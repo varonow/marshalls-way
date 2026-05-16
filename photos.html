@@ -518,6 +518,28 @@
   .lightbox.open .lightbox-close,
   .lightbox.open .lightbox-nav { display: flex; }
 
+  .photo-delete-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(13,31,51,0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .photo-item:hover .photo-delete-btn { opacity: 1; }
+  .photo-delete-btn:hover { background: var(--terracotta) !important; opacity: 1 !important; }
+
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   .photo-item { animation: fadeIn 0.4s ease both; }
 </style>
@@ -575,7 +597,7 @@
       <img id="lightboxImg" src="" alt="">
     </div>
     <div class="lightbox-sidebar">
-      <div class="lightbox-header">
+      <div class="lightbox-header" id="lightboxHeader">
         <div class="lightbox-uploader" id="lightboxUploader"></div>
         <div class="lightbox-caption" id="lightboxCaption"></div>
         <div class="lightbox-time" id="lightboxTime"></div>
@@ -651,14 +673,20 @@
     grid.innerHTML = photos.map((p, i) => {
       const likes = p.photo_likes || [];
       const liked = likes.some(l => l.user_name === user);
+      const canDelete = user === 'Victoria' || p.uploader_name === user;
       return `
-        <div class="photo-item" onclick="openLightbox(${i})">
-          <img src="${p.url}" alt="${p.caption || ''}" loading="lazy">
+        <div class="photo-item" id="photo-card-${p.id}">
+          <div style="position:relative;" onclick="openLightbox(${i})">
+            <img src="${p.url}" alt="${p.caption || ''}" loading="lazy">
+            ${canDelete ? `
+              <button class="photo-delete-btn" onclick="event.stopPropagation(); deletePhoto('${p.id}', '${p.url}')" title="Delete photo">✕</button>
+            ` : ''}
+          </div>
           <div class="photo-item-footer">
             ${p.caption ? `<div class="photo-item-caption">${p.caption}</div>` : ''}
             <div class="photo-item-meta">
               <span class="photo-item-uploader">📷 ${p.uploader_name}</span>
-              <button class="photo-item-likes ${liked ? 'liked' : ''}" onclick="event.stopPropagation(); quickLike(${i}, this)">
+              <button class="photo-item-likes ${liked ? 'liked' : ''}" onclick="quickLike(${i}, this)">
                 ${liked ? '♥' : '♡'} ${likes.length}
               </button>
             </div>
@@ -802,6 +830,23 @@
     document.getElementById('lightboxUploader').textContent = `📸 ${photo.uploader_name}`;
     document.getElementById('lightboxCaption').textContent = photo.caption || '';
     document.getElementById('lightboxTime').textContent = timeAgo(photo.created_at);
+
+    // Show/hide delete in lightbox
+    let deleteBtn = document.getElementById('lightboxDeleteBtn');
+    const canDelete = user === 'Victoria' || photo.uploader_name === user;
+    if (canDelete) {
+      if (!deleteBtn) {
+        deleteBtn = document.createElement('button');
+        deleteBtn.id = 'lightboxDeleteBtn';
+        deleteBtn.style.cssText = 'margin-top:10px;background:none;border:none;color:var(--text-muted);font-size:12px;cursor:pointer;font-family:Lato,sans-serif;padding:0;text-decoration:underline;';
+        deleteBtn.textContent = 'Delete this photo';
+        document.getElementById('lightboxHeader').appendChild(deleteBtn);
+      }
+      deleteBtn.onclick = () => deletePhoto(photo.id, photo.url);
+      deleteBtn.style.display = 'block';
+    } else if (deleteBtn) {
+      deleteBtn.style.display = 'none';
+    }
     document.getElementById('lightboxLikeCount').textContent = likes.length;
     document.getElementById('lightboxLikeIcon').textContent = liked ? '♥' : '♡';
     document.getElementById('lightboxLikeBtn').className = `lightbox-like-btn${liked ? ' liked' : ''}`;
@@ -855,7 +900,26 @@
     }
   };
 
-  // Keyboard nav
+  // Delete photo
+  window.deletePhoto = async function(photoId, url) {
+    if (!confirm('Delete this photo?')) return;
+    try {
+      // Extract filename from URL
+      const fileName = url.split('/').pop();
+      // Delete from storage
+      await db.storage.from('photos').remove([fileName]);
+      // Delete from database (cascades to likes and comments)
+      await db.from('photos').delete().eq('id', photoId);
+      // Remove from local array and re-render
+      photos = photos.filter(p => p.id !== photoId);
+      renderGrid();
+      // Close lightbox if open
+      closeLightbox();
+    } catch (err) {
+      console.error(err);
+      alert('Could not delete photo — please try again.');
+    }
+  };
   document.addEventListener('keydown', e => {
     if (!document.getElementById('lightbox').classList.contains('open')) return;
     if (e.key === 'Escape') closeLightbox();
