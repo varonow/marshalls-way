@@ -6,18 +6,18 @@ const SUPABASE_KEY = 'sb_publishable_ghdMhXPgLJTVjKl0AcvnlQ_jXK_uUXQ';
 export const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 export const GROUP_MEMBERS = [
-  { name: 'Victoria', emoji: '👑' },
-  { name: 'Marshall', emoji: '🎩' },
-  { name: 'Danielle', emoji: '🌸' },
-  { name: 'Mac', emoji: '⛵' },
-  { name: 'Jacob', emoji: '🌊' },
-  { name: 'Ginger', emoji: '🌺' },
-  { name: 'Kimberly', emoji: '✨' },
-  { name: 'Moshe', emoji: '🎶' },
-  { name: 'Stephanie', emoji: '🌙' },
-  { name: 'Joyce', emoji: '🌷' },
-  { name: 'Mousa', emoji: '🏖' },
-  { name: 'Selly', emoji: '🌟' },
+  { name: 'Victoria', emoji: '👸' },
+  { name: 'Marshall', emoji: '🤴' },
+  { name: 'Danielle', emoji: '😂' },
+  { name: 'Mac', emoji: '🏒' },
+  { name: 'Jacob', emoji: '🏋️' },
+  { name: 'Ginger', emoji: '💎' },
+  { name: 'Kimberly', emoji: '🎨' },
+  { name: 'Moshe', emoji: '⚓' },
+  { name: 'Stephanie', emoji: '💄' },
+  { name: 'Joyce', emoji: '🍸' },
+  { name: 'Mousa', emoji: '👔' },
+  { name: 'Selly', emoji: '💅' },
 ];
 
 export const SITE_PASSWORD = 'marshallsway2026';
