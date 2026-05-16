@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marshall's Way — Weather</title>
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/nav.css">
+<style>
+  body { background: #EEF6FC; }
+
+  .weather-header {
+    background: var(--navy);
+    padding: 56px 24px 72px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .weather-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 60px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60'%3E%3Cpath d='M0 30 Q150 0 300 30 Q450 60 600 30 Q750 0 900 30 Q1050 60 1200 30 L1200 60 L0 60 Z' fill='%23EEF6FC'/%3E%3C/svg%3E") no-repeat bottom;
+    background-size: cover;
+  }
+
+  .weather-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: var(--azure-light); margin-bottom: 12px; }
+  .weather-header h1 { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(2.2rem, 5vw, 3.2rem); color: var(--sand); margin-bottom: 8px; }
+  .weather-header h1 span { color: var(--gold); }
+  .weather-header-sub { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+
+  .weather-body {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 24px 100px;
+  }
+
+  /* NOTE CARD */
+  .note-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 16px 20px;
+    box-shadow: 0 2px 12px rgba(26,51,80,0.07);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* TODAY HERO */
+  .today-card {
+    background: var(--navy);
+    border-radius: 16px;
+    padding: 36px;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 24px rgba(26,51,80,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .today-left {}
+  .today-location { font-size: 10px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--azure-light); margin-bottom: 8px; }
+  .today-temp { font-family: 'Playfair Display', serif; font-size: 4rem; color: var(--sand); line-height: 1; margin-bottom: 4px; }
+  .today-temp span { font-size: 1.5rem; color: var(--azure-light); }
+  .today-desc { font-size: 1.1rem; color: var(--sand); font-style: italic; font-family: 'Playfair Display', serif; margin-bottom: 8px; }
+  .today-feels { font-size: 12px; color: rgba(255,255,255,0.5); }
+
+  .today-right { text-align: right; }
+  .today-icon { font-size: 72px; line-height: 1; margin-bottom: 8px; }
+  .today-date { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+
+  .today-stats {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    width: 100%;
+  }
+
+  .today-stat { text-align: center; }
+  .today-stat-val { font-size: 1.2rem; font-weight: 700; color: var(--gold); }
+  .today-stat-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-top: 2px; }
+
+  /* FORECAST */
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.5rem;
+    color: var(--navy);
+    margin-bottom: 20px;
+  }
+
+  .forecast-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+
+  .forecast-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 16px 12px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(26,51,80,0.07);
+    transition: transform 0.2s;
+  }
+
+  .forecast-card:hover { transform: translateY(-3px); }
+  .forecast-card.trip-day { border-top: 2px solid var(--terracotta); }
+  .forecast-card.today { border-top: 2px solid var(--gold-dark); }
+
+  .forecast-day { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+  .forecast-date-label { font-size: 9px; color: var(--terracotta); font-weight: 700; margin-bottom: 6px; letter-spacing: 1px; }
+  .forecast-icon { font-size: 28px; margin-bottom: 8px; }
+  .forecast-high { font-size: 1.1rem; font-weight: 700; color: var(--navy); }
+  .forecast-low { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .forecast-rain { font-size: 10px; color: var(--azure); margin-top: 4px; }
+
+  /* SEA CONDITIONS */
+  .sea-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .sea-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(26,51,80,0.07);
+    border-top: 2px solid var(--azure);
+  }
+
+  .sea-icon { font-size: 36px; margin-bottom: 12px; }
+  .sea-value { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--navy); margin-bottom: 4px; }
+  .sea-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+  .sea-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; font-style: italic; }
+
+  /* TRIP FORECAST TABLE */
+  .trip-table {
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(26,51,80,0.07);
+    margin-bottom: 40px;
+  }
+
+  .trip-table-header {
+    background: var(--navy);
+    padding: 16px 24px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--azure-light);
+  }
+
+  .trip-row {
+    padding: 14px 24px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 8px;
+    border-bottom: 1px solid #EEF6FC;
+    align-items: center;
+    font-size: 13px;
+  }
+
+  .trip-row:last-child { border-bottom: none; }
+  .trip-row:nth-child(even) { background: #FAFCFE; }
+
+  .trip-row-day { font-weight: 700; color: var(--navy); }
+  .trip-row-activity { font-size: 11px; color: var(--text-muted); }
+  .trip-row-icon { font-size: 20px; text-align: center; }
+  .trip-row-temp { font-weight: 700; color: var(--navy); text-align: center; }
+  .trip-row-low { color: var(--text-muted); text-align: center; }
+  .trip-row-rain { color: var(--azure); text-align: center; }
+
+  /* LOADING */
+  .loading { display: flex; justify-content: center; align-items: center; padding: 60px; gap: 12px; color: var(--text-muted); font-size: 14px; }
+
+  @media (max-width: 600px) {
+    .today-card { flex-direction: column; }
+    .today-right { text-align: left; }
+    .trip-table-header, .trip-row { grid-template-columns: 2fr 1fr 1fr; }
+    .trip-row-low, .trip-row-rain { display: none; }
+    .weather-body { padding: 32px 16px 80px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="weather-header">
+  <p class="weather-eyebrow">Marshall's Way · Amalfi Coast</p>
+  <h1>The <span>Weather</span></h1>
+  <p class="weather-header-sub">Sorrento · Amalfi · Capri · Positano · July 2026</p>
+</div>
+
+<div class="weather-body">
+
+  <div class="note-card">
+    <span>ℹ️</span>
+    <span>Live forecast from Open-Meteo for Sorrento (40.63°N, 14.38°E). Forecast accuracy improves as the trip approaches — check back closer to July!</span>
+  </div>
+
+  <div id="weatherContent">
+    <div class="loading"><div class="spinner"></div> Loading forecast...</div>
+  </div>
+
+</div>
+
+<script type="module">
+  import { requireAuth } from './js/supabase.js';
+  import { renderNav } from './js/nav.js';
+
+  await requireAuth();
+  renderNav('weather.html');
+
+  // Sorrento coordinates
+  const LAT = 40.626;
+  const LNG = 14.376;
+
+  const TRIP_DAYS = [
+    { date: '2026-07-03', label: 'Fri Jul 3', activity: 'Arrive Naples · La Cocumella' },
+    { date: '2026-07-04', label: 'Sat Jul 4', activity: 'La Cocumella · Sorrento' },
+    { date: '2026-07-05', label: 'Sun Jul 5', activity: 'Board M/Y R23 · Procida' },
+    { date: '2026-07-06', label: 'Mon Jul 6', activity: 'Ischia · Saads arrive' },
+    { date: '2026-07-07', label: 'Tue Jul 7', activity: 'Capri' },
+    { date: '2026-07-08', label: 'Wed Jul 8', activity: 'Positano · Nerano' },
+    { date: '2026-07-09', label: 'Thu Jul 9 🎂', activity: "Marshall's Birthday · Ravello" },
+    { date: '2026-07-10', label: 'Fri Jul 10', activity: 'Vietri · Riva Beach Club' },
+    { date: '2026-07-11', label: 'Sat Jul 11', activity: 'Positano · Music on the Rocks' },
+    { date: '2026-07-12', label: 'Sun Jul 12', activity: 'Depart Naples' },
+  ];
+
+  function cToF(c) { return Math.round(c * 9/5 + 32); }
+
+  function getWeatherIcon(code) {
+    if (code === 0) return '☀️';
+    if (code <= 2) return '⛅';
+    if (code <= 3) return '☁️';
+    if (code <= 48) return '🌫️';
+    if (code <= 57) return '🌧️';
+    if (code <= 67) return '🌧️';
+    if (code <= 77) return '🌨️';
+    if (code <= 82) return '🌦️';
+    if (code <= 86) return '🌨️';
+    if (code <= 99) return '⛈️';
+    return '🌤️';
+  }
+
+  function getWeatherDesc(code) {
+    if (code === 0) return 'Clear skies';
+    if (code <= 2) return 'Partly cloudy';
+    if (code <= 3) return 'Overcast';
+    if (code <= 48) return 'Foggy';
+    if (code <= 57) return 'Light drizzle';
+    if (code <= 67) return 'Rain showers';
+    if (code <= 77) return 'Snow showers';
+    if (code <= 82) return 'Rain showers';
+    if (code <= 99) return 'Thunderstorm';
+    return 'Partly cloudy';
+  }
+
+  function getWindDesc(speed) {
+    if (speed < 10) return 'Calm — perfect sailing';
+    if (speed < 20) return 'Light breeze';
+    if (speed < 30) return 'Moderate breeze';
+    if (speed < 40) return 'Fresh breeze';
+    return 'Strong winds — check conditions';
+  }
+
+  function getSeaDesc(height) {
+    if (height < 0.5) return 'Glassy — ideal for water toys';
+    if (height < 1.0) return 'Slight swell — comfortable';
+    if (height < 1.5) return 'Moderate swell';
+    if (height < 2.0) return 'Rough — may affect water sports';
+    return 'Very rough — stay onboard!';
+  }
+
+  async function loadWeather() {
+    try {
+      // Fetch weather + marine data
+      const [weatherRes, marineRes] = await Promise.all([
+        fetch(`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LNG}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max,windspeed_10m_max&timezone=Europe%2FRome&forecast_days=16`),
+        fetch(`https://marine-api.open-meteo.com/v1/marine?latitude=${LAT}&longitude=${LNG}&daily=wave_height_max,sea_surface_temperature_max&timezone=Europe%2FRome&forecast_days=16`)
+      ]);
+
+      const weather = await weatherRes.json();
+      const marine = await marineRes.json();
+
+      renderWeather(weather, marine);
+
+    } catch(err) {
+      document.getElementById('weatherContent').innerHTML = `
+        <div style="text-align:center; padding:40px; color:var(--text-muted);">
+          <div style="font-size:40px; margin-bottom:12px;">🌤️</div>
+          <p style="font-style:italic;">Weather data unavailable right now — check back soon!</p>
+          <p style="font-size:12px; margin-top:8px;">The Amalfi Coast in July typically sees 85–90°F (29–32°C) with very little rain and calm seas.</p>
+        </div>
+      `;
+    }
+  }
+
+  function renderWeather(w, m) {
+    const dates = w.daily.time;
+    const codes = w.daily.weathercode;
+    const highs = w.daily.temperature_2m_max;
+    const lows = w.daily.temperature_2m_min;
+    const rain = w.daily.precipitation_probability_max;
+    const wind = w.daily.windspeed_10m_max;
+    const waves = m.daily?.wave_height_max || [];
+    const seaTemp = m.daily?.sea_surface_temperature_max || [];
+
+    const today = new Date().toISOString().split('T')[0];
+    const todayIdx = dates.indexOf(today);
+    const i = todayIdx >= 0 ? todayIdx : 0;
+
+    const todayHigh = highs[i];
+    const todayLow = lows[i];
+    const todayCode = codes[i];
+    const todayWind = wind[i];
+    const todayWave = waves[i];
+    const todaySeaTemp = seaTemp[i];
+
+    // TODAY
+    const todayHTML = `
+      <div class="today-card">
+        <div class="today-left">
+          <div class="today-location">📍 Sorrento · Amalfi Coast</div>
+          <div class="today-temp">${cToF(todayHigh)}°<span>F / ${Math.round(todayHigh)}°C</span></div>
+          <div class="today-desc">${getWeatherDesc(todayCode)}</div>
+          <div class="today-feels">Low ${cToF(todayLow)}°F / ${Math.round(todayLow)}°C · Wind ${Math.round(todayWind * 0.621)} mph</div>
+          <div class="today-stats">
+            <div class="today-stat">
+              <div class="today-stat-val">${todayWave ? todayWave.toFixed(1) + 'm' : '--'}</div>
+              <div class="today-stat-label">Wave Height</div>
+            </div>
+            <div class="today-stat">
+              <div class="today-stat-val">${todaySeaTemp ? cToF(todaySeaTemp) + '°F' : '--'}</div>
+              <div class="today-stat-label">Sea Temp</div>
+            </div>
+            <div class="today-stat">
+              <div class="today-stat-val">${Math.round(todayWind * 0.621)} mph</div>
+              <div class="today-stat-label">Wind Speed</div>
+            </div>
+            <div class="today-stat">
+              <div class="today-stat-val">${rain[i]}%</div>
+              <div class="today-stat-label">Rain Chance</div>
+            </div>
+          </div>
+        </div>
+        <div class="today-right">
+          <div class="today-icon">${getWeatherIcon(todayCode)}</div>
+          <div class="today-date">Today · ${new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</div>
+        </div>
+      </div>
+    `;
+
+    // 16-DAY FORECAST
+    const forecastHTML = `
+      <div class="section-title">16-Day Forecast</div>
+      <div class="forecast-grid">
+        ${dates.slice(0, 16).map((date, idx) => {
+          const isToday = date === today;
+          const isTripDay = TRIP_DAYS.some(t => t.date === date);
+          const tripDay = TRIP_DAYS.find(t => t.date === date);
+          const d = new Date(date + 'T12:00:00');
+          const dayName = isToday ? 'Today' : d.toLocaleDateString('en-US', { weekday: 'short' });
+          const dateNum = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+          return `
+            <div class="forecast-card ${isToday ? 'today' : ''} ${isTripDay ? 'trip-day' : ''}">
+              <div class="forecast-day">${dayName}</div>
+              <div class="forecast-day" style="color:var(--navy);font-size:9px;">${dateNum}</div>
+              ${isTripDay ? `<div class="forecast-date-label">⚓ Trip</div>` : ''}
+              <div class="forecast-icon">${getWeatherIcon(codes[idx])}</div>
+              <div class="forecast-high">${cToF(highs[idx])}°F</div>
+              <div class="forecast-low">${cToF(lows[idx])}°F</div>
+              <div class="forecast-rain">💧 ${rain[idx]}%</div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+
+    // SEA CONDITIONS
+    const avgWave = waves.length ? (waves.slice(0, 7).reduce((a, b) => a + (b || 0), 0) / 7).toFixed(1) : null;
+    const avgSeaTemp = seaTemp.length ? Math.round(seaTemp.slice(0, 7).reduce((a, b) => a + (b || 0), 0) / 7) : null;
+    const avgWind = Math.round(wind.slice(0, 7).reduce((a, b) => a + b, 0) / 7 * 0.621);
+
+    const seaHTML = `
+      <div class="section-title">Sea Conditions</div>
+      <div class="sea-grid">
+        <div class="sea-card">
+          <div class="sea-icon">🌊</div>
+          <div class="sea-value">${avgWave ? avgWave + 'm' : '--'}</div>
+          <div class="sea-label">Avg Wave Height</div>
+          <div class="sea-sub">${avgWave ? getSeaDesc(parseFloat(avgWave)) : 'Data unavailable'}</div>
+        </div>
+        <div class="sea-card">
+          <div class="sea-icon">🌡️</div>
+          <div class="sea-value">${avgSeaTemp ? cToF(avgSeaTemp) + '°F' : '--'}</div>
+          <div class="sea-label">Sea Temperature</div>
+          <div class="sea-sub">${avgSeaTemp ? `${avgSeaTemp}°C · ${cToF(avgSeaTemp) >= 75 ? 'Warm — perfect for swimming!' : 'Refreshing swimming conditions'}` : 'Data unavailable'}</div>
+        </div>
+        <div class="sea-card">
+          <div class="sea-icon">💨</div>
+          <div class="sea-value">${avgWind} mph</div>
+          <div class="sea-label">Avg Wind Speed</div>
+          <div class="sea-sub">${getWindDesc(avgWind)}</div>
+        </div>
+        <div class="sea-card">
+          <div class="sea-icon">☀️</div>
+          <div class="sea-value">~${cToF(28)}°F</div>
+          <div class="sea-label">Typical July High</div>
+          <div class="sea-sub">Amalfi Coast July average</div>
+        </div>
+      </div>
+    `;
+
+    // TRIP DAY TABLE
+    const tripTableHTML = `
+      <div class="section-title">Trip Day by Day</div>
+      <div class="trip-table">
+        <div class="trip-table-header">
+          <div>Day</div>
+          <div style="text-align:center;">Sky</div>
+          <div style="text-align:center;">High</div>
+          <div style="text-align:center;">Low</div>
+          <div style="text-align:center;">Rain</div>
+        </div>
+        ${TRIP_DAYS.map(tripDay => {
+          const idx = dates.indexOf(tripDay.date);
+          if (idx === -1) return `
+            <div class="trip-row">
+              <div><div class="trip-row-day">${tripDay.label}</div><div class="trip-row-activity">${tripDay.activity}</div></div>
+              <div class="trip-row-icon">--</div>
+              <div class="trip-row-temp" style="color:var(--text-muted);font-size:11px;">Too far out</div>
+              <div class="trip-row-low">--</div>
+              <div class="trip-row-rain">--</div>
+            </div>
+          `;
+          return `
+            <div class="trip-row">
+              <div><div class="trip-row-day">${tripDay.label}</div><div class="trip-row-activity">${tripDay.activity}</div></div>
+              <div class="trip-row-icon">${getWeatherIcon(codes[idx])}</div>
+              <div class="trip-row-temp">${cToF(highs[idx])}°F</div>
+              <div class="trip-row-low">${cToF(lows[idx])}°F</div>
+              <div class="trip-row-rain">${rain[idx]}%</div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+
+    document.getElementById('weatherContent').innerHTML = todayHTML + seaHTML + forecastHTML + tripTableHTML;
+  }
+
+  loadWeather();
+</script>
+</body>
+</html>
