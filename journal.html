@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marshall's Way — Journal</title>
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/nav.css">
+<style>
+
+  body { background: #EEF6FC; }
+
+  .journal-header {
+    background: var(--navy);
+    padding: 56px 24px 72px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .journal-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 60px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60'%3E%3Cpath d='M0 30 Q150 0 300 30 Q450 60 600 30 Q750 0 900 30 Q1050 60 1200 30 L1200 60 L0 60 Z' fill='%23EEF6FC'/%3E%3C/svg%3E") no-repeat bottom;
+    background-size: cover;
+  }
+
+  .journal-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: var(--azure-light); margin-bottom: 12px; }
+  .journal-header h1 { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(2.2rem, 5vw, 3.2rem); color: var(--sand); margin-bottom: 8px; }
+  .journal-header h1 span { color: var(--gold); }
+  .journal-header-sub { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+
+  /* BODY */
+  .journal-body {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 100px;
+  }
+
+  /* NEW POST */
+  .new-post-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 16px rgba(26,51,80,0.08);
+    border-top: 2px solid var(--azure);
+    margin-bottom: 36px;
+  }
+
+  .new-post-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--navy);
+    margin-bottom: 16px;
+  }
+
+  .journal-textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--sand-dark);
+    border-radius: 8px;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    color: var(--navy);
+    background: var(--white);
+    outline: none;
+    resize: vertical;
+    min-height: 100px;
+    transition: border-color 0.2s;
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+
+  .journal-textarea:focus { border-color: var(--azure); }
+
+  .post-btn {
+    padding: 12px 28px;
+    background: var(--azure);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .post-btn:hover { background: var(--azure-dark); transform: translateY(-1px); }
+  .post-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* POSTS */
+  .posts-list { display: flex; flex-direction: column; gap: 20px; }
+
+  .post-card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(26,51,80,0.07);
+    overflow: hidden;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+  .post-body { padding: 20px 24px 16px; }
+
+  .post-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .post-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #EEF6FC;
+    border: 2px solid var(--azure-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+
+  .post-author {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .post-time {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 1px;
+  }
+
+  .post-content {
+    font-size: 14px;
+    color: #2C3E50;
+    line-height: 1.85;
+    white-space: pre-wrap;
+  }
+
+  .post-footer {
+    padding: 10px 24px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #EEF6FC;
+  }
+
+  .reply-toggle {
+    background: none;
+    border: none;
+    color: var(--azure);
+    font-family: 'Lato', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    padding: 4px 0;
+    transition: color 0.2s;
+  }
+
+  .reply-toggle:hover { color: var(--terracotta); }
+
+  /* REPLIES */
+  .replies-section {
+    background: #EEF6FC;
+    padding: 16px 24px;
+    border-top: 1px solid var(--sand-dark);
+    display: none;
+  }
+
+  .replies-section.open { display: block; }
+
+  .reply-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--sand-dark);
+  }
+
+  .reply-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .reply-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 1px solid var(--azure-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .reply-author { font-size: 11px; font-weight: 700; color: var(--azure); margin-bottom: 2px; }
+  .reply-text { font-size: 13px; color: var(--navy); line-height: 1.6; }
+  .reply-time { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+  .reply-form {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .reply-input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--sand-dark);
+    border-radius: 8px;
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    color: var(--navy);
+    background: var(--white);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .reply-input:focus { border-color: var(--azure); }
+
+  .reply-submit {
+    padding: 10px 16px;
+    background: var(--navy);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+
+  .reply-submit:hover { background: var(--azure); }
+
+  /* LOADING / EMPTY */
+  .loading { display: flex; justify-content: center; padding: 40px; }
+  .empty-state { text-align: center; padding: 48px 24px; color: var(--text-muted); }
+  .empty-state-icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-state p { font-size: 14px; font-style: italic; }
+
+  @media (max-width: 600px) {
+    .journal-body { padding: 32px 16px 80px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="journal-header">
+  <p class="journal-eyebrow">Marshall's Way · July 2026</p>
+  <h1>The <span>Journal</span></h1>
+  <p class="journal-header-sub">Share your thoughts, notes and moments from the voyage</p>
+</div>
+
+<div class="journal-body">
+
+  <!-- New Post -->
+  <div class="new-post-card">
+    <h3>Write a note...</h3>
+    <textarea class="journal-textarea" id="postContent" placeholder="Share a thought, a memory, a moment..."></textarea>
+    <button class="post-btn" id="postBtn" onclick="submitPost()">POST →</button>
+  </div>
+
+  <!-- Posts -->
+  <div id="postsLoading" class="loading"><div class="spinner"></div></div>
+  <div class="posts-list" id="postsList"></div>
+  <div class="empty-state" id="emptyState" style="display:none;">
+    <div class="empty-state-icon">📝</div>
+    <p>No entries yet — be the first to write something!</p>
+  </div>
+
+</div>
+
+<script type="module">
+  import { requireAuth, getCurrentUser, getCurrentEmoji, db } from './js/supabase.js';
+  import { renderNav } from './js/nav.js';
+
+  await requireAuth();
+  renderNav('journal.html');
+
+  const user = getCurrentUser();
+  const emoji = getCurrentEmoji();
+
+  function timeAgo(dateStr) {
+    const diff = Math.floor((Date.now() - new Date(dateStr)) / 1000);
+    if (diff < 60) return 'Just now';
+    if (diff < 3600) return `${Math.floor(diff/60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff/3600)}h ago`;
+    return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  }
+
+  // Load posts
+  async function loadPosts() {
+    document.getElementById('postsLoading').style.display = 'flex';
+    const { data, error } = await db
+      .from('journal_posts')
+      .select('*, journal_replies(id, author_name, content, created_at)')
+      .order('created_at', { ascending: false });
+
+    document.getElementById('postsLoading').style.display = 'none';
+    if (error || !data) return;
+
+    const list = document.getElementById('postsList');
+    const empty = document.getElementById('emptyState');
+
+    if (data.length === 0) {
+      empty.style.display = 'block';
+      return;
+    }
+
+    empty.style.display = 'none';
+    list.innerHTML = data.map(post => renderPost(post)).join('');
+  }
+
+  function renderPost(post) {
+    const replies = (post.journal_replies || []).sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+    const replyCount = replies.length;
+
+    const repliesHTML = replies.map(r => `
+      <div class="reply-item">
+        <div class="reply-avatar">${getEmoji(r.author_name)}</div>
+        <div>
+          <div class="reply-author">${r.author_name}</div>
+          <div class="reply-text">${r.content}</div>
+          <div class="reply-time">${timeAgo(r.created_at)}</div>
+        </div>
+      </div>
+    `).join('');
+
+    return `
+      <div class="post-card" id="post-${post.id}">
+        <div class="post-body">
+          <div class="post-header">
+            <div class="post-avatar">${getEmoji(post.author_name)}</div>
+            <div>
+              <div class="post-author">${post.author_name}</div>
+              <div class="post-time">${timeAgo(post.created_at)}</div>
+            </div>
+          </div>
+          <div class="post-content">${post.content}</div>
+        </div>
+        <div class="post-footer">
+          <button class="reply-toggle" onclick="toggleReplies('${post.id}')">
+            ${replyCount > 0 ? `${replyCount} ${replyCount === 1 ? 'reply' : 'replies'}` : 'Reply'}
+          </button>
+        </div>
+        <div class="replies-section" id="replies-${post.id}">
+          <div id="replies-list-${post.id}">${repliesHTML}</div>
+          <div class="reply-form">
+            <input type="text" class="reply-input" id="reply-input-${post.id}" placeholder="Write a reply..." onkeydown="if(event.key==='Enter') submitReply('${post.id}')">
+            <button class="reply-submit" onclick="submitReply('${post.id}')">↑</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function getEmoji(name) {
+    const map = { Victoria: '👸', Marshall: '🤴', Danielle: '😂', Mac: '🏒', Jacob: '🏋️', Ginger: '💎', Kimberly: '🎨', Moshe: '⚓', Stephanie: '💄', Joyce: '🍸', Mousa: '👔', Selly: '💅' };
+    return map[name] || '👤';
+  }
+
+  window.toggleReplies = function(postId) {
+    const section = document.getElementById(`replies-${postId}`);
+    section.classList.toggle('open');
+    if (section.classList.contains('open')) {
+      document.getElementById(`reply-input-${postId}`).focus();
+    }
+  };
+
+  window.submitPost = async function() {
+    const content = document.getElementById('postContent').value.trim();
+    if (!content) return;
+
+    const btn = document.getElementById('postBtn');
+    btn.disabled = true;
+    btn.textContent = 'POSTING...';
+
+    const { error } = await db.from('journal_posts').insert({
+      author_name: user,
+      content,
+    });
+
+    if (!error) {
+      document.getElementById('postContent').value = '';
+      await loadPosts();
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'POST →';
+  };
+
+  window.submitReply = async function(postId) {
+    const input = document.getElementById(`reply-input-${postId}`);
+    const content = input.value.trim();
+    if (!content) return;
+
+    const { data, error } = await db.from('journal_replies').insert({
+      post_id: postId,
+      author_name: user,
+      content,
+    }).select().single();
+
+    if (!error && data) {
+      input.value = '';
+      const list = document.getElementById(`replies-list-${postId}`);
+      list.innerHTML += `
+        <div class="reply-item">
+          <div class="reply-avatar">${emoji}</div>
+          <div>
+            <div class="reply-author">${user}</div>
+            <div class="reply-text">${content}</div>
+            <div class="reply-time">Just now</div>
+          </div>
+        </div>
+      `;
+      // Update reply count
+      const toggle = document.querySelector(`#post-${postId} .reply-toggle`);
+      const currentReplies = list.querySelectorAll('.reply-item').length;
+      toggle.textContent = `${currentReplies} ${currentReplies === 1 ? 'reply' : 'replies'}`;
+    }
+  };
+
+  loadPosts();
+</script>
+</body>
+</html>
