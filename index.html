@@ -27,6 +27,7 @@
   }
   .bg-waves { position: fixed; bottom: 0; left: 0; right: 0; height: 160px; overflow: hidden; pointer-events: none; }
   .bg-waves svg { width: 100%; height: 100%; }
+
   .login-container {
     width: 100%; max-width: 480px; padding: 24px;
     text-align: center; position: relative; z-index: 10;
@@ -54,40 +55,49 @@
   }
   .login-card h2 { color: var(--navy); font-size: 22px; font-style: italic; margin-bottom: 6px; }
   .login-card p { color: var(--text-muted); font-size: 13px; margin-bottom: 28px; }
+
+  .form-group { margin-bottom: 14px; text-align: left; }
+  .form-label {
+    display: block; font-size: 10px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 6px;
+  }
   .login-input {
-    width: 100%; padding: 15px 20px; border: 2px solid var(--sand-dark);
-    border-radius: 50px; background: var(--sand); color: var(--navy);
-    font-size: 16px; text-align: center; letter-spacing: 3px; outline: none;
-    font-family: 'Lato', sans-serif; transition: border-color 0.2s; margin-bottom: 14px;
+    width: 100%; padding: 14px 18px;
+    border: 2px solid var(--sand-dark); border-radius: 50px;
+    background: var(--sand); color: var(--navy);
+    font-size: 15px; outline: none;
+    font-family: 'Lato', sans-serif; transition: border-color 0.2s;
   }
-  .login-input::placeholder { color: var(--text-muted); letter-spacing: 1px; font-size: 14px; }
   .login-input:focus { border-color: var(--azure); }
-  .login-input.error { border-color: var(--terracotta); animation: shake 0.4s ease; }
-  @keyframes shake {
-    0%,100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); }
-  }
+  .login-input.error { border-color: var(--terracotta); }
+
   .login-btn {
     width: 100%; padding: 16px; background: var(--terracotta); color: var(--white);
     border: none; border-radius: 50px; font-family: 'Lato', sans-serif; font-weight: 700;
     font-size: 13px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer;
-    transition: all 0.2s; box-shadow: 0 4px 20px rgba(196,98,45,0.3);
+    transition: all 0.2s; box-shadow: 0 4px 20px rgba(196,98,45,0.3); margin-top: 8px;
   }
-  .login-btn:hover { background: #B05020; transform: translateY(-2px); box-shadow: 0 6px 28px rgba(196,98,45,0.45); }
-  .login-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-  .error-msg { color: var(--terracotta); font-size: 13px; margin-top: 12px; display: none; }
-  #step2 { display: none; }
-  .member-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 20px; }
-  .member-btn {
-    padding: 14px 8px; background: var(--sand); border: 2px solid var(--sand-dark);
-    border-radius: 10px; color: var(--navy); cursor: pointer; transition: all 0.2s;
-    font-family: 'Lato', sans-serif; font-size: 12px; font-weight: 700;
-    display: flex; flex-direction: column; align-items: center; gap: 6px;
+  .login-btn:hover { background: #B05020; transform: translateY(-2px); }
+  .login-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  .error-msg {
+    color: var(--terracotta); font-size: 13px;
+    margin-top: 12px; display: none; text-align: center;
   }
-  .member-btn .member-emoji { font-size: 22px; }
-  .member-btn:hover, .member-btn.selected {
-    background: var(--azure-light); border-color: var(--azure);
-    transform: translateY(-2px); box-shadow: 0 4px 12px rgba(26,123,184,0.2);
+
+  .forgot-link {
+    display: block; margin-top: 16px; font-size: 12px;
+    color: var(--text-muted); cursor: pointer;
+    text-decoration: underline;
   }
+  .forgot-link:hover { color: var(--azure); }
+
+  .success-msg {
+    color: #2E7D52; font-size: 13px;
+    margin-top: 12px; display: none; text-align: center;
+  }
+
   .login-footer {
     margin-top: 24px; color: var(--text-muted); font-size: 10px;
     letter-spacing: 3px; animation: fadeIn 1s ease 1s both;
@@ -97,6 +107,7 @@
 </style>
 </head>
 <body>
+
 <div class="bg-dots" id="dots"></div>
 <div class="bg-waves">
   <svg viewBox="0 0 1200 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
@@ -110,29 +121,56 @@
   <img src="images/logo.png" alt="Marshall's Way" class="login-logo">
   <p class="login-tagline-1">Amalfi Coast · July 2026</p>
   <p class="login-tagline-2">And now, the trip is near...</p>
+
   <div class="login-card">
-    <div id="step1">
+
+    <!-- LOGIN FORM -->
+    <div id="loginForm">
       <h2>Welcome, Family</h2>
-      <p>Enter the password to join the voyage</p>
-      <input type="password" class="login-input" id="passwordInput" placeholder="Enter password" autocomplete="off">
-      <button class="login-btn" onclick="checkPassword()">SET SAIL →</button>
-      <p class="error-msg" id="errorMsg">Wrong password — try again!</p>
+      <p>Sign in to join the voyage</p>
+
+      <div class="form-group">
+        <label class="form-label" for="emailInput">Email</label>
+        <input type="email" class="login-input" id="emailInput" placeholder="your@email.com" autocomplete="email">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="passwordInput">Password</label>
+        <input type="password" class="login-input" id="passwordInput" placeholder="Your password" autocomplete="current-password">
+      </div>
+
+      <button class="login-btn" id="loginBtn" onclick="handleLogin()">SET SAIL →</button>
+      <p class="error-msg" id="errorMsg"></p>
+      <a class="forgot-link" onclick="showForgotForm()">Forgot your password?</a>
     </div>
-    <div id="step2">
-      <h2>Who's aboard?</h2>
-      <p>Select your name to continue</p>
-      <div class="member-grid" id="memberGrid"></div>
-      <button class="login-btn" id="continueBtn" onclick="continueToSite()" disabled>LET'S GO →</button>
+
+    <!-- FORGOT PASSWORD FORM -->
+    <div id="forgotForm" style="display:none;">
+      <h2>Reset Password</h2>
+      <p>Enter your email and we'll send you a reset link</p>
+      <div class="form-group">
+        <label class="form-label" for="resetEmail">Email</label>
+        <input type="email" class="login-input" id="resetEmail" placeholder="your@email.com">
+      </div>
+      <button class="login-btn" onclick="handleReset()">SEND RESET LINK</button>
+      <p class="success-msg" id="successMsg">Reset link sent! Check your email.</p>
+      <a class="forgot-link" onclick="showLoginForm()">Back to login</a>
     </div>
+
   </div>
   <p class="login-footer">MARSHALL'S WAY · AMALFI COAST · JULY 2026</p>
 </div>
 
 <script type="module">
-  import { SITE_PASSWORD, GROUP_MEMBERS, authenticate, setCurrentUser, isAuthenticated, getCurrentUser } from './js/supabase.js';
+  import { db, signIn, getSession, getCurrentUser } from './js/supabase.js';
 
-  if (isAuthenticated() && getCurrentUser()) window.location.href = 'home.html';
+  // Redirect if already logged in
+  const session = await getSession();
+  if (session && getCurrentUser()) {
+    window.location.href = 'home.html';
+  }
 
+  // Animated dots
   const dotsContainer = document.getElementById('dots');
   for (let i = 0; i < 40; i++) {
     const d = document.createElement('div');
@@ -142,40 +180,56 @@
     dotsContainer.appendChild(d);
   }
 
-  window.checkPassword = function() {
-    const input = document.getElementById('passwordInput');
-    if (input.value.toLowerCase().trim() === SITE_PASSWORD) {
-      authenticate();
-      document.getElementById('step1').style.display = 'none';
-      document.getElementById('step2').style.display = 'block';
-      const grid = document.getElementById('memberGrid');
-      GROUP_MEMBERS.forEach(member => {
-        const btn = document.createElement('button');
-        btn.className = 'member-btn';
-        btn.innerHTML = `<span class="member-emoji">${member.emoji}</span>${member.name}`;
-        btn.onclick = () => selectMember(member.name, btn);
-        grid.appendChild(btn);
-      });
-    } else {
-      input.classList.add('error');
-      document.getElementById('errorMsg').style.display = 'block';
-      setTimeout(() => input.classList.remove('error'), 500);
-      input.value = '';
+  // Allow Enter key
+  document.getElementById('passwordInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') handleLogin();
+  });
+
+  window.handleLogin = async function() {
+    const email = document.getElementById('emailInput').value.trim();
+    const password = document.getElementById('passwordInput').value;
+    const btn = document.getElementById('loginBtn');
+    const errorMsg = document.getElementById('errorMsg');
+
+    if (!email || !password) {
+      errorMsg.textContent = 'Please enter your email and password.';
+      errorMsg.style.display = 'block';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'SIGNING IN...';
+    errorMsg.style.display = 'none';
+
+    try {
+      await signIn(email, password);
+      window.location.href = 'home.html';
+    } catch (err) {
+      errorMsg.textContent = 'Incorrect email or password — try again!';
+      errorMsg.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'SET SAIL →';
     }
   };
 
-  document.getElementById('passwordInput').addEventListener('keydown', e => { if (e.key === 'Enter') window.checkPassword(); });
-
-  let selectedMember = null;
-  window.selectMember = function(name, btn) {
-    document.querySelectorAll('.member-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    selectedMember = name;
-    document.getElementById('continueBtn').disabled = false;
+  window.handleReset = async function() {
+    const email = document.getElementById('resetEmail').value.trim();
+    const successMsg = document.getElementById('successMsg');
+    if (!email) return;
+    await db.auth.resetPasswordForEmail(email, {
+      redirectTo: 'https://aronow.tours/index.html'
+    });
+    successMsg.style.display = 'block';
   };
 
-  window.continueToSite = function() {
-    if (selectedMember) { setCurrentUser(selectedMember); window.location.href = 'home.html'; }
+  window.showForgotForm = function() {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('forgotForm').style.display = 'block';
+  };
+
+  window.showLoginForm = function() {
+    document.getElementById('forgotForm').style.display = 'none';
+    document.getElementById('loginForm').style.display = 'block';
   };
 </script>
 </body>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Marshall's Way — Home</title>
-<link rel="icon" type="image/jpeg" href="images/logo.png">
+<link rel="icon" type="image/jpeg" href="images/logo.jpg">
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/nav.css">
@@ -321,7 +321,7 @@
     </svg>
   </div>
 
-  <img src="images/logo.png" alt="Marshall's Way" class="hero-logo">
+  <img src="images/logo.jpg" alt="Marshall's Way" class="hero-logo">
 
   <h1 class="hero-title">Marshall's <span>Way</span></h1>
   <p class="hero-tagline-1">Amalfi Coast · July 2026</p>
@@ -395,10 +395,10 @@
 </footer>
 
 <script type="module">
-  import { requireAuth, getCurrentUser, authenticate } from './js/supabase.js';
+  import { requireAuth, getCurrentUser, signOut } from './js/supabase.js';
   import { renderNav } from './js/nav.js';
 
-  requireAuth();
+  await requireAuth();
   renderNav('home.html');
 
   const user = getCurrentUser();
@@ -468,10 +468,8 @@
   updateCountdown();
   setInterval(updateCountdown, 1000);
 
-  window.logout = function() {
-    localStorage.removeItem('mw_auth');
-    localStorage.removeItem('mw_user');
-    window.location.href = 'index.html';
+  window.logout = async function() {
+    await signOut();
   };
 </script>
 </body>
