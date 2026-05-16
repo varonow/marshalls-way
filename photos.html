@@ -653,7 +653,7 @@
           <div class="photo-item-footer">
             ${p.caption ? `<div class="photo-item-caption">${p.caption}</div>` : ''}
             <div class="photo-item-meta">
-              <span class="photo-item-uploader">${p.uploader_name}</span>
+              <span class="photo-item-uploader">📷 ${p.uploader_name}</span>
               <button class="photo-item-likes ${liked ? 'liked' : ''}" onclick="event.stopPropagation(); quickLike(${i}, this)">
                 ${liked ? '♥' : '♡'} ${likes.length}
               </button>
