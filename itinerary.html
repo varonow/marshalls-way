@@ -193,7 +193,7 @@
   .event-toggle {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 6px;
     padding: 16px 20px;
     cursor: pointer;
     background: var(--white);
@@ -201,24 +201,16 @@
     user-select: none;
   }
 
-  .event-toggle:hover { background: #FFFAF5; }
-  .event-item.open .event-toggle { background: var(--sand); }
+  .event-toggle:hover { background: #F5FAFE; }
+  .event-item.open .event-toggle { background: #EEF6FC; }
 
-  .event-time-pill {
+  .event-time-text {
     flex-shrink: 0;
-    background: var(--navy);
-    color: var(--sand);
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1px;
+    font-size: 12px;
+    color: #8A9AAA;
+    font-weight: 400;
     white-space: nowrap;
-    min-width: 80px;
-    text-align: center;
   }
-
-  .day-section:nth-child(even) .event-time-pill { background: var(--terracotta); }
 
   .event-toggle-title {
     font-family: 'Playfair Display', serif;
@@ -527,7 +519,7 @@
     const eventsHTML = day.events.map((e, i) => `
       <div class="event-item" id="event-${day.id}-${i}">
         <div class="event-toggle" onclick="toggleEvent('event-${day.id}-${i}')">
-          <span class="event-time-pill">${e.time}</span>
+          <span class="event-time-text">${e.time} ·</span>
           <span class="event-toggle-title">${e.title}</span>
           <span class="event-toggle-icon">▾</span>
         </div>

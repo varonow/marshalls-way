@@ -33,7 +33,7 @@ html {
 body {
   font-family: 'Lato', sans-serif;
   font-weight: 400;
-  background: var(--sand);
+  background: #EEF6FC;
   color: var(--text);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
