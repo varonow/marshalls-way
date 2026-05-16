@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marshall's Way — Shopping Guide</title>
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/nav.css">
+<style>
+  body { background: #EEF6FC; }
+
+  .shop-header {
+    background: var(--navy);
+    padding: 56px 24px 72px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shop-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 60px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60'%3E%3Cpath d='M0 30 Q150 0 300 30 Q450 60 600 30 Q750 0 900 30 Q1050 60 1200 30 L1200 60 L0 60 Z' fill='%23EEF6FC'/%3E%3C/svg%3E") no-repeat bottom;
+    background-size: cover;
+  }
+
+  .shop-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: var(--azure-light); margin-bottom: 12px; }
+  .shop-header h1 { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(2.2rem, 5vw, 3.2rem); color: var(--sand); margin-bottom: 8px; }
+  .shop-header h1 span { color: var(--gold); }
+  .shop-header-sub { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+
+  /* BODY */
+  .shop-body {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 24px 100px;
+  }
+
+  /* TIPS BANNER */
+  .tips-banner {
+    background: var(--navy);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+  }
+
+  .tip-item { display: flex; align-items: flex-start; gap: 10px; }
+  .tip-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+  .tip-text { font-size: 12px; color: rgba(255,255,255,0.7); line-height: 1.6; }
+  .tip-text strong { color: var(--gold); display: block; margin-bottom: 2px; }
+
+  /* LOCATION TABS */
+  .location-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+
+  .loc-tab {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 2px solid var(--sand-dark);
+    background: var(--white);
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .loc-tab:hover { border-color: var(--azure); color: var(--azure); }
+  .loc-tab.active { background: var(--navy); border-color: var(--navy); color: var(--gold); }
+
+  /* LOCATION SECTION */
+  .location-section { display: none; }
+  .location-section.active { display: block; }
+
+  .location-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--sand-dark);
+  }
+
+  .location-icon { font-size: 40px; }
+
+  .location-name {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 2rem;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+
+  .location-day {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--terracotta);
+  }
+
+  .location-tip {
+    background: #FFFDF8;
+    border-left: 3px solid var(--gold-dark);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--navy);
+    line-height: 1.7;
+    margin-bottom: 28px;
+    font-style: italic;
+  }
+
+  /* CATEGORIES */
+  .categories-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .category-card {
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(26,51,80,0.07);
+  }
+
+  .category-header {
+    background: #EEF6FC;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--sand-dark);
+  }
+
+  .category-icon { font-size: 20px; }
+
+  .category-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .category-body { padding: 20px; }
+
+  .category-tip {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  /* STORES */
+  .stores-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .store-item {
+    display: flex;
+    gap: 14px;
+    padding: 14px 16px;
+    background: #FAFCFE;
+    border-radius: 8px;
+    border: 1px solid #EEF6FC;
+  }
+
+  .store-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+
+  .store-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 3px;
+  }
+
+  .store-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .store-price {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--terracotta);
+    margin-top: 3px;
+  }
+
+  @media (max-width: 600px) {
+    .shop-body { padding: 32px 16px 80px; }
+    .location-tabs { gap: 6px; }
+    .loc-tab { padding: 8px 14px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shop-header">
+  <p class="shop-eyebrow">Marshall's Way · July 2026</p>
+  <h1>Shopping <span>Guide</span></h1>
+  <p class="shop-header-sub">Capri · Positano · Amalfi · Sorrento · Ravello</p>
+</div>
+
+<div class="shop-body">
+
+  <!-- Tips banner -->
+  <div class="tips-banner">
+    <div class="tip-item">
+      <div class="tip-icon">💶</div>
+      <div class="tip-text"><strong>Cash is king</strong>Many small shops, sandal makers and markets prefer cash. Keep euros on hand.</div>
+    </div>
+    <div class="tip-item">
+      <div class="tip-icon">🛍</div>
+      <div class="tip-text"><strong>Shop light early</strong>Anything you buy in Capri or Positano has to come back on the tender — keep bags manageable!</div>
+    </div>
+    <div class="tip-item">
+      <div class="tip-icon">🕐</div>
+      <div class="tip-text"><strong>Siesta hours</strong>Most shops close 1–4 PM for riposo. Plan your shopping for mornings or evenings.</div>
+    </div>
+    <div class="tip-item">
+      <div class="tip-icon">🧾</div>
+      <div class="tip-text"><strong>Tax refund</strong>Non-EU shoppers can claim VAT back on purchases over €154.94 at the same store.</div>
+    </div>
+  </div>
+
+  <!-- Location tabs -->
+  <div class="location-tabs">
+    <button class="loc-tab active" onclick="showLocation('capri', this)">💎 Capri</button>
+    <button class="loc-tab" onclick="showLocation('positano', this)">🌺 Positano</button>
+    <button class="loc-tab" onclick="showLocation('amalfi', this)">⛪ Amalfi</button>
+    <button class="loc-tab" onclick="showLocation('ravello', this)">🎶 Ravello</button>
+    <button class="loc-tab" onclick="showLocation('sorrento', this)">🍋 Sorrento</button>
+  </div>
+
+  <!-- CAPRI -->
+  <div class="location-section active" id="loc-capri">
+    <div class="location-header">
+      <div class="location-icon">💎</div>
+      <div>
+        <div class="location-name">Capri</div>
+        <div class="location-day">Tuesday July 7 · Via Camerelle & Via Vittorio Emanuele</div>
+      </div>
+    </div>
+    <div class="location-tip">Capri is the most glamorous shopping stop on the trip. Via Camerelle is the luxury boulevard — Hermès, Gucci, Prada all have boutiques here. Via Vittorio Emanuele is more artisanal and fun. Allow at least 2 hours to browse properly!</div>
+    <div class="categories-grid">
+
+      <div class="category-card">
+        <div class="category-header"><div class="category-icon">👗</div><div class="category-name">Fashion & Luxury</div></div>
+        <div class="category-body">
+          <div class="category-tip">Via Camerelle is lined with the finest Italian and international luxury houses. This is the place to splurge — everything here is the real deal.</div>
+          <div class="stores-list">
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Hermès Capri</div><div class="store-desc">The iconic Capri boutique — scarves, bags and the famous Hermès sandals designed specifically for the island.</div><div class="store-price">€€€€</div></div></div>
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Gucci Capri</div><div class="store-desc">Full Gucci collection in a stunning boutique. The Capri-exclusive pieces are worth looking out for.</div><div class="store-price">€€€€</div></div></div>
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">La Parisienne</div><div class="store-desc">The most famous linen shop on the island since 1889 — iconic Capri pants, resort wear and beautiful embroidered pieces.</div><div class="store-price">€€€</div></div></div>
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Livio De Simone</div><div class="store-desc">Legendary Capri designer known for hand-printed fabrics and iconic resort wear. A true island institution.</div><div class="store-price">€€€</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <div class="category-header"><div class="category-icon">👡</div><div class="category-name">Sandals</div></div>
+        <div class="category-body">
+          <div class="category-tip">Capri is THE place in the world for custom handmade sandals. You pick your style, leather, color and heel — made while you wait in about 20 minutes. An absolute must!</div>
+          <div class="stores-list">
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Amedeo Canfora</div><div class="store-desc">The most famous sandal maker in Capri — celebrities and royalty have been customers for decades. Book ahead if possible. Via Camerelle 3.</div><div class="store-price">€€€ · Made while you wait</div></div></div>
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">L'Arte del Sandalo Caprese</div><div class="store-desc">Equally legendary — Antonio Viva has been making sandals by hand since 1946. Via Vittorio Emanuele 75.</div><div class="store-price">€€ · Made while you wait</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <div class="category-header"><div class="category-icon">💄</div><div class="category-name">Beauty & Perfume</div></div>
+        <div class="category-body">
+          <div class="category-tip">Capri has its own legendary fragrance houses — the island's floral and citrus scents are world famous and make extraordinary gifts.</div>
+          <div class="stores-list">
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Carthusia Profumi di Capri</div><div class="store-desc">Founded in 1948 at the Certosa di San Giacomo monastery. Iconic fragrances made exclusively from Capri botanicals — Fiori di Capri, Io Capri. One of Italy's finest perfumers.</div><div class="store-price">€€€</div></div></div>
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Bottega di Brunella</div><div class="store-desc">Beautiful linen resort wear and accessories in a gorgeous boutique. Perfect summer pieces to wear on the yacht.</div><div class="store-price">€€€</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <div class="category-header"><div class="category-icon">🍋</div><div class="category-name">Food & Drink</div></div>
+        <div class="category-body">
+          <div class="category-tip">Capri's food gifts are some of the best on the coast — limoncello, local sweets and ceramics make perfect souvenirs.</div>
+          <div class="stores-list">
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Limoncello di Capri</div><div class="store-desc">The original Capri limoncello — beautiful bottles in ceramic decanters shaped like lemons. Perfect gifts to bring home.</div><div class="store-price">€€</div></div></div>
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">La Capannina</div><div class="store-desc">Pick up torta di mandorle (Capri almond cake) — the island's signature pastry. Utterly addictive.</div><div class="store-price">€</div></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- POSITANO -->
+  <div class="location-section" id="loc-positano">
+    <div class="location-header">
+      <div class="location-icon">🌺</div>
+      <div>
+        <div class="location-name">Positano</div>
+        <div class="location-day">Wednesday Jul 8 & Saturday Jul 11 · Via dei Mulini</div>
+      </div>
+    </div>
+    <div class="location-tip">Positano is the fashion capital of the Amalfi Coast — known worldwide for its colorful moda Positanese: the distinctive handmade clothing in vibrant fabrics that has been worn by Audrey Hepburn, Jackie Kennedy and every stylish woman since. The main shopping street is Via dei Mulini leading down to the beach.</div>
+    <div class="categories-grid">
+
+      <div class="category-card">
+        <div class="category-header"><div class="category-icon">👗</div><div class="category-name">Moda Positanese</div></div>
+        <div class="category-body">
+          <div class="category-tip">The distinctive Positano style — flowing dresses, palazzo pants, kaftans and beachwear in hand-blocked prints and vibrant colors. Every item is handmade locally. Buy something to wear on the yacht!</div>
+          <div class="stores-list">
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">La Bottega di Brunella</div><div class="store-desc">The most famous clothing boutique in Positano — gorgeous linen dresses, palazzo pants and resort wear in beautiful Mediterranean prints. Via Pasitea 72.</div><div class="store-price">€€€</div></div></div>
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Maria Lampo</div><div class="store-desc">Iconic Positano fashion house since 1959 — the place for the classic Positano look. Stunning hand-printed fabrics and elegant resort wear.</div><div class="store-price">€€€</div></div></div>
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Pepito's</div><div class="store-desc">Colorful and affordable — great for fun beach cover-ups, kaftans and casual summer pieces. Everything is made locally.</div><div class="store-price">€€</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <div class="category-header"><div class="category-icon">👡</div><div class="category-name">Sandals</div></div>
+        <div class="category-body">
+          <div class="category-tip">Like Capri, Positano has wonderful sandal makers — custom made to order in 20 minutes.</div>
+          <div class="stores-list">
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Safari Positano</div><div class="store-desc">Famous for handmade leather sandals in every color. Also does gorgeous leather bags and belts. Via della Tavolozza 6.</div><div class="store-price">€€ · Made while you wait</div></div></div>
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Camo</div><div class="store-desc">Beautiful handmade leather goods — sandals, bags, belts. One of the best leather craftsmen on the coast.</div><div class="store-price">€€€</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <div class="category-header"><div class="category-icon">🎨</div><div class="category-name">Art & Ceramics</div></div>
+        <div class="category-body">
+          <div class="category-tip">Positano has several wonderful galleries and ceramic studios — beautiful pieces to bring home as memories of the trip.</div>
+          <div class="stores-list">
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Ceramiche Casola</div><div class="store-desc">Beautiful hand-painted ceramics in the classic Amalfi Coast style — plates, tiles, decorative pieces. All made locally.</div><div class="store-price">€€</div></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- AMALFI -->
+  <div class="location-section" id="loc-amalfi">
+    <div class="location-header">
+      <div class="location-icon">⛪</div>
+      <div>
+        <div class="location-name">Amalfi</div>
+        <div class="location-day">Thursday July 9 · Piazza del Duomo & Via Lorenzo d'Amalfi</div>
+      </div>
+    </div>
+    <div class="location-tip">Amalfi is famous for two things above all others — its handmade paper (carta amalfitana) which has been made here since the 13th century, and its ceramics. The main shopping street fans out from the magnificent Duomo square. You'll also find excellent limoncello and local food products here.</div>
+    <div class="categories-grid">
+
+      <div class="category-card">
+        <div class="category-header"><div class="category-icon">📜</div><div class="category-name">Handmade Paper</div></div>
+        <div class="category-body">
+          <div class="category-tip">Amalfi's handmade paper is one of the great crafts of Southern Italy — used by popes and merchants for centuries. The Museo della Carta tells the story. Beautiful journals, stationery and art paper make exceptional gifts.</div>
+          <div class="stores-list">
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">La Scuderia del Duca</div><div class="store-desc">The finest handmade paper shop in Amalfi — exquisite stationery, journals, photo albums and art paper made using 13th century methods. Piazza del Duomo.</div><div class="store-price">€€</div></div></div>
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Museo della Carta</div><div class="store-desc">The paper museum in an ancient mill — buy beautiful handmade paper products directly from the source. Via delle Cartiere 23.</div><div class="store-price">€</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <div class="category-header"><div class="category-icon">🏺</div><div class="category-name">Ceramics</div></div>
+        <div class="category-body">
+          <div class="category-tip">The Amalfi Coast ceramic style — hand-painted lemons, sea motifs and vibrant Mediterranean colors on bright white — is iconic and beautiful. Perfect for bringing a piece of the coast home.</div>
+          <div class="stores-list">
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Ceramiche Artistiche Solimene</div><div class="store-desc">The most famous ceramics producer on the entire coast — based in Vietri sul Mare (which you'll visit on July 10!). The Amalfi shop has a beautiful selection.</div><div class="store-price">€€</div></div></div>
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">L'Arte della Ceramica</div><div class="store-desc">Wonderful local ceramics shop — great for tiles, plates and decorative pieces in the traditional Amalfi style.</div><div class="store-price">€€</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <div class="category-header"><div class="category-icon">🍋</div><div class="category-name">Food & Limoncello</div></div>
+        <div class="category-body">
+          <div class="category-tip">The sfusato amalfitano — the giant Amalfi lemon — is the most prized citrus in Italy. Everything made from it here is extraordinary.</div>
+          <div class="stores-list">
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Antichi Sapori d'Amalfi</div><div class="store-desc">The best food shop in town — limoncello, colatura di alici (the extraordinary local anchovy sauce), local pasta, preserved lemons and beautiful gift sets.</div><div class="store-price">€€</div></div></div>
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Andrea Pansa</div><div class="store-desc">Historic pasticceria since 1830 — the famous delizie al limone cake, candied citrus peels and local pastries. A must stop.</div><div class="store-price">€</div></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RAVELLO -->
+  <div class="location-section" id="loc-ravello">
+    <div class="location-header">
+      <div class="location-icon">🎶</div>
+      <div>
+        <div class="location-name">Ravello</div>
+        <div class="location-day">Thursday July 9 🎂 · Marshall's Birthday · Piazza Duomo</div>
+      </div>
+    </div>
+    <div class="location-tip">Ravello sits high above the coast with extraordinary views — it's quieter and more refined than the coastal towns, attracting artists and musicians for centuries. Shopping here is more artisanal and unique — you're less likely to find the same things everywhere else. The tiny streets around the Duomo are worth exploring.</div>
+    <div class="categories-grid">
+
+      <div class="category-card">
+        <div class="category-header"><div class="category-icon">🏺</div><div class="category-name">Ceramics & Art</div></div>
+        <div class="category-body">
+          <div class="category-tip">Ravello has some of the finest ceramics and artisan shops on the entire coast — quality tends to be higher and crowds lower than in the coastal towns.</div>
+          <div class="stores-list">
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Ceramiche d'Arte Carmela</div><div class="store-desc">Exquisite hand-painted ceramics in Ravello's refined style — more sophisticated than the typical coast souvenir. Beautiful pieces for the home.</div><div class="store-price">€€€</div></div></div>
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Profumi di Ravello</div><div class="store-desc">A tiny perfume laboratory creating fragrances inspired by the Ravello landscape — utterly unique gifts that you simply cannot find anywhere else.</div><div class="store-price">€€€</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <div class="category-header"><div class="category-icon">📚</div><div class="category-name">Books & Antiques</div></div>
+        <div class="category-body">
+          <div class="category-tip">Ravello has charming antique and book shops that reflect the town's long history as a cultural hub — DH Lawrence, Virginia Woolf and Gore Vidal all lived or stayed here.</div>
+          <div class="stores-list">
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Antique shops around Piazza Duomo</div><div class="store-desc">Several small antique and curiosity shops around the main square sell everything from old prints of the coast to vintage jewellery and local artifacts.</div><div class="store-price">€–€€€</div></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SORRENTO -->
+  <div class="location-section" id="loc-sorrento">
+    <div class="location-header">
+      <div class="location-icon">🍋</div>
+      <div>
+        <div class="location-name">Sorrento</div>
+        <div class="location-day">Jul 3–5 pre-voyage · Corso Italia & Via San Cesareo</div>
+      </div>
+    </div>
+    <div class="location-tip">Sorrento is the most accessible and least frenetic shopping destination on the trip — you have two full days here before boarding. The pedestrian Corso Italia is lined with shops, but the real character is in the narrow Via San Cesareo and the lanes of the old town, where you'll find woodworkers, leather craftsmen and food producers.</div>
+    <div class="categories-grid">
+
+      <div class="category-card">
+        <div class="category-header"><div class="category-icon">🪵</div><div class="category-name">Intarsia Woodwork</div></div>
+        <div class="category-body">
+          <div class="category-tip">Sorrento is world famous for intarsia — intricate marquetry woodwork using dozens of different wood types inlaid together. Unique to this area and absolutely beautiful. Music boxes, trays, frames and furniture.</div>
+          <div class="stores-list">
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Gargiulo & Jannuzzi</div><div class="store-desc">The most famous intarsia workshop in Sorrento since 1863 — stunning marquetry music boxes, trays, frames and furniture. You can watch the craftsmen working. Vico I Fuoro 1.</div><div class="store-price">€€–€€€€</div></div></div>
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Salvatore Gargiulo</div><div class="store-desc">Another historic intarsia master — beautiful smaller pieces that are easier to travel home with. Via Fuoro.</div><div class="store-price">€€–€€€</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <div class="category-header"><div class="category-icon">🍋</div><div class="category-name">Limoncello & Food</div></div>
+        <div class="category-body">
+          <div class="category-tip">Sorrento is the home of limoncello — made from the sfusato sorrentino lemons grown on the peninsula. Buy it here and it will be better (and cheaper) than anything you find in a duty-free shop.</div>
+          <div class="stores-list">
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Limonoro</div><div class="store-desc">The most beloved limoncello producer in Sorrento — you can watch them make it through a window. Also sells crema di limoncello, limone liqueur and beautiful gift sets. Via San Cesareo 49.</div><div class="store-price">€€</div></div></div>
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Foreigners Club / Bar</div><div class="store-desc">Pick up local pastries and the famous delizia al limone. Also a beautiful terrace bar with views over the bay.</div><div class="store-price">€</div></div></div>
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Fior di Latte</div><div class="store-desc">The best mozzarella and local cheese shop in Sorrento — extraordinary provola affumicata (smoked mozzarella) and fresh fior di latte.</div><div class="store-price">€</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <div class="category-header"><div class="category-icon">👜</div><div class="category-name">Leather & Fashion</div></div>
+        <div class="category-body">
+          <div class="category-tip">Sorrento has a strong leather craft tradition — bags, belts, wallets and sandals at better prices than Capri or Positano.</div>
+          <div class="stores-list">
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Punta Campanella</div><div class="store-desc">Beautiful handmade leather bags and accessories in a wide range of styles and colors. Good quality at reasonable prices.</div><div class="store-price">€€</div></div></div>
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Corso Italia boutiques</div><div class="store-desc">The main pedestrian street has a good mix of Italian fashion brands, linen shops and accessories — perfect for browsing on your first afternoon.</div><div class="store-price">€€</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <div class="category-header"><div class="category-icon">💎</div><div class="category-name">Coral Jewelry</div></div>
+        <div class="category-body">
+          <div class="category-tip">The Campania coast is one of the world's great coral jewelry traditions — red and pink coral pieces, cameos carved from conch shells, and coral set in gold. Sorrento and Naples are the best places to buy.</div>
+          <div class="stores-list">
+            <div class="store-item"><div class="store-dot"></div><div><div class="store-name">Coral jewelry shops on Corso Italia</div><div class="store-desc">Several reputable coral and cameo jewelers along the main street — look for pieces with certificates of authenticity. Beautiful gifts to bring home.</div><div class="store-price">€€–€€€€</div></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script type="module">
+  import { requireAuth } from './js/supabase.js';
+  import { renderNav } from './js/nav.js';
+  await requireAuth();
+  renderNav('shopping.html');
+</script>
+
+<script>
+  window.showLocation = function(id, btn) {
+    document.querySelectorAll('.location-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.loc-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('loc-' + id).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+</script>
+</body>
+</html>
