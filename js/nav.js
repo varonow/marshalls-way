@@ -34,7 +34,7 @@ export function renderNav(activePage = '') {
     <nav class="nav">
       <div class="nav-inner">
         <a href="home.html" class="nav-logo">
-          <img src="images/logo.jpg" alt="Marshall's Way">
+          <img src="images/logo.png" alt="Marshall's Way">
           <span class="nav-logo-text">Marshall's <span>Way</span></span>
         </a>
         <ul class="nav-links">${linksHTML}</ul>
