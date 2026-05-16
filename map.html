@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marshall's Way — The Map</title>
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/nav.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+
+  body { background: #EEF6FC; }
+
+  /* HEADER */
+  .map-header {
+    background: var(--navy);
+    padding: 56px 24px 72px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .map-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 60px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60'%3E%3Cpath d='M0 30 Q150 0 300 30 Q450 60 600 30 Q750 0 900 30 Q1050 60 1200 30 L1200 60 L0 60 Z' fill='%23EEF6FC'/%3E%3C/svg%3E") no-repeat bottom;
+    background-size: cover;
+  }
+
+  .map-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: var(--azure-light); margin-bottom: 12px; }
+  .map-header h1 { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(2.2rem, 5vw, 3.5rem); color: var(--sand); margin-bottom: 8px; }
+  .map-header h1 span { color: var(--gold); }
+  .map-header-sub { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+
+  /* ILLUSTRATED MAP */
+  .illustrated-section {
+    background: var(--white);
+    padding: 48px 24px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.6rem;
+    color: var(--navy);
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .illustrated-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .illustrated-map {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(26,51,80,0.12);
+  }
+
+  /* STOP LIST */
+  .stops-section {
+    background: #EEF6FC;
+    padding: 48px 24px;
+  }
+
+  .stops-grid {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .stop-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(26,51,80,0.08);
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .stop-number {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--gold);
+    font-family: 'Pacifico', cursive;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .stop-info {}
+  .stop-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
+  .stop-date { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--terracotta); margin-bottom: 4px; }
+  .stop-desc { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+
+  /* INTERACTIVE MAP */
+  .interactive-section {
+    background: var(--white);
+    padding: 48px 24px;
+  }
+
+  #leafletMap {
+    max-width: 900px;
+    margin: 0 auto;
+    height: 520px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(26,51,80,0.12);
+  }
+
+  /* Custom leaflet popup */
+  .leaflet-popup-content-wrapper {
+    border-radius: 10px !important;
+    box-shadow: 0 4px 20px rgba(26,51,80,0.15) !important;
+  }
+
+  .popup-content { padding: 4px; }
+  .popup-number { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--terracotta); margin-bottom: 2px; }
+  .popup-name { font-family: Georgia, serif; font-size: 15px; font-weight: 700; color: #1A3350; margin-bottom: 2px; }
+  .popup-date { font-size: 11px; color: #1A7BB8; font-weight: 700; margin-bottom: 4px; }
+  .popup-desc { font-size: 12px; color: #5A6E7A; line-height: 1.5; }
+
+  @media (max-width: 600px) {
+    #leafletMap { height: 360px; }
+    .stops-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="map-header">
+  <p class="map-eyebrow">Marshall's Way · July 2026</p>
+  <h1>The <span>Voyage</span></h1>
+  <p class="map-header-sub">Naples · Procida · Ischia · Capri · Positano · Amalfi · Ravello</p>
+</div>
+
+<!-- ILLUSTRATED MAP -->
+<div class="illustrated-section">
+  <div class="section-title">Our Route</div>
+  <div class="illustrated-wrap">
+    <svg class="illustrated-map" viewBox="0 0 900 580" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="seaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#B8D9F0;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#7CB9E0;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="landGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#E8F0D8;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#D4E4B8;stop-opacity:1" />
+        </linearGradient>
+        <filter id="shadow">
+          <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.15"/>
+        </filter>
+      </defs>
+
+      <!-- Sea background -->
+      <rect width="900" height="580" fill="url(#seaGrad)" rx="12"/>
+
+      <!-- Subtle wave texture -->
+      <path d="M0 100 Q225 88 450 100 Q675 112 900 100" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+      <path d="M0 160 Q225 148 450 160 Q675 172 900 160" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+      <path d="M0 220 Q225 208 450 220 Q675 232 900 220" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+      <path d="M0 280 Q225 268 450 280 Q675 292 900 280" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+      <path d="M0 340 Q225 328 450 340 Q675 352 900 340" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+      <path d="M0 400 Q225 388 450 400 Q675 412 900 400" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+      <!-- MAINLAND — Italian coast -->
+      <path d="M0 0 L900 0 L900 120 Q820 110 750 115 Q700 118 660 125 Q630 130 600 138 Q570 145 545 155 Q520 165 500 172 Q480 178 460 182 Q440 185 420 185 Q400 184 380 180 Q355 175 330 165 Q305 155 280 142 Q255 128 230 115 Q205 102 180 92 Q155 82 130 76 Q100 70 70 68 Q40 67 0 70 Z" fill="url(#landGrad)" filter="url(#shadow)"/>
+
+      <!-- Sorrento peninsula -->
+      <path d="M380 180 Q390 195 395 215 Q398 232 396 248 Q393 262 388 272 Q382 282 375 285 Q365 288 356 283 Q345 276 338 262 Q330 246 328 228 Q326 210 330 195 Q335 182 345 178 Q360 174 375 178 Z" fill="url(#landGrad)" filter="url(#shadow)"/>
+
+      <!-- Amalfi Coast -->
+      <path d="M388 272 Q400 278 415 282 Q435 286 455 286 Q475 284 495 278 Q515 270 530 258 Q545 245 555 230 Q562 218 565 205 Q567 192 563 182 Q558 170 548 163 L545 155 Q540 175 535 192 Q528 208 518 220 Q506 232 492 240 Q476 247 458 250 Q440 252 422 250 Q405 246 392 238 Q388 254 388 272 Z" fill="url(#landGrad)" filter="url(#shadow)"/>
+
+      <!-- ISLANDS -->
+      <!-- Procida -->
+      <ellipse cx="238" cy="248" rx="28" ry="18" fill="url(#landGrad)" transform="rotate(-15 238 248)" filter="url(#shadow)"/>
+
+      <!-- Ischia -->
+      <ellipse cx="155" cy="300" rx="48" ry="28" fill="url(#landGrad)" transform="rotate(-10 155 300)" filter="url(#shadow)"/>
+
+      <!-- Capri -->
+      <ellipse cx="370" cy="355" rx="35" ry="16" fill="url(#landGrad)" transform="rotate(-5 370 355)" filter="url(#shadow)"/>
+
+      <!-- VOYAGE ROUTE dotted line -->
+      <!-- Naples → Cocumella → Sorrento → Procida → Ischia → Capri → Positano → Amalfi/Ravello → Vietri → Sorrento → Positano -->
+      <path d="M580 108 L490 155 L460 175 L238 248 L155 300 L370 355 L480 270 L530 240 L555 230 L600 228 L460 175" fill="none" stroke="var(--terracotta)" stroke-width="2.5" stroke-dasharray="8,5" opacity="0.8"/>
+
+      <!-- Arrows on route -->
+      <polygon points="238,248 228,238 248,238" fill="var(--terracotta)" opacity="0.8"/>
+      <polygon points="155,300 145,290 165,290" fill="var(--terracotta)" opacity="0.8"/>
+      <polygon points="370,355 360,345 380,345" fill="var(--terracotta)" opacity="0.8"/>
+
+      <!-- STOP MARKERS -->
+      <!-- 1. Naples Airport -->
+      <circle cx="580" cy="108" r="16" fill="var(--navy)" stroke="var(--gold)" stroke-width="2.5"/>
+      <text x="580" y="113" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="var(--gold)" font-weight="bold">1</text>
+      <text x="600" y="98" font-family="Georgia,serif" font-size="11" fill="var(--navy)" font-weight="bold">Naples</text>
+
+      <!-- 2. Sant'Agnello / La Cocumella -->
+      <circle cx="490" cy="155" r="16" fill="var(--navy)" stroke="var(--gold)" stroke-width="2.5"/>
+      <text x="490" y="160" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="var(--gold)" font-weight="bold">2</text>
+      <text x="510" y="145" font-family="Georgia,serif" font-size="11" fill="var(--navy)" font-weight="bold">Sorrento</text>
+
+      <!-- 3. Procida -->
+      <circle cx="238" cy="248" r="16" fill="var(--navy)" stroke="var(--gold)" stroke-width="2.5"/>
+      <text x="238" y="253" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="var(--gold)" font-weight="bold">3</text>
+      <text x="210" y="232" font-family="Georgia,serif" font-size="11" fill="var(--navy)" font-weight="bold">Procida</text>
+
+      <!-- 4. Ischia -->
+      <circle cx="155" cy="300" r="16" fill="var(--navy)" stroke="var(--gold)" stroke-width="2.5"/>
+      <text x="155" y="305" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="var(--gold)" font-weight="bold">4</text>
+      <text x="115" y="290" font-family="Georgia,serif" font-size="11" fill="var(--navy)" font-weight="bold">Ischia</text>
+
+      <!-- 5. Capri -->
+      <circle cx="370" cy="355" r="16" fill="var(--navy)" stroke="var(--gold)" stroke-width="2.5"/>
+      <text x="370" y="360" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="var(--gold)" font-weight="bold">5</text>
+      <text x="392" y="348" font-family="Georgia,serif" font-size="11" fill="var(--navy)" font-weight="bold">Capri</text>
+
+      <!-- 6. Positano -->
+      <circle cx="480" cy="270" r="16" fill="var(--navy)" stroke="var(--gold)" stroke-width="2.5"/>
+      <text x="480" y="275" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="var(--gold)" font-weight="bold">6</text>
+      <text x="498" y="262" font-family="Georgia,serif" font-size="11" fill="var(--navy)" font-weight="bold">Positano</text>
+
+      <!-- 7. Amalfi / Ravello -->
+      <circle cx="536" cy="235" r="16" fill="var(--navy)" stroke="var(--gold)" stroke-width="2.5"/>
+      <text x="536" y="240" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="var(--gold)" font-weight="bold">7</text>
+      <text x="554" y="226" font-family="Georgia,serif" font-size="11" fill="var(--navy)" font-weight="bold">Amalfi</text>
+
+      <!-- 8. Vietri -->
+      <circle cx="600" cy="228" r="16" fill="var(--navy)" stroke="var(--gold)" stroke-width="2.5"/>
+      <text x="600" y="233" text-anchor="middle" font-family="Georgia,serif" font-size="12" fill="var(--gold)" font-weight="bold">8</text>
+      <text x="618" y="220" font-family="Georgia,serif" font-size="11" fill="var(--navy)" font-weight="bold">Vietri</text>
+
+      <!-- TITLE -->
+      <text x="450" y="470" text-anchor="middle" font-family="Georgia,serif" font-size="26" font-style="italic" fill="var(--navy)" opacity="0.7">Marshall's Way</text>
+      <text x="450" y="498" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" letter-spacing="4" fill="var(--navy)" opacity="0.5">AMALFI COAST · JULY 2026</text>
+
+      <!-- Compass rose -->
+      <g transform="translate(830, 480)">
+        <circle cx="0" cy="0" r="28" fill="rgba(255,255,255,0.7)" stroke="var(--navy)" stroke-width="1.5" opacity="0.8"/>
+        <text x="0" y="-14" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--navy)" font-family="Arial">N</text>
+        <text x="0" y="20" text-anchor="middle" font-size="9" fill="var(--navy)" font-family="Arial">S</text>
+        <text x="15" y="4" text-anchor="middle" font-size="9" fill="var(--navy)" font-family="Arial">E</text>
+        <text x="-15" y="4" text-anchor="middle" font-size="9" fill="var(--navy)" font-family="Arial">W</text>
+        <polygon points="0,-20 4,-4 0,-8 -4,-4" fill="var(--terracotta)"/>
+        <polygon points="0,20 4,4 0,8 -4,4" fill="var(--navy)" opacity="0.4"/>
+      </g>
+
+      <!-- Yacht icon on route -->
+      <text x="305" y="298" font-size="20" opacity="0.8">⛵</text>
+    </svg>
+  </div>
+</div>
+
+<!-- STOP LIST -->
+<div class="stops-section">
+  <div class="section-title">The Stops</div>
+  <div class="stops-grid" id="stopsList"></div>
+</div>
+
+<!-- INTERACTIVE MAP -->
+<div class="interactive-section">
+  <div class="section-title">Explore the Route</div>
+  <div id="leafletMap"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script type="module">
+  import { requireAuth } from './js/supabase.js';
+  import { renderNav } from './js/nav.js';
+  await requireAuth();
+  renderNav('map.html');
+
+  const STOPS = [
+    { num: 1, name: 'Naples Airport', date: 'Thu Jul 3', desc: 'We land at Capodichino — Menzies VIP meets us at the gate.', lat: 40.8860, lng: 14.2908 },
+    { num: 2, name: 'La Cocumella · Sorrento', date: 'Jul 3–5', desc: 'Two nights at one of the great hotels of the Sorrentine peninsula.', lat: 40.6264, lng: 14.3800 },
+    { num: 3, name: 'Procida', date: 'Sun Jul 5', desc: 'Our first night aboard M/Y R23 — dinner at La Lampara in Corricella.', lat: 40.7596, lng: 14.0121 },
+    { num: 4, name: 'Ischia', date: 'Mon Jul 6', desc: 'The Saads join us. Dinner at Michelin-starred Indaco. Valentino Club.', lat: 40.7310, lng: 13.9436 },
+    { num: 5, name: 'Capri', date: 'Tue Jul 7', desc: 'Via Camerelle shopping, Da Luigi ai Faraglioni lunch, Taverna Anema e Core.', lat: 40.5506, lng: 14.2426 },
+    { num: 6, name: 'Positano', date: 'Wed Jul 8', desc: 'Conca del Sogno lunch, Spiaggia Grande, Franco\'s Bar at Le Sirenuse.', lat: 40.6282, lng: 14.4843 },
+    { num: 7, name: 'Amalfi & Ravello', date: 'Thu Jul 9 — Birthday!', desc: 'Marshall\'s birthday lunch at Salvatore 1958. Birthday party onboard!', lat: 40.6340, lng: 14.6023 },
+    { num: 8, name: 'Vietri sul Mare', date: 'Fri Jul 10', desc: 'Riva Beach Club at Giardini del Fuenti. Shabbat dinner onboard.', lat: 40.6735, lng: 14.7273 },
+    { num: 9, name: 'Positano — Final Night', date: 'Sat Jul 11', desc: 'After Havdalah — Terrazza Celè dinner and Music on the Rocks.', lat: 40.6282, lng: 14.4843 },
+    { num: 10, name: 'Naples Airport', date: 'Sun Jul 12', desc: 'Menzies VIP departure — UA 967 home to Newark. Arrivederci!', lat: 40.8860, lng: 14.2908 },
+  ];
+
+  // Render stop cards
+  const list = document.getElementById('stopsList');
+  list.innerHTML = STOPS.map(s => `
+    <div class="stop-card">
+      <div class="stop-number">${s.num}</div>
+      <div class="stop-info">
+        <div class="stop-name">${s.name}</div>
+        <div class="stop-date">${s.date}</div>
+        <div class="stop-desc">${s.desc}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Init Leaflet map
+  const map = L.map('leafletMap', {
+    center: [40.68, 14.2],
+    zoom: 10,
+    zoomControl: true,
+  });
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors',
+    maxZoom: 18,
+  }).addTo(map);
+
+  // Custom marker icon
+  function makeIcon(num) {
+    return L.divIcon({
+      html: `<div style="width:32px;height:32px;border-radius:50%;background:#1A3350;border:2.5px solid #E8C84A;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:13px;font-weight:bold;color:#E8C84A;box-shadow:0 2px 8px rgba(0,0,0,0.3);">${num}</div>`,
+      className: '',
+      iconSize: [32, 32],
+      iconAnchor: [16, 16],
+    });
+  }
+
+  // Add markers
+  const latLngs = [];
+  STOPS.forEach(stop => {
+    const marker = L.marker([stop.lat, stop.lng], { icon: makeIcon(stop.num) }).addTo(map);
+    marker.bindPopup(`
+      <div class="popup-content">
+        <div class="popup-number">Stop ${stop.num}</div>
+        <div class="popup-name">${stop.name}</div>
+        <div class="popup-date">${stop.date}</div>
+        <div class="popup-desc">${stop.desc}</div>
+      </div>
+    `, { maxWidth: 240 });
+    latLngs.push([stop.lat, stop.lng]);
+  });
+
+  // Draw route line
+  L.polyline(latLngs, {
+    color: '#C4622D',
+    weight: 2.5,
+    opacity: 0.7,
+    dashArray: '8, 6',
+  }).addTo(map);
+
+  // Fit map to route
+  map.fitBounds(latLngs, { padding: [40, 40] });
+</script>
+</body>
+</html>
