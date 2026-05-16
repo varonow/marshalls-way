@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marshall's Way — Photo Album</title>
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/nav.css">
+<style>
+
+  /* HEADER */
+  .album-header {
+    background: var(--navy);
+    padding: 56px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .album-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 60px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60'%3E%3Cpath d='M0 30 Q150 0 300 30 Q450 60 600 30 Q750 0 900 30 Q1050 60 1200 30 L1200 60 L0 60 Z' fill='%23EEF6FC'/%3E%3C/svg%3E") no-repeat bottom;
+    background-size: cover;
+  }
+
+  .album-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 5px;
+    text-transform: uppercase; color: var(--azure-light); margin-bottom: 12px;
+  }
+
+  .album-header h1 {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: clamp(2.2rem, 5vw, 3.2rem); color: var(--sand); margin-bottom: 8px;
+  }
+
+  .album-header h1 span { color: var(--gold); }
+  .album-header-sub { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+
+  /* UPLOAD SECTION */
+  .upload-section {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 40px 24px 20px;
+  }
+
+  .upload-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 2px 16px rgba(26,51,80,0.07);
+    border-top: 2px solid var(--azure);
+  }
+
+  .upload-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--navy);
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  .upload-drop {
+    border: 2px dashed var(--azure-light);
+    border-radius: 10px;
+    padding: 32px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #EEF6FC;
+    margin-bottom: 16px;
+  }
+
+  .upload-drop:hover, .upload-drop.dragover {
+    border-color: var(--azure);
+    background: #E0EEF8;
+  }
+
+  .upload-drop-icon { font-size: 32px; margin-bottom: 8px; }
+
+  .upload-drop p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .upload-drop strong { color: var(--azure); cursor: pointer; }
+
+  .upload-input { display: none; }
+
+  .upload-preview {
+    display: none;
+    margin-bottom: 16px;
+  }
+
+  .upload-preview img {
+    width: 100%;
+    max-height: 240px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--azure-light);
+  }
+
+  .upload-caption {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--sand-dark);
+    border-radius: 8px;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    color: var(--navy);
+    background: var(--white);
+    outline: none;
+    resize: none;
+    transition: border-color 0.2s;
+    margin-bottom: 14px;
+  }
+
+  .upload-caption:focus { border-color: var(--azure); }
+
+  .upload-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--azure);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .upload-btn:hover { background: var(--azure-dark); }
+  .upload-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .upload-progress {
+    height: 3px;
+    background: var(--azure-light);
+    border-radius: 2px;
+    margin-top: 12px;
+    overflow: hidden;
+    display: none;
+  }
+
+  .upload-progress-bar {
+    height: 100%;
+    background: var(--azure);
+    border-radius: 2px;
+    transition: width 0.3s;
+    width: 0%;
+  }
+
+  /* PHOTO GRID */
+  .grid-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 24px 80px;
+  }
+
+  .grid-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .grid-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--navy);
+  }
+
+  .grid-count {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .photo-grid {
+    columns: 3;
+    column-gap: 16px;
+  }
+
+  @media (max-width: 768px) { .photo-grid { columns: 2; } }
+  @media (max-width: 480px) { .photo-grid { columns: 1; } }
+
+  .photo-item {
+    break-inside: avoid;
+    margin-bottom: 16px;
+    cursor: pointer;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--white);
+    box-shadow: 0 2px 12px rgba(26,51,80,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .photo-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 24px rgba(26,51,80,0.14);
+  }
+
+  .photo-item img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .photo-item-footer {
+    padding: 10px 14px 12px;
+  }
+
+  .photo-item-caption {
+    font-size: 13px;
+    color: var(--navy);
+    margin-bottom: 6px;
+    line-height: 1.5;
+  }
+
+  .photo-item-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .photo-item-uploader {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+
+  .photo-item-likes {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.2s;
+    background: none;
+    border: none;
+    font-family: 'Lato', sans-serif;
+  }
+
+  .photo-item-likes:hover { color: #E05577; }
+  .photo-item-likes.liked { color: #E05577; }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 60px 24px;
+    color: var(--text-muted);
+  }
+
+  .empty-state-icon { font-size: 48px; margin-bottom: 16px; }
+  .empty-state p { font-size: 14px; }
+
+  /* LOADING */
+  .grid-loading {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+  }
+
+  /* LIGHTBOX */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(13,31,51,0.95);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .lightbox.open { display: flex; }
+
+  .lightbox-inner {
+    display: flex;
+    max-width: 1100px;
+    width: 100%;
+    max-height: 90vh;
+    gap: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--white);
+  }
+
+  .lightbox-img-wrap {
+    flex: 1.5;
+    background: var(--navy-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+  }
+
+  .lightbox-img-wrap img {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+    display: block;
+  }
+
+  .lightbox-sidebar {
+    width: 320px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .lightbox-header {
+    padding: 20px 20px 14px;
+    border-bottom: 1px solid var(--sand-dark);
+    flex-shrink: 0;
+  }
+
+  .lightbox-uploader {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--azure);
+    margin-bottom: 4px;
+  }
+
+  .lightbox-caption {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--navy);
+    line-height: 1.5;
+  }
+
+  .lightbox-time {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  /* Likes in lightbox */
+  .lightbox-likes {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--sand-dark);
+    flex-shrink: 0;
+  }
+
+  .lightbox-like-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: 1px solid var(--sand-dark);
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
+    transition: all 0.2s;
+  }
+
+  .lightbox-like-btn:hover { border-color: #E05577; color: #E05577; }
+  .lightbox-like-btn.liked { border-color: #E05577; color: #E05577; background: #FFF0F4; }
+
+  /* Comments */
+  .lightbox-comments {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 20px;
+  }
+
+  .lightbox-comments::-webkit-scrollbar { width: 4px; }
+  .lightbox-comments::-webkit-scrollbar-thumb { background: var(--sand-dark); border-radius: 2px; }
+
+  .comment-item {
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--sand-dark);
+  }
+
+  .comment-item:last-child { border-bottom: none; }
+
+  .comment-name {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--azure);
+    letter-spacing: 0.5px;
+    margin-bottom: 3px;
+  }
+
+  .comment-text {
+    font-size: 13px;
+    color: var(--navy);
+    line-height: 1.5;
+  }
+
+  .comment-time {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 3px;
+  }
+
+  .no-comments {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-style: italic;
+    text-align: center;
+    padding: 20px 0;
+  }
+
+  /* Comment form */
+  .lightbox-comment-form {
+    padding: 14px 20px;
+    border-top: 1px solid var(--sand-dark);
+    flex-shrink: 0;
+    display: flex;
+    gap: 8px;
+  }
+
+  .comment-input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--sand-dark);
+    border-radius: 8px;
+    font-family: 'Lato', sans-serif;
+    font-size: 13px;
+    color: var(--navy);
+    outline: none;
+    transition: border-color 0.2s;
+    background: var(--white);
+  }
+
+  .comment-input:focus { border-color: var(--azure); }
+
+  .comment-submit {
+    padding: 10px 16px;
+    background: var(--azure);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+
+  .comment-submit:hover { background: var(--azure-dark); }
+
+  /* Lightbox close */
+  .lightbox-close {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: var(--white);
+    font-size: 24px;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    z-index: 2001;
+  }
+
+  .lightbox-close:hover { background: rgba(255,255,255,0.2); }
+
+  /* Prev/next */
+  .lightbox-nav {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: var(--white);
+    font-size: 24px;
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    z-index: 2001;
+  }
+
+  .lightbox-nav:hover { background: rgba(255,255,255,0.2); }
+  .lightbox-prev { left: 20px; }
+  .lightbox-next { right: 370px; }
+
+  @media (max-width: 768px) {
+    .lightbox-inner { flex-direction: column; max-height: 95vh; }
+    .lightbox-sidebar { width: 100%; max-height: 40vh; }
+    .lightbox-img-wrap { min-height: 250px; }
+    .lightbox-next { right: 20px; }
+  }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .photo-item { animation: fadeIn 0.4s ease both; }
+</style>
+</head>
+<body>
+
+<div class="album-header">
+  <p class="album-eyebrow">Marshall's Way · July 2026</p>
+  <h1>Photo <span>Album</span></h1>
+  <p class="album-header-sub">Share your favourite moments</p>
+</div>
+
+<!-- Upload -->
+<div class="upload-section">
+  <div class="upload-card">
+    <h3>Add a Photo</h3>
+    <div class="upload-drop" id="uploadDrop" onclick="document.getElementById('fileInput').click()">
+      <div class="upload-drop-icon">📷</div>
+      <p><strong>Choose a photo</strong> or drag it here</p>
+      <p>JPG, PNG, HEIC up to 20MB</p>
+    </div>
+    <input type="file" class="upload-input" id="fileInput" accept="image/*">
+    <div class="upload-preview" id="uploadPreview">
+      <img id="previewImg" src="" alt="Preview">
+    </div>
+    <textarea class="upload-caption" id="captionInput" rows="2" placeholder="Add a caption (optional)..."></textarea>
+    <button class="upload-btn" id="uploadBtn" onclick="uploadPhoto()">SHARE PHOTO</button>
+    <div class="upload-progress" id="uploadProgress">
+      <div class="upload-progress-bar" id="uploadProgressBar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Grid -->
+<div class="grid-section">
+  <div class="grid-header">
+    <div class="grid-title">All Photos</div>
+    <div class="grid-count" id="photoCount"></div>
+  </div>
+  <div id="gridLoading" class="grid-loading"><div class="spinner"></div></div>
+  <div class="photo-grid" id="photoGrid"></div>
+  <div class="empty-state" id="emptyState" style="display:none;">
+    <div class="empty-state-icon">📷</div>
+    <p>No photos yet — be the first to share a moment!</p>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<button class="lightbox-close" onclick="closeLightbox()">✕</button>
+<button class="lightbox-nav lightbox-prev" onclick="navigatePhoto(-1)">‹</button>
+<button class="lightbox-nav lightbox-next" onclick="navigatePhoto(1)">›</button>
+
+<div class="lightbox" id="lightbox" onclick="handleLightboxClick(event)">
+  <div class="lightbox-inner" onclick="event.stopPropagation()">
+    <div class="lightbox-img-wrap">
+      <img id="lightboxImg" src="" alt="">
+    </div>
+    <div class="lightbox-sidebar">
+      <div class="lightbox-header">
+        <div class="lightbox-uploader" id="lightboxUploader"></div>
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+        <div class="lightbox-time" id="lightboxTime"></div>
+      </div>
+      <div class="lightbox-likes">
+        <button class="lightbox-like-btn" id="lightboxLikeBtn" onclick="toggleLike()">
+          <span id="lightboxLikeIcon">♡</span>
+          <span id="lightboxLikeCount">0</span> likes
+        </button>
+      </div>
+      <div class="lightbox-comments" id="lightboxComments"></div>
+      <div class="lightbox-comment-form">
+        <input type="text" class="comment-input" id="commentInput" placeholder="Add a comment..." onkeydown="if(event.key==='Enter') submitComment()">
+        <button class="comment-submit" onclick="submitComment()">↑</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { requireAuth, getCurrentUser, db } from './js/supabase.js';
+  import { renderNav } from './js/nav.js';
+
+  await requireAuth();
+  renderNav('photos.html');
+
+  const user = getCurrentUser();
+  let photos = [];
+  let currentPhotoIndex = 0;
+  let selectedFile = null;
+
+  // Format date
+  function timeAgo(dateStr) {
+    const date = new Date(dateStr);
+    const diff = Math.floor((Date.now() - date) / 1000);
+    if (diff < 60) return 'Just now';
+    if (diff < 3600) return `${Math.floor(diff/60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff/3600)}h ago`;
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  }
+
+  // Load photos
+  async function loadPhotos() {
+    document.getElementById('gridLoading').style.display = 'flex';
+    const { data, error } = await db
+      .from('photos')
+      .select('*, photo_likes(user_name), photo_comments(id, user_name, comment, created_at)')
+      .order('created_at', { ascending: false });
+
+    document.getElementById('gridLoading').style.display = 'none';
+
+    if (error || !data) { console.error(error); return; }
+
+    photos = data;
+    renderGrid();
+  }
+
+  function renderGrid() {
+    const grid = document.getElementById('photoGrid');
+    const empty = document.getElementById('emptyState');
+    const count = document.getElementById('photoCount');
+
+    if (photos.length === 0) {
+      grid.innerHTML = '';
+      empty.style.display = 'block';
+      count.textContent = '';
+      return;
+    }
+
+    empty.style.display = 'none';
+    count.textContent = `${photos.length} photo${photos.length !== 1 ? 's' : ''}`;
+
+    grid.innerHTML = photos.map((p, i) => {
+      const likes = p.photo_likes || [];
+      const liked = likes.some(l => l.user_name === user);
+      return `
+        <div class="photo-item" onclick="openLightbox(${i})">
+          <img src="${p.url}" alt="${p.caption || ''}" loading="lazy">
+          <div class="photo-item-footer">
+            ${p.caption ? `<div class="photo-item-caption">${p.caption}</div>` : ''}
+            <div class="photo-item-meta">
+              <span class="photo-item-uploader">${p.uploader_name}</span>
+              <button class="photo-item-likes ${liked ? 'liked' : ''}" onclick="event.stopPropagation(); quickLike(${i}, this)">
+                ${liked ? '♥' : '♡'} ${likes.length}
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // File selection
+  document.getElementById('fileInput').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    selectedFile = file;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      document.getElementById('previewImg').src = ev.target.result;
+      document.getElementById('uploadPreview').style.display = 'block';
+      document.getElementById('uploadDrop').style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Drag and drop
+  const dropZone = document.getElementById('uploadDrop');
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      document.getElementById('fileInput').files = e.dataTransfer.files;
+      document.getElementById('fileInput').dispatchEvent(new Event('change'));
+    }
+  });
+
+  // Upload photo
+  window.uploadPhoto = async function() {
+    if (!selectedFile) return;
+    const btn = document.getElementById('uploadBtn');
+    const progress = document.getElementById('uploadProgress');
+    const bar = document.getElementById('uploadProgressBar');
+    const caption = document.getElementById('captionInput').value.trim();
+
+    btn.disabled = true;
+    btn.textContent = 'UPLOADING...';
+    progress.style.display = 'block';
+    bar.style.width = '30%';
+
+    try {
+      const ext = selectedFile.name.split('.').pop();
+      const fileName = `${Date.now()}-${user}.${ext}`;
+
+      const { error: uploadError } = await db.storage
+        .from('photos')
+        .upload(fileName, selectedFile, { contentType: selectedFile.type });
+
+      if (uploadError) throw uploadError;
+      bar.style.width = '70%';
+
+      const { data: urlData } = db.storage.from('photos').getPublicUrl(fileName);
+      const url = urlData.publicUrl;
+
+      const { error: insertError } = await db.from('photos').insert({
+        url,
+        caption: caption || null,
+        uploader_name: user,
+      });
+
+      if (insertError) throw insertError;
+      bar.style.width = '100%';
+
+      setTimeout(() => {
+        // Reset form
+        selectedFile = null;
+        document.getElementById('fileInput').value = '';
+        document.getElementById('captionInput').value = '';
+        document.getElementById('uploadPreview').style.display = 'none';
+        document.getElementById('uploadDrop').style.display = 'block';
+        progress.style.display = 'none';
+        bar.style.width = '0%';
+        btn.disabled = false;
+        btn.textContent = 'SHARE PHOTO';
+        loadPhotos();
+      }, 500);
+
+    } catch (err) {
+      console.error(err);
+      btn.disabled = false;
+      btn.textContent = 'SHARE PHOTO';
+      progress.style.display = 'none';
+      alert('Upload failed — please try again.');
+    }
+  };
+
+  // Quick like from grid
+  window.quickLike = async function(index, btn) {
+    const photo = photos[index];
+    const liked = btn.classList.contains('liked');
+    if (liked) {
+      await db.from('photo_likes').delete().eq('photo_id', photo.id).eq('user_name', user);
+      photo.photo_likes = photo.photo_likes.filter(l => l.user_name !== user);
+    } else {
+      await db.from('photo_likes').insert({ photo_id: photo.id, user_name: user });
+      photo.photo_likes = [...(photo.photo_likes || []), { user_name: user }];
+    }
+    btn.classList.toggle('liked');
+    btn.innerHTML = `${btn.classList.contains('liked') ? '♥' : '♡'} ${photo.photo_likes.length}`;
+  };
+
+  // Lightbox
+  window.openLightbox = function(index) {
+    currentPhotoIndex = index;
+    renderLightbox();
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeLightbox = function() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  window.handleLightboxClick = function(e) {
+    if (e.target === document.getElementById('lightbox')) closeLightbox();
+  };
+
+  window.navigatePhoto = function(dir) {
+    currentPhotoIndex = (currentPhotoIndex + dir + photos.length) % photos.length;
+    renderLightbox();
+  };
+
+  function renderLightbox() {
+    const photo = photos[currentPhotoIndex];
+    const likes = photo.photo_likes || [];
+    const comments = (photo.photo_comments || []).sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+    const liked = likes.some(l => l.user_name === user);
+
+    document.getElementById('lightboxImg').src = photo.url;
+    document.getElementById('lightboxUploader').textContent = `📸 ${photo.uploader_name}`;
+    document.getElementById('lightboxCaption').textContent = photo.caption || '';
+    document.getElementById('lightboxTime').textContent = timeAgo(photo.created_at);
+    document.getElementById('lightboxLikeCount').textContent = likes.length;
+    document.getElementById('lightboxLikeIcon').textContent = liked ? '♥' : '♡';
+    document.getElementById('lightboxLikeBtn').className = `lightbox-like-btn${liked ? ' liked' : ''}`;
+
+    const commentsEl = document.getElementById('lightboxComments');
+    if (comments.length === 0) {
+      commentsEl.innerHTML = '<div class="no-comments">No comments yet — say something!</div>';
+    } else {
+      commentsEl.innerHTML = comments.map(c => `
+        <div class="comment-item">
+          <div class="comment-name">${c.user_name}</div>
+          <div class="comment-text">${c.comment}</div>
+          <div class="comment-time">${timeAgo(c.created_at)}</div>
+        </div>
+      `).join('');
+    }
+    document.getElementById('commentInput').value = '';
+  }
+
+  window.toggleLike = async function() {
+    const photo = photos[currentPhotoIndex];
+    const likes = photo.photo_likes || [];
+    const liked = likes.some(l => l.user_name === user);
+
+    if (liked) {
+      await db.from('photo_likes').delete().eq('photo_id', photo.id).eq('user_name', user);
+      photo.photo_likes = likes.filter(l => l.user_name !== user);
+    } else {
+      await db.from('photo_likes').insert({ photo_id: photo.id, user_name: user });
+      photo.photo_likes = [...likes, { user_name: user }];
+    }
+    renderLightbox();
+    renderGrid();
+  };
+
+  window.submitComment = async function() {
+    const input = document.getElementById('commentInput');
+    const text = input.value.trim();
+    if (!text) return;
+
+    const photo = photos[currentPhotoIndex];
+    const { data, error } = await db.from('photo_comments').insert({
+      photo_id: photo.id,
+      user_name: user,
+      comment: text,
+    }).select().single();
+
+    if (!error && data) {
+      photo.photo_comments = [...(photo.photo_comments || []), data];
+      renderLightbox();
+    }
+  };
+
+  // Keyboard nav
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') navigatePhoto(-1);
+    if (e.key === 'ArrowRight') navigatePhoto(1);
+  });
+
+  loadPhotos();
+</script>
+</body>
+</html>
