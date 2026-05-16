@@ -9,10 +9,10 @@
 <link rel="stylesheet" href="css/nav.css">
 <style>
 
-  /* === PAGE HEADER === */
+  /* PAGE HEADER */
   .itin-header {
     background: var(--navy);
-    padding: 48px 24px 0;
+    padding: 52px 24px 0;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -22,303 +22,258 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(26,123,184,0.15) 0%, transparent 60%);
+    background: linear-gradient(135deg, rgba(26,123,184,0.12) 0%, transparent 60%);
     pointer-events: none;
   }
 
-  .itin-header-eyebrow {
+  .itin-eyebrow {
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 5px;
     text-transform: uppercase;
     color: var(--azure-light);
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
 
   .itin-header h1 {
     font-family: 'Playfair Display', serif;
     font-style: italic;
-    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-size: clamp(2rem, 5vw, 3.2rem);
     color: var(--sand);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
 
   .itin-header h1 span { color: var(--gold); }
 
   .itin-header-sub {
-    font-size: 12px;
+    font-size: 11px;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: var(--azure-light);
-    margin-bottom: 32px;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 0;
   }
 
-  /* === DAY TABS === */
+  /* DAY TABS */
   .day-tabs-wrap {
     background: var(--navy);
     position: sticky;
     top: 64px;
     z-index: 100;
-    border-bottom: 2px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
   }
 
   .day-tabs {
     display: flex;
     overflow-x: auto;
     scrollbar-width: none;
-    max-width: 1100px;
+    max-width: 1000px;
     margin: 0 auto;
-    padding: 0 16px;
+    padding: 0 8px;
   }
 
   .day-tabs::-webkit-scrollbar { display: none; }
 
   .day-tab {
     flex-shrink: 0;
-    padding: 14px 20px;
+    padding: 16px 18px 14px;
     cursor: pointer;
-    border-bottom: 3px solid transparent;
+    border-bottom: 2px solid transparent;
     transition: all 0.2s;
     text-align: center;
-    min-width: 80px;
+    min-width: 76px;
   }
 
-  .day-tab:hover { background: rgba(255,255,255,0.04); }
+  .day-tab:hover { background: rgba(255,255,255,0.03); }
 
-  .day-tab.active {
-    border-bottom-color: var(--gold);
-  }
+  .day-tab.active { border-bottom-color: var(--gold); }
 
-  .day-tab-date {
+  .day-tab-num {
+    font-family: 'Playfair Display', serif;
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: 1px;
-    color: var(--azure-light);
+    color: rgba(255,255,255,0.35);
     text-transform: uppercase;
+    letter-spacing: 1px;
   }
 
-  .day-tab.active .day-tab-date { color: var(--gold); }
+  .day-tab.active .day-tab-num { color: var(--gold); }
 
-  .day-tab-label {
-    font-size: 12px;
+  .day-tab-name {
+    font-size: 11px;
     font-weight: 700;
-    color: rgba(255,255,255,0.5);
+    color: rgba(255,255,255,0.45);
     margin-top: 2px;
+    letter-spacing: 0.5px;
   }
 
-  .day-tab.active .day-tab-label { color: var(--sand); }
+  .day-tab.active .day-tab-name { color: var(--sand); }
 
-  .day-tab-icon { font-size: 18px; margin-bottom: 2px; }
-
-  /* === CONTENT AREA === */
+  /* CONTENT */
   .itin-content {
-    max-width: 820px;
+    max-width: 780px;
     margin: 0 auto;
-    padding: 40px 24px 80px;
+    padding: 48px 24px 100px;
   }
 
-  /* === DAY PANEL === */
+  /* DAY PANEL */
   .day-panel { display: none; }
-  .day-panel.active { display: block; animation: fadeUp 0.4s ease both; }
+  .day-panel.active {
+    display: block;
+    animation: fadeUp 0.35s ease both;
+  }
 
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
+    from { opacity: 0; transform: translateY(12px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .day-panel-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    margin-bottom: 32px;
-    padding-bottom: 24px;
-    border-bottom: 2px solid var(--sand-dark);
+  /* Day title block */
+  .day-title-block {
+    margin-bottom: 40px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--sand-dark);
   }
 
-  .day-number-big {
-    font-family: 'Pacifico', cursive;
-    font-size: 64px;
-    line-height: 1;
-    color: var(--azure-light);
-    flex-shrink: 0;
-    min-width: 80px;
-    text-align: center;
-  }
-
-  .day-panel-info {}
-
-  .day-panel-label {
-    font-size: 9px;
+  .day-label {
+    font-size: 10px;
     font-weight: 700;
     letter-spacing: 4px;
     text-transform: uppercase;
     color: var(--azure);
-    margin-bottom: 4px;
+    margin-bottom: 6px;
   }
 
-  .day-panel-title {
+  .day-title {
     font-family: 'Playfair Display', serif;
-    font-size: 2rem;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
     font-weight: 700;
     color: var(--navy);
     line-height: 1.1;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
   }
 
-  .day-panel-date {
+  .day-date {
     font-size: 12px;
     color: var(--text-muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .day-location {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--navy);
+    color: var(--sand);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 700;
     letter-spacing: 1px;
   }
 
-  .day-panel-note {
-    background: var(--azure-light);
-    border-left: 3px solid var(--azure);
-    padding: 10px 14px;
-    border-radius: 0 6px 6px 0;
-    font-size: 12px;
+  .day-highlight {
+    margin-top: 14px;
+    background: linear-gradient(135deg, #FEF3E2, #FFF8F0);
+    border-left: 3px solid var(--terracotta);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    font-size: 13px;
     color: var(--navy);
-    font-weight: 700;
-    margin-top: 8px;
-    display: inline-block;
+    line-height: 1.6;
+    font-style: italic;
   }
 
-  /* === TIMELINE === */
+  /* Timeline */
   .timeline {
-    border-left: 2px solid var(--sand-dark);
-    margin-left: 16px;
-    padding-left: 28px;
+    border-left: 1px solid var(--sand-dark);
+    margin-left: 12px;
+    padding-left: 32px;
   }
 
   .event {
     position: relative;
-    margin-bottom: 24px;
-    padding-bottom: 24px;
-    border-bottom: 1px dashed var(--sand-dark);
+    margin-bottom: 32px;
   }
 
-  .event:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
-  }
+  .event:last-child { margin-bottom: 0; }
 
   .event::before {
     content: '';
     position: absolute;
-    left: -36px;
-    top: 6px;
-    width: 12px;
-    height: 12px;
+    left: -38px;
+    top: 8px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    background: var(--azure);
-    border: 3px solid var(--white);
-    box-shadow: 0 0 0 2px var(--azure);
+    background: var(--sand-dark);
+    border: 2px solid var(--azure);
   }
 
-  .event.terracotta::before {
-    background: var(--terracotta);
-    box-shadow: 0 0 0 2px var(--terracotta);
-  }
-
-  .event.gold::before {
-    background: var(--gold-dark);
-    box-shadow: 0 0 0 2px var(--gold-dark);
-  }
+  .event.accent::before { border-color: var(--terracotta); }
+  .event.gold::before { border-color: var(--gold-dark); background: var(--gold-dark); }
 
   .event-time {
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--azure);
+    color: var(--text-muted);
     margin-bottom: 4px;
   }
 
-  .event.terracotta .event-time { color: var(--terracotta); }
+  .event.accent .event-time { color: var(--terracotta); }
   .event.gold .event-time { color: var(--gold-dark); }
 
   .event-title {
     font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: 700;
     color: var(--navy);
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     line-height: 1.3;
   }
 
-  .event-detail {
-    font-size: 13px;
-    color: var(--text-muted);
-    line-height: 1.8;
+  .event-desc {
+    font-size: 14px;
+    color: #4A5A6A;
+    line-height: 1.85;
   }
 
-  .event-detail a {
+  .event-desc a {
     color: var(--azure);
     text-decoration: none;
-    border-bottom: 1px dotted var(--azure);
-  }
-
-  .event-detail a:hover { color: var(--terracotta); border-bottom-color: var(--terracotta); }
-
-  .event-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 8px;
-  }
-
-  /* === LOCATION PILL === */
-  .location-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--navy);
-    color: var(--sand);
-    padding: 6px 14px;
-    border-radius: 50px;
-    font-size: 11px;
     font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 24px;
   }
 
-  /* === VOYAGE BADGE === */
-  .voyage-badge {
-    background: linear-gradient(135deg, var(--azure), var(--navy));
-    color: var(--sand);
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+  .event-desc a:hover { color: var(--terracotta); }
+
+  .event-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--sand-dark), transparent);
+    margin: 32px 0;
   }
 
-  /* Responsive */
   @media (max-width: 600px) {
-    .day-panel-header { flex-direction: column; gap: 8px; }
-    .day-number-big { font-size: 48px; min-width: auto; }
-    .day-tab { min-width: 70px; padding: 12px 12px; }
-    .day-tab-label { font-size: 10px; }
+    .day-tab { min-width: 66px; padding: 14px 10px 12px; }
+    .day-tab-name { font-size: 10px; }
+    .itin-content { padding: 32px 20px 80px; }
   }
 </style>
 </head>
 <body>
 
 <div class="itin-header">
-  <p class="itin-header-eyebrow">⚓ M/Y R23 · Amalfi Coast · July 2026</p>
-  <h1>The <span>Itinerary</span></h1>
-  <p class="itin-header-sub">July 3 – 12, 2026 · 10 Days · 12 Family Members</p>
+  <p class="itin-eyebrow">Amalfi Coast · July 2026</p>
+  <h1>Our <span>Itinerary</span></h1>
+  <p class="itin-header-sub">July 3 – 12, 2026</p>
 </div>
 
-<!-- Day tabs -->
 <div class="day-tabs-wrap">
   <div class="day-tabs" id="dayTabs"></div>
 </div>
 
-<!-- Content -->
 <div class="itin-content">
   <div id="dayPanels"></div>
 </div>
@@ -332,361 +287,413 @@
 
   const DAYS = [
     {
-      date: 'Jul 3', day: '03', label: 'Arrival', icon: '✈️',
-      title: 'Arrival Day', fullDate: 'Friday, July 3rd, 2026',
-      location: '📍 La Cocumella, Sant\'Agnello',
+      tab: { num: 'Fri Jul 3', name: 'Arrival' },
+      title: 'Arrival Day', date: 'Friday, July 3rd, 2026',
+      label: 'Pre-Voyage · La Cocumella',
+      location: 'Sant\'Agnello, Sorrento',
+      highlight: null,
       events: [
         {
-          time: '11:40 AM', title: 'Land at Naples Airport (NAP)',
-          detail: 'UA 966 from Newark · Menzies Aviation VIP meet & greet — agent escorts group through passport control, customs and baggage claim.',
-          badge: 'confirmed', badgeText: 'Menzies VIP Booked & Paid', color: 'azure'
+          time: '11:40 AM',
+          title: 'Land at Naples Capodichino Airport',
+          desc: 'The adventure begins. After an overnight flight from Newark, we land in Naples — gateway to the Amalfi Coast. A private VIP team will meet us at the gate and escort the group through the airport seamlessly.',
+          style: 'default'
         },
         {
-          time: '~12:30 PM', title: 'Private Minivan to La Cocumella',
-          detail: 'Hotel-arranged minivan transfer · Approx. 1 hour drive to Sant\'Agnello · Driver details to follow.',
-          badge: 'confirmed', badgeText: 'Confirmed by Giuseppe', color: 'azure'
+          time: '~1:30 PM',
+          title: 'Arrive at La Cocumella',
+          desc: 'A private minivan whisks us through the Bay of Naples corridor to our home for the weekend — La Cocumella in Sant\'Agnello, one of the most storied hotels on the Sorrentine peninsula. Check in, freshen up, breathe in that Italian air.',
+          style: 'default'
         },
         {
-          time: '~1:30 PM', title: 'Arrive La Cocumella',
-          detail: 'Check in, drop luggage, freshen up. The hotel will arrange taxis to the cooking class.',
-          badge: null, color: 'azure'
+          time: '3:00 PM',
+          title: 'Cooking Class — Sorrento\'s Tasty Garden',
+          desc: 'Our welcome to Italy is hands-on and delicious. At a beautiful garden kitchen in Sant\'Agnello, we roll up our sleeves and learn the secrets of authentic Sorrentine cooking — fresh pasta, wood-fired pizza and tiramisù, all accompanied by prosecco, local wine, and homemade limoncello made from lemons right outside the door.',
+          style: 'accent'
         },
         {
-          time: '3:00 PM', title: 'Cooking Class — Sorrento\'s Tasty Garden',
-          detail: 'Via Maiano 15, Sant\'Agnello · Pizza making · Fresh pasta Sorrentino-style · Tiramisù · Prosecco while cooking · Local wine · Homemade limoncello · €130/person · Group of 9',
-          badge: 'confirmed', badgeText: 'Booked & Paid', color: 'terracotta', link: 'https://www.sorrentostastygarden.com/en/'
+          time: 'Late Afternoon',
+          title: 'Stroll Corso Italia',
+          desc: 'Sorrento\'s elegant main street is lined with artisan shops, boutiques and pasticcerias. Pick up hand-painted ceramics, fine leather goods, or simply wander and take it all in with a gelato in hand.',
+          style: 'gold'
         },
         {
-          time: 'Late Afternoon', title: 'Shopping — Corso Italia',
-          detail: 'Stroll Sorrento\'s main street · ceramics, leather goods, limoncello, local boutiques · ~10 min walk from hotel.',
-          badge: null, color: 'gold'
-        },
-        {
-          time: '8:30 PM', title: 'Dinner — Ristorante Tasso',
-          detail: 'Via Correale 11D, Sorrento · À la carte · Payment on site · Dietary requirements noted · ~10 min walk from hotel.',
-          badge: 'confirmed', badgeText: 'Confirmed by Annalisa', color: 'terracotta', link: 'https://www.ristorantetasso.com/en/'
+          time: '8:30 PM',
+          title: 'Dinner at Ristorante Tasso',
+          desc: 'A warm welcome dinner at one of Sorrento\'s most refined establishments. Ristorante Tasso has been welcoming guests for generations with a menu rooted in the best of Campanian seafood and pasta. À la carte, at our own pace — the perfect first evening.',
+          link: 'https://www.ristorantetasso.com/en/',
+          style: 'accent'
         },
       ]
     },
     {
-      date: 'Jul 4', day: '04', label: 'Sorrento', icon: '🌊',
-      title: 'Sorrento Day', fullDate: 'Saturday, July 4th, 2026',
-      location: '📍 La Cocumella, Sant\'Agnello',
+      tab: { num: 'Sat Jul 4', name: 'Sorrento' },
+      title: 'A Day in Sorrento', date: 'Saturday, July 4th, 2026',
+      label: 'Pre-Voyage · La Cocumella',
+      location: 'Sant\'Agnello & Sorrento',
+      highlight: null,
       events: [
         {
-          time: 'Morning', title: 'Late Breakfast at La Cocumella',
-          detail: 'Relax, enjoy the hotel gardens and terraces.',
-          badge: null, color: 'azure'
+          time: 'Morning',
+          title: 'A Slow Breakfast at La Cocumella',
+          desc: 'No alarms. No rush. The hotel\'s terrace breakfast is a celebration in itself — fresh pastries, local cheeses, Amalfi lemons, and views across the Gulf of Naples that will make you forget everything else.',
+          style: 'default'
         },
         {
-          time: 'Late Morning', title: 'Hotel Private Beach',
-          detail: 'Accessible by lift or scenic staircase · Sun loungers, umbrellas, sea swimming · Beautiful Gulf of Naples views.',
-          badge: null, color: 'azure'
+          time: 'Late Morning',
+          title: 'La Cocumella Private Beach',
+          desc: 'Descend by private lift to the hotel\'s exclusive seafront — sun loungers, umbrellas, crystal-clear water, and the sound of the Mediterranean. One of the great privileges of staying at La Cocumella.',
+          style: 'default'
         },
         {
-          time: 'Midday', title: 'Poolside Lunch — L\'Agrumeto',
-          detail: 'La Cocumella\'s poolside restaurant · Wood-fired pizza, salads, light bites · Surrounded by orange trees.',
-          badge: null, color: 'gold'
+          time: 'Midday',
+          title: 'Poolside Lunch at L\'Agrumeto',
+          desc: 'Back up to the hotel\'s gorgeous poolside restaurant, surrounded by orange and lemon trees. Light, fresh, Italian — exactly what lunch should be.',
+          style: 'gold'
         },
         {
-          time: 'Afternoon', title: 'Pool · Spa · Tennis',
-          detail: 'Enjoy the hotel facilities — spa treatments, pool, tennis court, or simply relax in the gardens.',
-          badge: null, color: 'azure'
+          time: 'Afternoon',
+          title: 'Spa · Pool · Tennis',
+          desc: 'The afternoon is yours. A massage at the spa, another swim, a game of tennis — or simply a sun-soaked nap in the gardens. La dolce vita in its purest form.',
+          style: 'default'
         },
         {
-          time: 'Late Afternoon', title: 'Aperitivo — Villa Comunale Terrace',
-          detail: 'Clifftop public gardens · Panoramic views of the Bay of Naples and Vesuvius · Perfect sunset aperitivo spot · ~10 min walk from hotel.',
-          badge: null, color: 'gold'
+          time: 'Late Afternoon',
+          title: 'Aperitivo at Villa Comunale',
+          desc: 'Sorrento\'s beloved clifftop gardens, where the whole town gathers at sunset. A spritz in hand, Vesuvius in the distance, the Bay of Naples turning gold — this is the Italy you came for.',
+          style: 'gold'
         },
         {
-          time: '8:30 PM', title: 'Dinner — L\'Abate',
-          detail: 'Piazza Sant\'Antonino 24, Sorrento · Fresh catch of the day · Seafood pasta · Lively piazza setting · ~12 min walk from hotel.',
-          badge: 'confirmed', badgeText: 'Confirmed', color: 'terracotta', link: 'https://www.labatesorrento.it'
+          time: '8:30 PM',
+          title: 'Dinner at L\'Abate',
+          desc: 'Right on Piazza Sant\'Antonino, one of Sorrento\'s most vibrant and beloved restaurants. The owner Fabio greets every table personally, the catch of the day arrives straight from the fishermen, and the wine flows generously. Lively, warm, and unforgettable.',
+          link: 'https://www.labatesorrento.it',
+          style: 'accent'
         },
         {
-          time: 'After Dinner', title: 'Late Night — Follow the Music',
-          detail: 'All within 5 min walk · No reservations needed\n· Filou Club — live Italian music, piano bar\n· Daniele\'s Club — karaoke, DJ, rooftop views\n· Circolo dei Forestieri — live band, dancing, Vesuvius views\n· Fauno Bar — outdoor terrace, final limoncello spritz',
-          badge: null, color: 'gold'
+          time: 'After Dinner',
+          title: 'The Night is Young',
+          desc: 'Sorrento comes alive after dinner. A short stroll from L\'Abate you\'ll find Filou Club with live Italian classics, Daniele\'s Club with karaoke and rooftop views, the storied Circolo dei Forestieri with its clifftop terrace and live band, or simply a final limoncello spritz under the stars at Fauno Bar on Piazza Tasso.',
+          style: 'gold'
         },
       ]
     },
     {
-      date: 'Jul 5', day: '05', label: 'Embark', icon: '⛵',
-      title: 'Set Sail — Procida', fullDate: 'Sunday, July 5th, 2026',
-      location: '⚓ M/Y R23 · Procida',
-      note: 'Yacht concierge handles all transportation & restaurant bookings from this point',
+      tab: { num: 'Sun Jul 5', name: 'Procida' },
+      title: 'Set Sail — Procida', date: 'Sunday, July 5th, 2026',
+      label: 'Aboard M/Y R23',
+      location: 'Sorrento → Procida',
+      highlight: 'The voyage begins. From this point all transportation and restaurant bookings are arranged by the M/Y R23 concierge.',
       events: [
         {
-          time: 'Morning', title: 'Breakfast & Check-Out',
-          detail: 'Final morning at La Cocumella. Pack and prepare for departure.',
-          badge: null, color: 'azure'
+          time: 'Morning',
+          title: 'Farewell La Cocumella',
+          desc: 'A final breakfast on the terrace, then check out and transfer to Sorrento port. It\'s time to board.',
+          style: 'default'
         },
         {
-          time: '10:00 AM', title: 'Board M/Y R23 — Sorrento',
-          detail: 'Transfer arranged by yacht concierge · Begin the Amalfi Coast voyage!',
-          badge: 'confirmed', badgeText: 'Yacht Concierge', color: 'azure'
+          time: '10:00 AM',
+          title: 'Board M/Y R23',
+          desc: 'We step aboard our home for the next eight days — M/Y R23, a magnificent private yacht with every luxury. The crew welcomes us, we settle into our cabins, and the adventure truly begins.',
+          style: 'accent'
         },
         {
-          time: '2:00 PM', title: 'Lunch Onboard M/Y R23',
-          detail: 'Welcome lunch aboard the yacht.',
-          badge: null, color: 'gold'
+          time: '2:00 PM',
+          title: 'Welcome Lunch Onboard',
+          desc: 'Our first meal aboard — the yacht chef\'s welcome lunch as we cruise toward Procida, one of Italy\'s most beautiful and unspoiled islands.',
+          style: 'gold'
         },
         {
-          time: '8:30 PM', title: 'Dinner — La Lampara, Corricella',
-          detail: 'Waterfront dining at Corricella harbor, Procida · Tender access.',
-          badge: 'pending', badgeText: 'Concierge to book', color: 'terracotta'
+          time: '8:30 PM',
+          title: 'Dinner at La Lampara, Corricella',
+          desc: 'Procida\'s jewel is the harbor of Corricella — a cascade of pastel-colored fishermen\'s houses tumbling down to the water\'s edge. La Lampara sits right on the waterfront, serving the freshest local seafood in one of Italy\'s most cinematic settings.',
+          style: 'accent'
         },
         {
-          time: 'Evening', title: 'Live Music — Corricella Harbor',
-          detail: 'Stroll the colorful harbor front and enjoy the local music bars.',
-          badge: null, color: 'gold'
+          time: 'Evening',
+          title: 'Music Along the Harbor',
+          desc: 'Corricella\'s harbor comes alive at night with local music spilling from the bars. Wander the ancient lanes, listen to the sea, and toast to the voyage ahead.',
+          style: 'gold'
         },
       ]
     },
     {
-      date: 'Jul 6', day: '06', label: 'Ischia', icon: '🌋',
-      title: 'Ischia', fullDate: 'Monday, July 6th, 2026',
-      location: '⚓ M/Y R23 · Ischia',
-      note: '🍸 Joyce, Mousa & Selly Saad join today — welcome aboard! Group becomes 12.',
+      tab: { num: 'Mon Jul 6', name: 'Ischia' },
+      title: 'Ischia', date: 'Monday, July 6th, 2026',
+      label: 'Aboard M/Y R23',
+      location: 'Ischia',
+      highlight: 'Joyce, Mousa and Selly Saad join us today — welcome aboard, the group is now complete!',
       events: [
         {
-          time: '11:40 AM', title: 'Saads Land at Naples Airport',
-          detail: 'UA 966 from Newark · Menzies VIP meet & greet arranged · Yacht concierge transfer to M/Y R23.',
-          badge: 'confirmed', badgeText: 'Menzies VIP Booked', color: 'azure'
+          time: 'Morning',
+          title: 'The Saads Arrive',
+          desc: 'Our final three crew members fly in from Newark and are transferred directly to M/Y R23. The family is now complete — twelve of us together for the rest of the voyage.',
+          style: 'default'
         },
         {
-          time: '2:00 PM', title: 'Saads Arrive Onboard · Full Group Lunch',
-          detail: 'Welcome lunch for the full group of 12.',
-          badge: null, color: 'gold'
+          time: '2:00 PM',
+          title: 'Welcome Lunch for the Full Group',
+          desc: 'The first meal with all twelve around the table. A celebration lunch onboard as we make our way to Ischia.',
+          style: 'gold'
         },
         {
-          time: 'Afternoon', title: 'Sant\'Angelo Village Walk',
-          detail: 'Tender to the car-free village of Sant\'Angelo · Optional: Poseidon or Negombo thermal gardens.',
-          badge: null, color: 'azure'
+          time: 'Afternoon',
+          title: 'Sant\'Angelo Village',
+          desc: 'Tender ashore to Sant\'Angelo, Ischia\'s most enchanting village — entirely car-free, draped in bougainvillea, with a tiny harbor and winding lanes that seem frozen in time. For those who want to go further, the famous thermal gardens of Poseidon or Negombo are nearby.',
+          style: 'default'
         },
         {
-          time: 'Evening', title: 'Dinner — Indaco Restaurant',
-          detail: 'Michelin-starred · Ischia · Dietary requirements apply.',
-          badge: 'confirmed', badgeText: 'Confirmed', color: 'terracotta'
+          time: 'Evening',
+          title: 'Dinner at Indaco',
+          desc: 'One of southern Italy\'s most celebrated tables. Indaco holds a Michelin star and a deserved reputation for extraordinary Neapolitan cuisine — refined, inventive, and deeply rooted in the flavors of the sea.',
+          style: 'accent'
         },
         {
-          time: 'Night', title: 'Valentino Club Ischia',
-          detail: 'Ischia\'s most celebrated nightlife venue.',
-          badge: null, color: 'gold'
+          time: 'Night',
+          title: 'Valentino Club',
+          desc: 'Ischia\'s legendary nightclub. Dancing, music, and the kind of Italian summer night you\'ll still be talking about in September.',
+          style: 'gold'
         },
       ]
     },
     {
-      date: 'Jul 7', day: '07', label: 'Capri', icon: '💎',
-      title: 'Capri', fullDate: 'Tuesday, July 7th, 2026',
-      location: '⚓ M/Y R23 · Capri',
+      tab: { num: 'Tue Jul 7', name: 'Capri' },
+      title: 'Capri', date: 'Tuesday, July 7th, 2026',
+      label: 'Aboard M/Y R23',
+      location: 'Capri',
+      highlight: null,
       events: [
         {
-          time: 'Before 10 AM', title: 'Arrive & Dock in Capri',
-          detail: 'Early arrival to secure docking.',
-          badge: null, color: 'azure'
+          time: 'Before 10:00 AM',
+          title: 'Arrive and Dock in Capri',
+          desc: 'An early arrival to secure our berth in one of the most glamorous ports in the world. The island wakes slowly — and we have it almost to ourselves.',
+          style: 'default'
         },
         {
-          time: 'Morning', title: 'Shopping — Via Camerelle',
-          detail: 'Prada · Loro Piana · Carthusia perfume · Capri Watch · The best of Capri\'s luxury boutiques.',
-          badge: null, color: 'gold'
+          time: 'Morning',
+          title: 'Via Camerelle — The Luxury Shopping',
+          desc: 'Capri\'s legendary shopping street is the place for serious retail therapy. Prada, Loro Piana, Carthusia (Capri\'s iconic perfumery since 1948), Capri Watch — and a dozen boutiques you won\'t find anywhere else in the world.',
+          style: 'gold'
         },
         {
-          time: '2:00 PM', title: 'Lunch — Da Luigi ai Faraglioni',
-          detail: 'Moor at buoys · Tender in · Lunch on the rocks with the iconic Faraglioni sea stacks as backdrop. Unforgettable setting.',
-          badge: 'pending', badgeText: 'Concierge to book', color: 'terracotta'
+          time: '2:00 PM',
+          title: 'Lunch at Da Luigi ai Faraglioni',
+          desc: 'We moor directly at the buoys and tender in to one of the most spectacular lunch spots in Italy — a restaurant built into the rocks beneath the famous Faraglioni sea stacks. The water is impossibly blue, the seafood is sublime, and the setting is unlike anywhere else on earth.',
+          style: 'accent'
         },
         {
-          time: '9:00 PM', title: 'Dinner — Ristorante Panorama',
-          detail: 'Traversa Lo Palazzo 2, Capri · Stunning lemon grove terrace · Sea views · Family-run for 40+ years.',
-          badge: 'pending', badgeText: 'Concierge to book', color: 'terracotta', link: 'https://www.panoramacapri.com'
+          time: '9:00 PM',
+          title: 'Dinner at Ristorante Panorama',
+          desc: 'A lemon grove terrace steps from the Piazzetta, run by the same family for over forty years. The scialatielli pasta, the grilled fish, the view, the wine — Panorama earns its name every single evening.',
+          link: 'https://www.panoramacapri.com',
+          style: 'accent'
         },
         {
-          time: 'Night', title: 'Taverna Anema e Core',
-          detail: 'Capri\'s legendary live music and singing venue. Everyone joins in!',
-          badge: null, color: 'gold'
+          time: 'After Dinner',
+          title: 'Taverna Anema e Core',
+          desc: 'There is no more joyful place on the island than Anema e Core. Live music, singing, dancing, laughter — this Capri institution has been drawing beautiful people since 1964 and shows no signs of slowing down. An essential Capri night.',
+          style: 'gold'
         },
       ]
     },
     {
-      date: 'Jul 8', day: '08', label: 'Positano', icon: '🌅',
-      title: 'Capri → Positano', fullDate: 'Wednesday, July 8th, 2026',
-      location: '⚓ M/Y R23 · Positano',
+      tab: { num: 'Wed Jul 8', name: 'Positano' },
+      title: 'Capri to Positano', date: 'Wednesday, July 8th, 2026',
+      label: 'Aboard M/Y R23',
+      location: 'Positano',
+      highlight: null,
       events: [
         {
-          time: 'Morning', title: 'Cruise to Positano',
-          detail: 'Morning cruise from Capri along the coast.',
-          badge: null, color: 'azure'
+          time: 'Morning',
+          title: 'Cruise the Amalfi Coast',
+          desc: 'One of the great drives in the world is even more spectacular from the water. We cruise west from Capri along the dramatic Amalfi coastline — cliffs plunging into the sea, ancient villages clinging to the rock — toward the most photographed town in Italy.',
+          style: 'default'
         },
         {
-          time: '2:00 PM', title: 'Lunch — Conca del Sogno, Nerano',
-          detail: 'Accessible by boat only · Arrive by tender · One of the most spectacular lunch settings on the coast.',
-          badge: 'pending', badgeText: 'Concierge to book', color: 'terracotta'
+          time: '2:00 PM',
+          title: 'Lunch at Conca del Sogno, Nerano',
+          desc: 'Accessible only by boat — which makes it feel like a private discovery. Conca del Sogno is tucked into a small cove in the Bay of Ieranto, with turquoise water, terraces built into the rock, and a kitchen that has been celebrating Neapolitan seafood for decades. A legendary stop.',
+          style: 'accent'
         },
         {
-          time: 'Afternoon', title: 'Spiaggia Grande Beach, Positano',
-          detail: 'Anchor off Positano\'s main beach · Tender access to town.',
-          badge: null, color: 'azure'
+          time: 'Afternoon',
+          title: 'Spiaggia Grande, Positano',
+          desc: 'We anchor off Positano\'s iconic main beach. The town rises above us in its famous cascade of pastel buildings. Swim, tender ashore, wander the vertical lanes — or simply float and look up.',
+          style: 'default'
         },
         {
-          time: '7:30 PM', title: 'Franco\'s Bar — Le Sirenuse Hotel',
-          detail: 'Rooftop terrace of the iconic Le Sirenuse hotel · Panoramic views over Positano · No reservation required · Arrive by 6:30 PM for best seats.',
-          badge: null, color: 'gold', link: 'https://www.sirenuse.it/en/francos-bar/'
+          time: '7:30 PM',
+          title: 'Franco\'s Bar at Le Sirenuse',
+          desc: 'The rooftop bar of Positano\'s most storied hotel is the finest place on the coast to watch the sun set over the Tyrrhenian Sea. A spritz, a Negroni, the whole town below you, the sky turning pink and gold. Pure magic.',
+          link: 'https://www.sirenuse.it/en/francos-bar/',
+          style: 'gold'
         },
         {
-          time: '9:00 PM', title: 'Dinner — Chic Mama, Montepertuso',
-          detail: 'Upper Positano (Montepertuso) · Complimentary shuttle from town provided by the restaurant.',
-          badge: 'pending', badgeText: 'Concierge to book', color: 'terracotta'
+          time: '9:00 PM',
+          title: 'Dinner at Chic Mama, Montepertuso',
+          desc: 'High above Positano in the village of Montepertuso — the restaurant provides a complimentary shuttle from town — Chic Mama offers a perspective and a menu that rewards the journey. A beautiful final Positano evening.',
+          style: 'accent'
         },
       ]
     },
     {
-      date: 'Jul 9', day: '09', label: 'Ravello 🎂', icon: '🎂',
-      title: 'Amalfi & Ravello', fullDate: 'Thursday, July 9th, 2026',
-      location: '⚓ M/Y R23 · Amalfi & Ravello',
-      note: '🎂 Marshall\'s Birthday! — Birthday cake at lunch · Party dinner onboard with decorations & disco ball!',
+      tab: { num: 'Thu Jul 9', name: 'Ravello' },
+      title: 'Amalfi & Ravello', date: 'Thursday, July 9th, 2026',
+      label: 'Aboard M/Y R23',
+      location: 'Amalfi & Ravello',
+      highlight: 'Happy Birthday Marshall! Today we celebrate the man of the hour — from birthday cake at lunch to a party dinner aboard M/Y R23 with music, dancing, and a disco ball.',
       events: [
         {
-          time: 'Morning', title: 'Wakeboard & Water Ski Session',
-          detail: 'Early morning session in calm waters.',
-          badge: null, color: 'azure'
+          time: 'Morning',
+          title: 'Wakeboard & Water Ski',
+          desc: 'For those with energy to burn, the morning belongs to the water sports. The Amalfi Coast as your backdrop, the Mediterranean at your feet.',
+          style: 'default'
         },
         {
-          time: 'Late Morning', title: 'Excursion — Amalfi & Ravello',
-          detail: 'Tender into Amalfi → car up to Ravello · Villa Cimbrone · Villa Rufolo · Village walk through one of Italy\'s most beautiful hill towns.',
-          badge: null, color: 'azure'
+          time: 'Late Morning',
+          title: 'Amalfi & Ravello Excursion',
+          desc: 'Tender into the ancient town of Amalfi, then a car up the mountain to Ravello — one of the most beautiful villages in Italy. Walk the gardens of Villa Cimbrone with their famous Terrace of Infinity, explore Villa Rufolo, and breathe air that has inspired composers, writers and kings for centuries.',
+          style: 'default'
         },
         {
-          time: '2:00 PM', title: 'Lunch — Salvatore Ravello 1958 🎂',
-          detail: 'Panoramic terrace with sweeping sea views · Classic Amalfitano cuisine · Birthday cake surprise for Marshall!',
-          badge: 'pending', badgeText: 'Concierge to book', color: 'terracotta', link: 'https://www.salvatoreravello.com'
+          time: '2:00 PM',
+          title: 'Birthday Lunch at Salvatore Ravello 1958',
+          desc: 'A Ravello institution since 1958, with a panoramic terrace that sweeps across the entire Amalfi Coast far below. The seafood, the pasta, the local wine — and a birthday cake for Marshall. Cin cin!',
+          link: 'https://www.salvatoreravello.com',
+          style: 'accent'
         },
         {
-          time: 'Evening', title: '🎂 Marshall\'s Birthday Party — Onboard M/Y R23',
-          detail: 'Private birthday party for the full group of 12 · Festive decorations · Disco ball · Birthday cake · Dancing on the deck!',
-          badge: 'confirmed', badgeText: 'Captain Mauro Notified', color: 'gold'
+          time: 'Evening',
+          title: 'Marshall\'s Birthday Party — Onboard M/Y R23',
+          desc: 'Back aboard, the yacht is transformed. Decorations, music, a disco ball, the whole family together on the water under the stars of the Amalfi Coast. This is what we came for. Happy Birthday, Marshall.',
+          style: 'gold'
         },
       ]
     },
     {
-      date: 'Jul 10', day: '10', label: 'Shabbat', icon: '✡️',
-      title: 'Shabbat Preparation', fullDate: 'Friday, July 10th, 2026',
-      location: '⚓ M/Y R23 · Anchored off Sorrento',
+      tab: { num: 'Fri Jul 10', name: 'Shabbat' },
+      title: 'Shabbat', date: 'Friday, July 10th, 2026',
+      label: 'Aboard M/Y R23',
+      location: 'Vietri sul Mare · Sorrento',
+      highlight: null,
       events: [
         {
-          time: 'Morning', title: 'Cruise East — Swim Stop at Vietri sul Mare',
-          detail: 'Morning cruise east along the coast · Swim stop at beautiful Vietri.',
-          badge: null, color: 'azure'
+          time: 'Morning',
+          title: 'Cruise East to Vietri sul Mare',
+          desc: 'A gentle morning cruise east along the coast to Vietri sul Mare — the gateway to the Amalfi Coast and home of its famous hand-painted ceramics tradition. A swim stop in beautiful waters.',
+          style: 'default'
         },
         {
-          time: 'Afternoon', title: 'Cruise Back to Sorrento',
-          detail: 'Return to Sorrento · Anchor overnight (not docking in port) · Shabbat preparations onboard.',
-          badge: null, color: 'azure'
+          time: 'Afternoon',
+          title: 'Cruise Back to Sorrento',
+          desc: 'We make our way back to anchor off Sorrento for Shabbat. The yacht chef prepares for a very special evening.',
+          style: 'default'
         },
         {
-          time: 'Evening', title: 'Formal Shabbat Dinner — Onboard',
-          detail: 'Candlelit Shabbat dinner for the full group of 12 · Coordinate with yacht chef in advance.',
-          badge: 'confirmed', badgeText: 'Captain Mauro Notified', color: 'gold'
+          time: 'Evening',
+          title: 'Formal Shabbat Dinner Onboard',
+          desc: 'As the sun sets over the Bay of Naples, we gather for a candlelit Shabbat dinner aboard M/Y R23 — twelve of us together, on the water, in one of the most beautiful places in the world. Shabbat Shalom.',
+          style: 'gold'
         },
       ]
     },
     {
-      date: 'Jul 11', day: '11', label: 'Positano', icon: '🌙',
-      title: 'Shabbat → Positano', fullDate: 'Saturday, July 11th, 2026',
-      location: '⚓ M/Y R23 · Positano',
-      note: 'Shabbat observance onboard all day — no activities until after Havdalah at nightfall.',
+      tab: { num: 'Sat Jul 11', name: 'Positano' },
+      title: 'Shabbat to Positano', date: 'Saturday, July 11th, 2026',
+      label: 'Aboard M/Y R23',
+      location: 'Sorrento · Positano',
+      highlight: 'Shabbat is observed onboard all day. After Havdalah, we sail for Positano and our final night together.',
       events: [
         {
-          time: 'Day', title: 'Shabbat Observance — Anchored off Sorrento',
-          detail: 'Rest, relax and observe Shabbat onboard.',
-          badge: null, color: 'azure'
+          time: 'Day',
+          title: 'Shabbat Onboard',
+          desc: 'A day of rest, peace, and togetherness. Anchored off Sorrento, with the whole bay before us and nothing demanded of us.',
+          style: 'default'
         },
         {
-          time: 'After Havdalah', title: 'Cruise to Positano — Finale Night',
-          detail: 'Evening cruise to Positano for the final night of the voyage.',
-          badge: null, color: 'azure'
+          time: 'After Havdalah',
+          title: 'Cruise to Positano',
+          desc: 'As the stars appear, we make our final cruise — back to Positano for one last magical night on the coast.',
+          style: 'accent'
         },
         {
-          time: '9:00 PM', title: 'Dinner — Terrazza Celè, Hotel Marincanto',
-          detail: 'Via Cristoforo Colombo 50, Positano · Ranked one of the most beautiful restaurant terraces in the world · Panoramic sea views · Live piano some evenings.',
-          badge: 'pending', badgeText: 'Concierge to book', color: 'terracotta', link: 'https://www.terrazzacele.it'
+          time: '9:00 PM',
+          title: 'Dinner at Terrazza Celè',
+          desc: 'Perched high above the sea at the Hotel Marincanto, Terrazza Celè has been ranked among the most beautiful restaurant terraces in the world. The final dinner of our voyage deserves nothing less.',
+          link: 'https://www.terrazzacele.it',
+          style: 'accent'
         },
         {
-          time: 'After Dinner', title: 'Music on the Rocks — Finale Night 🎉',
-          detail: 'Via Grotte dell\'Incanto 51, Positano · Legendary cave club carved into the cliffs of Spiaggia Grande · VIP table service · Open until 4 AM · The perfect send-off!',
-          badge: 'pending', badgeText: 'Concierge to book VIP table', color: 'gold', link: 'https://musicontherocks.it'
+          time: 'After Dinner',
+          title: 'Music on the Rocks — The Grand Finale',
+          desc: 'Carved into the cliffs of Spiaggia Grande, Music on the Rocks is Positano\'s legendary cave nightclub — and the perfect way to close out one of the great family trips. Dancing, music, the sound of the sea, and the people you love most. This is Marshall\'s Way.',
+          link: 'https://musicontherocks.it',
+          style: 'gold'
         },
       ]
     },
     {
-      date: 'Jul 12', day: '12', label: 'Home', icon: '🏠',
-      title: 'Disembarkation', fullDate: 'Sunday, July 12th, 2026',
-      location: '✈️ Naples → Newark',
+      tab: { num: 'Sun Jul 12', name: 'Home' },
+      title: 'Arrivederci', date: 'Sunday, July 12th, 2026',
+      label: 'Naples · Newark',
+      location: 'Naples Airport',
+      highlight: null,
       events: [
         {
-          time: '11:00 AM', title: 'Depart M/Y R23',
-          detail: 'Transfer arranged by yacht concierge · Naples airport · Menzies VIP departure service for all 12 guests.',
-          badge: 'pending', badgeText: 'Menzies Quote Requested', color: 'azure'
+          time: '11:00 AM',
+          title: 'Disembark M/Y R23',
+          desc: 'We say farewell to our beautiful home on the water and the wonderful crew who made every day extraordinary. A VIP team will escort us through Naples airport.',
+          style: 'default'
         },
         {
-          time: '2:00 PM', title: 'Depart Naples — UA 967',
-          detail: 'UA 967 Naples (NAP) → Newark (EWR) · All 12 passengers.',
-          badge: 'confirmed', badgeText: 'Flights Booked', color: 'terracotta'
+          time: '2:00 PM',
+          title: 'Depart Naples — UA 967',
+          desc: 'United Airlines flight 967, Naples to Newark. Ten days, twelve family members, one extraordinary voyage. Until next time — arrivederci, Italia.',
+          style: 'accent'
         },
         {
-          time: '6:25 PM', title: 'Arrive Newark',
-          detail: 'Welcome home — until next time! 🇮🇹',
-          badge: null, color: 'gold'
+          time: '6:25 PM',
+          title: 'Arrive Newark',
+          desc: 'Home. With full hearts, a thousand memories, and probably a little too much limoncello. Welcome back.',
+          style: 'gold'
         },
       ]
     },
   ];
 
-  // Render tabs
+  // Build tabs
   const tabsEl = document.getElementById('dayTabs');
   DAYS.forEach((day, i) => {
     const tab = document.createElement('div');
     tab.className = `day-tab${i === 0 ? ' active' : ''}`;
     tab.innerHTML = `
-      <div class="day-tab-icon">${day.icon}</div>
-      <div class="day-tab-date">${day.date}</div>
-      <div class="day-tab-label">${day.label}</div>
+      <div class="day-tab-num">${day.tab.num}</div>
+      <div class="day-tab-name">${day.tab.name}</div>
     `;
     tab.onclick = () => switchDay(i);
     tabsEl.appendChild(tab);
   });
 
-  // Render panels
+  // Build panels
   const panelsEl = document.getElementById('dayPanels');
   DAYS.forEach((day, i) => {
-    const badgeMap = {
-      confirmed: '<span class="badge badge-confirmed">✅ ',
-      pending: '<span class="badge badge-pending">⏳ ',
-      null: ''
-    };
-
     const eventsHTML = day.events.map(e => `
-      <div class="event ${e.color || 'azure'}">
+      <div class="event ${e.style === 'accent' ? 'accent' : e.style === 'gold' ? 'gold' : ''}">
         <div class="event-time">${e.time}</div>
         <div class="event-title">${e.title}</div>
-        <div class="event-detail">${e.detail.replace(/\n/g, '<br>')}${e.link ? ` <a href="${e.link}" target="_blank">↗ website</a>` : ''}</div>
-        ${e.badge ? `<div class="event-badges"><span class="badge badge-${e.badge}">${e.badgeText}</span></div>` : ''}
+        <div class="event-desc">${e.desc}${e.link ? ` <a href="${e.link}" target="_blank">Learn more →</a>` : ''}</div>
       </div>
-    `).join('');
+    `).join('<div class="event-divider"></div>');
 
     const panel = document.createElement('div');
     panel.className = `day-panel${i === 0 ? ' active' : ''}`;
-    panel.id = `panel-${i}`;
     panel.innerHTML = `
-      <div class="day-panel-header">
-        <div class="day-number-big">${day.day}</div>
-        <div class="day-panel-info">
-          <div class="day-panel-label">${i < 2 ? 'Pre-Voyage · La Cocumella' : 'Aboard M/Y R23'}</div>
-          <div class="day-panel-title">${day.title}</div>
-          <div class="day-panel-date">${day.fullDate}</div>
-          <div style="margin-top:6px"><span class="location-pill">${day.location}</span></div>
-          ${day.note ? `<div class="day-panel-note">📌 ${day.note}</div>` : ''}
-        </div>
+      <div class="day-title-block">
+        <div class="day-label">${day.label}</div>
+        <div class="day-title">${day.title}</div>
+        <div class="day-date">${day.date}</div>
+        <span class="day-location">${day.location}</span>
+        ${day.highlight ? `<div class="day-highlight">${day.highlight}</div>` : ''}
       </div>
       <div class="timeline">${eventsHTML}</div>
     `;
@@ -696,9 +703,8 @@
   window.switchDay = function(index) {
     document.querySelectorAll('.day-tab').forEach((t, i) => t.classList.toggle('active', i === index));
     document.querySelectorAll('.day-panel').forEach((p, i) => p.classList.toggle('active', i === index));
-    // Scroll tabs into view
-    const tabs = document.querySelectorAll('.day-tab');
-    tabs[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    document.querySelectorAll('.day-tab')[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 </script>
 </body>
