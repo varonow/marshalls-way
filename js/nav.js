@@ -1,41 +1,22 @@
 import { getCurrentUser, getCurrentEmoji, signOut } from './supabase.js';
 
 export const NAV_ITEMS = [
-  {
-    section: 'The Voyage',
-    items: [
-      { label: 'Home', desc: 'Countdown & overview', href: 'home.html', icon: '🏠' },
-      { label: 'Itinerary', desc: 'Day by day plan', href: 'itinerary.html', icon: '🗓' },
-      { label: 'Flights', desc: 'All flight details', href: 'home.html#flights', icon: '✈️' },
-      { label: 'La Cocumella', desc: 'Our hotel in Sorrento', href: 'home.html#cocumella', icon: '🏨' },
-      { label: 'M/Y R23', desc: 'Yacht info & crew', href: 'yacht.html', icon: '🛥' },
-      { label: 'Map', desc: 'Our voyage route', href: 'map.html', icon: '📍' },
-      { label: '☀️ Weather', desc: 'Amalfi Coast forecast', href: 'weather.html', icon: '☀️' },
-    ]
-  },
-  {
-    section: 'The Family',
-    items: [
-      { label: 'Photo Album', desc: 'Share your moments', href: 'photos.html', icon: '📸' },
-      { label: 'Journal', desc: 'Trip notes & thoughts', href: 'journal.html', icon: '📝' },
-      { label: 'Packing List', desc: "Don't forget a thing", href: 'packing.html', icon: '🧳' },
-    ]
-  },
-  {
-    section: 'For Marshall 🤴',
-    items: [
-      { label: 'Letters to Marshall', desc: 'Read at his birthday dinner', href: 'letters.html', icon: '💌', hideFromMarshall: true },
-      { label: "Marshall's Memories", desc: 'Stories from those who love him', href: 'memories.html', icon: '🧠', hideFromMarshall: true },
-      { label: 'Game', desc: 'Family fun & trivia', href: 'game.html', icon: '🎯' },
-    ]
-  },
-  {
-    section: 'Explore',
-    items: [
-      { label: 'Shopping Guide', desc: 'What to buy & where', href: 'shopping.html', icon: '💸' },
-      { label: 'Playlist', desc: "Marshall's Way soundtrack", href: 'playlist.html', icon: '🎵' },
-    ]
-  }
+  { label: 'Flights', desc: 'All flight details', href: 'home.html#flights', icon: '✈️' },
+  { label: 'Game', desc: 'Family fun & trivia', href: 'game.html', icon: '🎯' },
+  { label: 'Home', desc: 'Countdown & overview', href: 'home.html', icon: '🏠' },
+  { label: 'Itinerary', desc: 'Day by day plan', href: 'itinerary.html', icon: '🗓' },
+  { label: 'Journal', desc: 'Trip notes & thoughts', href: 'journal.html', icon: '📝' },
+  { label: 'La Cocumella', desc: 'Our hotel in Sorrento', href: 'home.html#cocumella', icon: '🏨' },
+  { label: 'Letters to Marshall', desc: 'Read at his birthday dinner', href: 'letters.html', icon: '💌', hideFromMarshall: true },
+  { label: 'Map', desc: 'Our voyage route', href: 'map.html', icon: '📍' },
+  { label: "Marshall's Memories", desc: 'Stories from those who love him', href: 'memories.html', icon: '🧠', hideFromMarshall: true },
+  { label: 'M/Y R23', desc: 'Yacht info & crew', href: 'yacht.html', icon: '🛥' },
+  { label: 'Packing List', desc: "Don't forget a thing", href: 'packing.html', icon: '🧳' },
+  { label: 'Photo Album', desc: 'Share your moments', href: 'photos.html', icon: '📸' },
+  { label: 'Playlist', desc: "Marshall's Way soundtrack", href: 'playlist.html', icon: '🎵' },
+  { label: 'Room Draw', desc: 'Captain Mauro spins the wheel', href: 'rooms.html', icon: '🛏' },
+  { label: 'Shopping Guide', desc: 'What to buy & where', href: 'shopping.html', icon: '💸' },
+  { label: 'Weather', desc: 'Amalfi Coast forecast', href: 'weather.html', icon: '☀️' },
 ];
 
 export function renderNav(activePage = '') {
@@ -43,25 +24,19 @@ export function renderNav(activePage = '') {
   const emoji = getCurrentEmoji();
   const isMarshall = user === 'Marshall';
 
-  const drawerSections = NAV_ITEMS.map(section => {
-    const items = section.items
-      .filter(item => !(isMarshall && item.hideFromMarshall))
-      .map(item => {
-        const isActive = item.href === activePage ? 'active' : '';
-        return `
-          <a href="${item.href}" class="drawer-item ${isActive}">
-            <span class="drawer-item-icon">${item.icon}</span>
-            <div class="drawer-item-text">
-              <div class="drawer-item-label">${item.label}</div>
-              <div class="drawer-item-desc">${item.desc}</div>
-            </div>
-          </a>`;
-      }).join('');
-
-    return `
-      <div class="drawer-section-label">${section.section}</div>
-      ${items}`;
-  }).join('');
+  const drawerItems = NAV_ITEMS
+    .filter(item => !(isMarshall && item.hideFromMarshall))
+    .map(item => {
+      const isActive = item.href === activePage ? 'active' : '';
+      return `
+        <a href="${item.href}" class="drawer-item ${isActive}">
+          <span class="drawer-item-icon">${item.icon}</span>
+          <div class="drawer-item-text">
+            <div class="drawer-item-label">${item.label}</div>
+            <div class="drawer-item-desc">${item.desc}</div>
+          </div>
+        </a>`;
+    }).join('');
 
   const navHTML = `
     <nav class="nav">
@@ -95,7 +70,7 @@ export function renderNav(activePage = '') {
         </div>
       </div>
       <nav class="drawer-nav">
-        ${drawerSections}
+        ${drawerItems}
       </nav>
       <div class="drawer-footer">
         <button class="drawer-signout" onclick="handleSignOut()">
@@ -134,7 +109,6 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') window.closeDrawer();
 });
 
-// Close drawer when any link is clicked
 document.addEventListener('click', e => {
   const link = e.target.closest('.drawer-item');
   if (link) closeDrawer();

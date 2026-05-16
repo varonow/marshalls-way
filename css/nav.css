@@ -1,256 +1,293 @@
-import { getCurrentUser, getCurrentEmoji, signOut } from './supabase.js';
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Lato:wght@300;400;700&display=swap');
 
-export const NAV_ITEMS = [
-  { label: 'Flights', desc: 'All flight details', href: 'home.html#flights', icon: '✈️' },
-  { label: 'Game', desc: 'Family fun & trivia', href: 'game.html', icon: '🎯' },
-  { label: 'Home', desc: 'Countdown & overview', href: 'home.html', icon: '🏠' },
-  { label: 'Itinerary', desc: 'Day by day plan', href: 'itinerary.html', icon: '🗓' },
-  { label: 'Journal', desc: 'Trip notes & thoughts', href: 'journal.html', icon: '📝' },
-  { label: 'La Cocumella', desc: 'Our hotel in Sorrento', href: 'home.html#cocumella', icon: '🏨' },
-  { label: 'Letters to Marshall', desc: 'Read at his birthday dinner', href: 'letters.html', icon: '💌', hideFromMarshall: true },
-  { label: 'Map', desc: 'Our voyage route', href: 'map.html', icon: '📍' },
-  { label: "Marshall's Memories", desc: 'Stories from those who love him', href: 'memories.html', icon: '🧠', hideFromMarshall: true },
-  { label: 'M/Y R23', desc: 'Yacht info & crew', href: 'yacht.html', icon: '🛥' },
-  { label: 'Packing List', desc: "Don't forget a thing", href: 'packing.html', icon: '🧳' },
-  { label: 'Photo Album', desc: 'Share your moments', href: 'photos.html', icon: '📸' },
-  { label: 'Playlist', desc: "Marshall's Way soundtrack", href: 'playlist.html', icon: '🎵' },
-  { label: 'Room Draw', desc: 'Captain Mauro spins the wheel', href: 'rooms.html', icon: '🛏' },
-  { label: 'Shopping Guide', desc: 'What to buy & where', href: 'shopping.html', icon: '💸' },
-  { label: 'Weather', desc: 'Amalfi Coast forecast', href: 'weather.html', icon: '☀️' },
-];
-
-export function renderNav(activePage = '') {
-  const user = getCurrentUser();
-  const emoji = getCurrentEmoji();
-  const isMarshall = user === 'Marshall';
-
-  const drawerItems = NAV_ITEMS
-    .filter(item => !(isMarshall && item.hideFromMarshall))
-    .map(item => {
-      const isActive = item.href === activePage ? 'active' : '';
-      return `
-        <a href="${item.href}" class="drawer-item ${isActive}">
-          <span class="drawer-item-icon">${item.icon}</span>
-          <div class="drawer-item-text">
-            <div class="drawer-item-label">${item.label}</div>
-            <div class="drawer-item-desc">${item.desc}</div>
-          </div>
-        </a>`;
-    }).join('');
-
-  const navHTML = `
-    <nav class="nav">
-      <div class="nav-inner">
-        <div class="nav-left">
-          <button class="nav-hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Menu">
-            <span></span><span></span><span></span>
-          </button>
-        </div>
-        <a href="home.html" class="nav-logo">
-          <img src="images/logo.png" alt="Marshall's Way">
-          <span class="nav-logo-text">Marshall's <span>Way</span></span>
-        </a>
-        <div class="nav-right">
-          <div class="nav-user">
-            <div class="nav-user-avatar">${emoji}</div>
-            <span>${user || 'Guest'}</span>
-          </div>
-        </div>
-      </div>
-    </nav>
-
-    <div class="nav-overlay" id="navOverlay" onclick="closeDrawer()"></div>
-
-    <div class="nav-drawer" id="navDrawer">
-      <div class="drawer-header">
-        <div class="drawer-avatar">${emoji}</div>
-        <div>
-          <div class="drawer-user-name">${user || 'Guest'}</div>
-          <div class="drawer-user-sub">Aboard M/Y R23</div>
-        </div>
-      </div>
-      <nav class="drawer-nav">
-        ${drawerItems}
-      </nav>
-      <div class="drawer-footer">
-        <button class="drawer-signout" onclick="handleSignOut()">
-          🚪 &nbsp; Sign Out
-        </button>
-      </div>
-    </div>
-
-    <div class="nav-spacer"></div>
-  `;
-
-  document.body.insertAdjacentHTML('afterbegin', navHTML);
+/* === TOP NAV BAR === */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: var(--navy);
+  box-shadow: 0 2px 20px rgba(13,31,51,0.3);
+  height: 64px;
 }
 
-window.toggleDrawer = function() {
-  const drawer = document.getElementById('navDrawer');
-  const overlay = document.getElementById('navOverlay');
-  const hamburger = document.getElementById('hamburger');
-  drawer.classList.toggle('open');
-  overlay.classList.toggle('open');
-  hamburger.classList.toggle('open');
-};
-
-window.closeDrawer = function() {
-  document.getElementById('navDrawer').classList.remove('open');
-  document.getElementById('navOverlay').classList.remove('open');
-  document.getElementById('hamburger').classList.remove('open');
-};
-
-window.handleSignOut = async function() {
-  await signOut();
-};
-
-// Close drawer on ESC or link click
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') window.closeDrawer();
-});
-
-// Close drawer when any link is clicked
-document.addEventListener('click', e => {
-  const link = e.target.closest('.drawer-item');
-  if (link) closeDrawer();
-});
-
-export const NAV_ITEMS = [
-  {
-    section: 'The Voyage',
-    items: [
-      { label: 'Home', desc: 'Countdown & overview', href: 'home.html', icon: '🏠' },
-      { label: 'Itinerary', desc: 'Day by day plan', href: 'itinerary.html', icon: '🗓' },
-      { label: 'Flights', desc: 'All flight details', href: 'home.html#flights', icon: '✈️' },
-      { label: 'La Cocumella', desc: 'Our hotel in Sorrento', href: 'home.html#cocumella', icon: '🏨' },
-      { label: 'M/Y R23', desc: 'Yacht info & crew', href: 'yacht.html', icon: '🛥' },
-      { label: 'Map', desc: 'Our voyage route', href: 'map.html', icon: '📍' },
-      { label: '☀️ Weather', desc: 'Amalfi Coast forecast', href: 'weather.html', icon: '☀️' },
-    ]
-  },
-  {
-    section: 'The Family',
-    items: [
-      { label: 'Photo Album', desc: 'Share your moments', href: 'photos.html', icon: '📸' },
-      { label: 'Journal', desc: 'Trip notes & thoughts', href: 'journal.html', icon: '📝' },
-      { label: 'Packing List', desc: "Don't forget a thing", href: 'packing.html', icon: '🧳' },
-    ]
-  },
-  {
-    section: 'For Marshall 🤴',
-    items: [
-      { label: 'Letters to Marshall', desc: 'Read at his birthday dinner', href: 'letters.html', icon: '💌', hideFromMarshall: true },
-      { label: "Marshall's Memories", desc: 'Stories from those who love him', href: 'memories.html', icon: '🧠', hideFromMarshall: true },
-      { label: 'Game', desc: 'Family fun & trivia', href: 'game.html', icon: '🎯' },
-    ]
-  },
-  {
-    section: 'Explore',
-    items: [
-      { label: 'Shopping Guide', desc: 'What to buy & where', href: 'shopping.html', icon: '💸' },
-      { label: 'Playlist', desc: "Marshall's Way soundtrack", href: 'playlist.html', icon: '🎵' },
-    ]
-  }
-];
-
-export function renderNav(activePage = '') {
-  const user = getCurrentUser();
-  const emoji = getCurrentEmoji();
-  const isMarshall = user === 'Marshall';
-
-  const drawerSections = NAV_ITEMS.map(section => {
-    const items = section.items
-      .filter(item => !(isMarshall && item.hideFromMarshall))
-      .map(item => {
-        const isActive = item.href === activePage ? 'active' : '';
-        return `
-          <a href="${item.href}" class="drawer-item ${isActive}">
-            <span class="drawer-item-icon">${item.icon}</span>
-            <div class="drawer-item-text">
-              <div class="drawer-item-label">${item.label}</div>
-              <div class="drawer-item-desc">${item.desc}</div>
-            </div>
-          </a>`;
-      }).join('');
-
-    return `
-      <div class="drawer-section-label">${section.section}</div>
-      ${items}`;
-  }).join('');
-
-  const navHTML = `
-    <nav class="nav">
-      <div class="nav-inner">
-        <div class="nav-left">
-          <button class="nav-hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Menu">
-            <span></span><span></span><span></span>
-          </button>
-        </div>
-        <a href="home.html" class="nav-logo">
-          <img src="images/logo.png" alt="Marshall's Way">
-          <span class="nav-logo-text">Marshall's <span>Way</span></span>
-        </a>
-        <div class="nav-right">
-          <div class="nav-user">
-            <div class="nav-user-avatar">${emoji}</div>
-            <span>${user || 'Guest'}</span>
-          </div>
-        </div>
-      </div>
-    </nav>
-
-    <div class="nav-overlay" id="navOverlay" onclick="closeDrawer()"></div>
-
-    <div class="nav-drawer" id="navDrawer">
-      <div class="drawer-header">
-        <div class="drawer-avatar">${emoji}</div>
-        <div>
-          <div class="drawer-user-name">${user || 'Guest'}</div>
-          <div class="drawer-user-sub">Aboard M/Y R23</div>
-        </div>
-      </div>
-      <nav class="drawer-nav">
-        ${drawerSections}
-      </nav>
-      <div class="drawer-footer">
-        <button class="drawer-signout" onclick="handleSignOut()">
-          🚪 &nbsp; Sign Out
-        </button>
-      </div>
-    </div>
-
-    <div class="nav-spacer"></div>
-  `;
-
-  document.body.insertAdjacentHTML('afterbegin', navHTML);
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 64px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-window.toggleDrawer = function() {
-  const drawer = document.getElementById('navDrawer');
-  const overlay = document.getElementById('navOverlay');
-  const hamburger = document.getElementById('hamburger');
-  drawer.classList.toggle('open');
-  overlay.classList.toggle('open');
-  hamburger.classList.toggle('open');
-};
+/* Hamburger on left */
+.nav-left {
+  display: flex;
+  align-items: center;
+}
 
-window.closeDrawer = function() {
-  document.getElementById('navDrawer').classList.remove('open');
-  document.getElementById('navOverlay').classList.remove('open');
-  document.getElementById('hamburger').classList.remove('open');
-};
+/* Logo centered */
+.nav-logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
 
-window.handleSignOut = async function() {
-  await signOut();
-};
+.nav-logo img {
+  height: 44px;
+  width: 44px;
+  border-radius: 50%;
+  background: var(--white);
+  object-fit: contain;
+  padding: 2px;
+}
 
-// Close drawer on ESC or link click
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') window.closeDrawer();
-});
+.nav-logo-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 20px;
+  color: var(--sand);
+  white-space: nowrap;
+}
 
-// Close drawer when any link is clicked
-document.addEventListener('click', e => {
-  const link = e.target.closest('.drawer-item');
-  if (link) closeDrawer();
-});
+.nav-logo-text span { color: var(--gold); }
+
+/* Right side */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.nav-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--sand);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.nav-user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--navy-dark);
+  border: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+/* Hamburger button */
+.nav-hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  padding: 8px;
+  background: none;
+  border: none;
+  width: 40px;
+  height: 40px;
+}
+
+.nav-hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--sand);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.nav-hamburger.open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.nav-hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+.nav-hamburger.open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* === DRAWER OVERLAY === */
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13,31,51,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.nav-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* === DRAWER === */
+.nav-drawer {
+  position: fixed;
+  top: 0;
+  left: -340px;
+  width: 320px;
+  height: 100vh;
+  background: var(--navy-dark);
+  z-index: 999;
+  transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.nav-drawer.open {
+  left: 0;
+}
+
+/* Drawer header */
+.drawer-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--navy);
+  flex-shrink: 0;
+}
+
+.drawer-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--navy-dark);
+  border: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.drawer-user-name {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 20px;
+  color: var(--sand);
+}
+
+.drawer-user-sub {
+  font-size: 11px;
+  color: var(--azure-light);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Drawer nav items */
+.drawer-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 0;
+}
+
+.drawer-nav::-webkit-scrollbar { width: 4px; }
+.drawer-nav::-webkit-scrollbar-track { background: transparent; }
+.drawer-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+.drawer-section-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  padding: 16px 24px 6px;
+}
+
+.drawer-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 24px;
+  text-decoration: none;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+}
+
+.drawer-item:hover,
+.drawer-item.active {
+  background: rgba(255,255,255,0.05);
+  border-left-color: var(--gold);
+}
+
+.drawer-item.active .drawer-item-label {
+  color: var(--gold);
+}
+
+.drawer-item-icon {
+  font-size: 22px;
+  width: 32px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.drawer-item-label {
+  font-family: 'Lato', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--sand);
+  letter-spacing: 0.5px;
+}
+
+.drawer-item-desc {
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  margin-top: 1px;
+}
+
+/* Marshall-only hidden items */
+.drawer-item.marshall-hidden {
+  display: none;
+}
+
+/* Drawer footer */
+.drawer-footer {
+  padding: 16px 24px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  flex-shrink: 0;
+}
+
+.drawer-signout {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255,255,255,0.4);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  padding: 8px 0;
+  transition: color 0.2s;
+  width: 100%;
+}
+
+.drawer-signout:hover { color: var(--terracotta); }
+
+.nav-spacer { height: 64px; }
+
+@media (max-width: 500px) {
+  .nav-logo-text { display: none; }
+  .nav-user span { display: none; }
+}
