@@ -710,6 +710,8 @@
 
   updateCountdown();
   setInterval(updateCountdown, 1000);
+
+  window.logout = async function() {
     await signOut();
   };
 </script>
