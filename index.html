@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Marshall's Way — Enter</title>
-<link rel="icon" type="image/jpeg" href="images/logo.png">
+<link rel="icon" type="image/png" href="images/logo.png">
 <link rel="stylesheet" href="css/style.css">
 <style>
   body {
-    background: var(--navy-dark);
+    background: var(--sand);
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -16,326 +16,138 @@
     overflow: hidden;
     position: relative;
   }
-
-  /* animated background stars */
-  .bg-stars {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  .star {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background: var(--gold);
-    border-radius: 50%;
-    opacity: 0;
+  .bg-dots { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+  .dot {
+    position: absolute; border-radius: 50%; opacity: 0;
     animation: twinkle var(--dur) ease-in-out infinite;
     animation-delay: var(--delay);
   }
-
   @keyframes twinkle {
-    0%, 100% { opacity: 0; transform: scale(0.5); }
-    50% { opacity: 0.6; transform: scale(1); }
+    0%,100% { opacity: 0; } 50% { opacity: var(--opa); }
   }
-
-  /* wave lines at bottom */
-  .bg-waves {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 180px;
-    overflow: hidden;
-    pointer-events: none;
-  }
-
-  .bg-waves svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  /* main container */
+  .bg-waves { position: fixed; bottom: 0; left: 0; right: 0; height: 160px; overflow: hidden; pointer-events: none; }
+  .bg-waves svg { width: 100%; height: 100%; }
   .login-container {
-    width: 100%;
-    max-width: 460px;
-    padding: 24px;
-    text-align: center;
-    position: relative;
-    z-index: 10;
-    animation: fadeUp 0.8s ease forwards;
+    width: 100%; max-width: 480px; padding: 24px;
+    text-align: center; position: relative; z-index: 10;
   }
-
-  /* logo */
   .login-logo {
-    width: 180px;
-    height: auto;
-    margin-bottom: 8px;
-    filter: drop-shadow(0 8px 32px rgba(232,200,74,0.3));
+    width: 220px; height: auto; margin-bottom: 12px;
+    filter: drop-shadow(0 6px 20px rgba(26,51,80,0.15));
     animation: fadeUp 0.8s ease 0.1s both;
   }
-
-  /* taglines */
   .login-tagline-1 {
-    font-family: 'Lato', sans-serif;
-    font-weight: 300;
-    font-size: 13px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--azure-light);
-    margin-bottom: 4px;
-    animation: fadeUp 0.8s ease 0.3s both;
+    font-family: 'Lato', sans-serif; font-weight: 700; font-size: 11px;
+    letter-spacing: 5px; text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 4px; animation: fadeUp 0.8s ease 0.25s both;
   }
-
   .login-tagline-2 {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 22px;
-    color: var(--gold);
-    margin-bottom: 40px;
-    animation: fadeUp 0.8s ease 0.4s both;
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 24px; color: var(--navy); margin-bottom: 36px;
+    animation: fadeUp 0.8s ease 0.35s both;
   }
-
-  /* card */
   .login-card {
-    background: rgba(26,51,80,0.7);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(232,200,74,0.2);
-    border-radius: 16px;
-    padding: 36px 32px;
-    animation: fadeUp 0.8s ease 0.5s both;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    background: var(--white); border: 1px solid var(--sand-dark);
+    border-top: 4px solid var(--terracotta); border-radius: 16px;
+    padding: 36px 32px; box-shadow: 0 8px 40px rgba(26,51,80,0.1);
+    animation: fadeUp 0.8s ease 0.45s both;
   }
-
-  .login-card h2 {
-    color: var(--sand);
-    font-size: 20px;
-    margin-bottom: 8px;
-    font-style: italic;
-  }
-
-  .login-card p {
-    color: var(--azure-light);
-    font-size: 13px;
-    margin-bottom: 28px;
-  }
-
-  /* step 1 — password */
+  .login-card h2 { color: var(--navy); font-size: 22px; font-style: italic; margin-bottom: 6px; }
+  .login-card p { color: var(--text-muted); font-size: 13px; margin-bottom: 28px; }
   .login-input {
-    width: 100%;
-    padding: 16px 20px;
-    border: 2px solid rgba(232,200,74,0.3);
-    border-radius: 50px;
-    background: rgba(255,255,255,0.05);
-    color: var(--sand);
-    font-size: 16px;
-    text-align: center;
-    letter-spacing: 3px;
-    outline: none;
-    font-family: 'Lato', sans-serif;
-    transition: border-color 0.2s;
-    margin-bottom: 16px;
+    width: 100%; padding: 15px 20px; border: 2px solid var(--sand-dark);
+    border-radius: 50px; background: var(--sand); color: var(--navy);
+    font-size: 16px; text-align: center; letter-spacing: 3px; outline: none;
+    font-family: 'Lato', sans-serif; transition: border-color 0.2s; margin-bottom: 14px;
   }
-
-  .login-input::placeholder {
-    color: rgba(250,243,226,0.3);
-    letter-spacing: 1px;
-    font-size: 14px;
-  }
-
-  .login-input:focus {
-    border-color: var(--gold);
-  }
-
-  .login-input.error {
-    border-color: var(--terracotta);
-    animation: shake 0.4s ease;
-  }
-
+  .login-input::placeholder { color: var(--text-muted); letter-spacing: 1px; font-size: 14px; }
+  .login-input:focus { border-color: var(--azure); }
+  .login-input.error { border-color: var(--terracotta); animation: shake 0.4s ease; }
   @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-8px); }
-    75% { transform: translateX(8px); }
+    0%,100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); }
   }
-
   .login-btn {
-    width: 100%;
-    padding: 16px;
-    background: var(--terracotta);
-    color: var(--white);
-    border: none;
-    border-radius: 50px;
-    font-family: 'Lato', sans-serif;
-    font-weight: 700;
-    font-size: 13px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 4px 20px rgba(196,98,45,0.4);
+    width: 100%; padding: 16px; background: var(--terracotta); color: var(--white);
+    border: none; border-radius: 50px; font-family: 'Lato', sans-serif; font-weight: 700;
+    font-size: 13px; letter-spacing: 3px; text-transform: uppercase; cursor: pointer;
+    transition: all 0.2s; box-shadow: 0 4px 20px rgba(196,98,45,0.3);
   }
-
-  .login-btn:hover {
-    background: #B05020;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 28px rgba(196,98,45,0.5);
-  }
-
-  .error-msg {
-    color: #FF8A70;
-    font-size: 13px;
-    margin-top: 12px;
-    display: none;
-  }
-
-  /* step 2 — who are you */
+  .login-btn:hover { background: #B05020; transform: translateY(-2px); box-shadow: 0 6px 28px rgba(196,98,45,0.45); }
+  .login-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .error-msg { color: var(--terracotta); font-size: 13px; margin-top: 12px; display: none; }
   #step2 { display: none; }
-
-  .member-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-
+  .member-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 20px; }
   .member-btn {
-    padding: 14px 8px;
-    background: rgba(255,255,255,0.05);
-    border: 2px solid rgba(232,200,74,0.15);
-    border-radius: 10px;
-    color: var(--sand);
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: 'Lato', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
+    padding: 14px 8px; background: var(--sand); border: 2px solid var(--sand-dark);
+    border-radius: 10px; color: var(--navy); cursor: pointer; transition: all 0.2s;
+    font-family: 'Lato', sans-serif; font-size: 12px; font-weight: 700;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
   }
-
-  .member-btn .member-emoji {
-    font-size: 24px;
+  .member-btn .member-emoji { font-size: 22px; }
+  .member-btn:hover, .member-btn.selected {
+    background: var(--azure-light); border-color: var(--azure);
+    transform: translateY(-2px); box-shadow: 0 4px 12px rgba(26,123,184,0.2);
   }
-
-  .member-btn:hover,
-  .member-btn.selected {
-    background: rgba(232,200,74,0.15);
-    border-color: var(--gold);
-    color: var(--gold);
-    transform: translateY(-2px);
-  }
-
-  /* footer */
   .login-footer {
-    margin-top: 24px;
-    color: rgba(250,243,226,0.3);
-    font-size: 11px;
-    letter-spacing: 2px;
-    animation: fadeIn 1s ease 1s both;
+    margin-top: 24px; color: var(--text-muted); font-size: 10px;
+    letter-spacing: 3px; animation: fadeIn 1s ease 1s both;
   }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 </style>
 </head>
 <body>
-
-<!-- Background stars -->
-<div class="bg-stars" id="stars"></div>
-
-<!-- Background waves -->
+<div class="bg-dots" id="dots"></div>
 <div class="bg-waves">
-  <svg viewBox="0 0 1200 180" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0 100 Q150 60 300 100 Q450 140 600 100 Q750 60 900 100 Q1050 140 1200 100 L1200 180 L0 180 Z" fill="rgba(26,123,184,0.15)"/>
-    <path d="M0 120 Q200 80 400 120 Q600 160 800 120 Q1000 80 1200 120 L1200 180 L0 180 Z" fill="rgba(26,123,184,0.12)"/>
-    <path d="M0 140 Q300 110 600 140 Q900 170 1200 140 L1200 180 L0 180 Z" fill="rgba(26,90,138,0.2)"/>
+  <svg viewBox="0 0 1200 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 60 Q150 20 300 60 Q450 100 600 60 Q750 20 900 60 Q1050 100 1200 60 L1200 160 L0 160 Z" fill="rgba(26,123,184,0.12)"/>
+    <path d="M0 90 Q200 55 400 90 Q600 125 800 90 Q1000 55 1200 90 L1200 160 L0 160 Z" fill="rgba(26,123,184,0.1)"/>
+    <path d="M0 115 Q300 90 600 115 Q900 140 1200 115 L1200 160 L0 160 Z" fill="rgba(26,51,80,0.06)"/>
   </svg>
 </div>
 
 <div class="login-container">
-
   <img src="images/logo.png" alt="Marshall's Way" class="login-logo">
   <p class="login-tagline-1">Amalfi Coast · July 2026</p>
   <p class="login-tagline-2">And now, the trip is near...</p>
-
   <div class="login-card">
-
-    <!-- STEP 1: Password -->
     <div id="step1">
       <h2>Welcome, Family</h2>
       <p>Enter the password to join the voyage</p>
-      <input
-        type="password"
-        class="login-input"
-        id="passwordInput"
-        placeholder="Enter password"
-        autocomplete="off"
-        spellcheck="false"
-      >
+      <input type="password" class="login-input" id="passwordInput" placeholder="Enter password" autocomplete="off">
       <button class="login-btn" onclick="checkPassword()">SET SAIL →</button>
       <p class="error-msg" id="errorMsg">Wrong password — try again!</p>
     </div>
-
-    <!-- STEP 2: Who are you? -->
     <div id="step2">
       <h2>Who's aboard?</h2>
       <p>Select your name to continue</p>
       <div class="member-grid" id="memberGrid"></div>
-      <button class="login-btn" id="continueBtn" onclick="continueToSite()" disabled style="opacity:0.4">
-        LET'S GO →
-      </button>
+      <button class="login-btn" id="continueBtn" onclick="continueToSite()" disabled>LET'S GO →</button>
     </div>
-
   </div>
-
   <p class="login-footer">MARSHALL'S WAY · AMALFI COAST · JULY 2026</p>
 </div>
 
 <script type="module">
   import { SITE_PASSWORD, GROUP_MEMBERS, authenticate, setCurrentUser, isAuthenticated, getCurrentUser } from './js/supabase.js';
 
-  // Redirect if already logged in
-  if (isAuthenticated() && getCurrentUser()) {
-    window.location.href = 'home.html';
+  if (isAuthenticated() && getCurrentUser()) window.location.href = 'home.html';
+
+  const dotsContainer = document.getElementById('dots');
+  for (let i = 0; i < 40; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot';
+    const size = 2 + Math.random() * 4;
+    d.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;top:${Math.random()*85}%;background:${Math.random()>.5?'#C9A830':'#1A7BB8'};--dur:${3+Math.random()*5}s;--delay:${Math.random()*5}s;--opa:${0.12+Math.random()*0.18};`;
+    dotsContainer.appendChild(d);
   }
 
-  // Generate stars
-  const starsContainer = document.getElementById('stars');
-  for (let i = 0; i < 60; i++) {
-    const star = document.createElement('div');
-    star.className = 'star';
-    star.style.cssText = `
-      left: ${Math.random() * 100}%;
-      top: ${Math.random() * 70}%;
-      --dur: ${2 + Math.random() * 4}s;
-      --delay: ${Math.random() * 4}s;
-    `;
-    starsContainer.appendChild(star);
-  }
-
-  // Password check
   window.checkPassword = function() {
     const input = document.getElementById('passwordInput');
-    const errorMsg = document.getElementById('errorMsg');
-
     if (input.value.toLowerCase().trim() === SITE_PASSWORD) {
       authenticate();
       document.getElementById('step1').style.display = 'none';
       document.getElementById('step2').style.display = 'block';
-
-      // Render member grid
       const grid = document.getElementById('memberGrid');
       GROUP_MEMBERS.forEach(member => {
         const btn = document.createElement('button');
@@ -346,33 +158,24 @@
       });
     } else {
       input.classList.add('error');
-      errorMsg.style.display = 'block';
+      document.getElementById('errorMsg').style.display = 'block';
       setTimeout(() => input.classList.remove('error'), 500);
       input.value = '';
     }
   };
 
-  // Allow Enter key
-  document.getElementById('passwordInput').addEventListener('keydown', e => {
-    if (e.key === 'Enter') window.checkPassword();
-  });
+  document.getElementById('passwordInput').addEventListener('keydown', e => { if (e.key === 'Enter') window.checkPassword(); });
 
   let selectedMember = null;
-
   window.selectMember = function(name, btn) {
     document.querySelectorAll('.member-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
     selectedMember = name;
-    const continueBtn = document.getElementById('continueBtn');
-    continueBtn.disabled = false;
-    continueBtn.style.opacity = '1';
+    document.getElementById('continueBtn').disabled = false;
   };
 
   window.continueToSite = function() {
-    if (selectedMember) {
-      setCurrentUser(selectedMember);
-      window.location.href = 'home.html';
-    }
+    if (selectedMember) { setCurrentUser(selectedMember); window.location.href = 'home.html'; }
   };
 </script>
 </body>
