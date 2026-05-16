@@ -513,6 +513,11 @@
     .lightbox-next { right: 20px; }
   }
 
+  .lightbox-close { display: none; }
+  .lightbox-nav { display: none; }
+  .lightbox.open .lightbox-close,
+  .lightbox.open .lightbox-nav { display: flex; }
+
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   .photo-item { animation: fadeIn 0.4s ease both; }
 </style>
@@ -561,11 +566,10 @@
 </div>
 
 <!-- Lightbox -->
-<button class="lightbox-close" onclick="closeLightbox()">✕</button>
-<button class="lightbox-nav lightbox-prev" onclick="navigatePhoto(-1)">‹</button>
-<button class="lightbox-nav lightbox-next" onclick="navigatePhoto(1)">›</button>
-
 <div class="lightbox" id="lightbox" onclick="handleLightboxClick(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <button class="lightbox-nav lightbox-prev" onclick="navigatePhoto(-1)">‹</button>
+  <button class="lightbox-nav lightbox-next" onclick="navigatePhoto(1)">›</button>
   <div class="lightbox-inner" onclick="event.stopPropagation()">
     <div class="lightbox-img-wrap">
       <img id="lightboxImg" src="" alt="">
