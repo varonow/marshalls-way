@@ -325,6 +325,34 @@
     padding: 20px 20px 14px;
     border-bottom: 1px solid var(--sand-dark);
     flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .lightbox-header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .lightbox-close-mobile {
+    background: var(--sand-dark);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: var(--navy);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .lightbox-close-mobile { display: flex; }
   }
 
   .lightbox-uploader {
@@ -598,7 +626,10 @@
     </div>
     <div class="lightbox-sidebar">
       <div class="lightbox-header" id="lightboxHeader">
-        <div class="lightbox-uploader" id="lightboxUploader"></div>
+        <div class="lightbox-header-top">
+          <div class="lightbox-uploader" id="lightboxUploader"></div>
+          <button class="lightbox-close-mobile" onclick="closeLightbox()">✕</button>
+        </div>
         <div class="lightbox-caption" id="lightboxCaption"></div>
         <div class="lightbox-time" id="lightboxTime"></div>
       </div>
