@@ -129,7 +129,13 @@ window.handleSignOut = async function() {
   await signOut();
 };
 
-// Close drawer on ESC
+// Close drawer on ESC or link click
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') window.closeDrawer();
+});
+
+// Close drawer when any link is clicked
+document.addEventListener('click', e => {
+  const link = e.target.closest('.drawer-item');
+  if (link) closeDrawer();
 });
