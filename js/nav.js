@@ -15,7 +15,6 @@ export const NAV_ITEMS = [
   {
     section: 'The Family',
     items: [
-      { label: 'The Crew', desc: 'Meet the family', href: 'group.html', icon: '🎭' },
       { label: 'Photo Album', desc: 'Share your moments', href: 'photos.html', icon: '📸' },
       { label: 'Journal', desc: 'Trip notes & thoughts', href: 'journal.html', icon: '📝' },
       { label: 'Packing List', desc: "Don't forget a thing", href: 'packing.html', icon: '🧳' },
