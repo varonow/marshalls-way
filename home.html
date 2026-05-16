@@ -584,12 +584,12 @@
       <h3>Journal</h3>
       <p>Share your thoughts, notes and memories from the voyage</p>
     </a>
-    <a href="letters.html" class="nav-card">
+    <a href="letters.html" class="nav-card" id="lettersCard">
       <span class="nav-card-icon">💌</span>
       <h3>Letters to Marshall</h3>
       <p>Write a heartfelt note — all letters read aloud at his birthday dinner</p>
     </a>
-    <a href="memories.html" class="nav-card">
+    <a href="memories.html" class="nav-card" id="memoriesCard">
       <span class="nav-card-icon">🧠</span>
       <h3>Marshall's Memories</h3>
       <p>Share your favourite stories and memories of the birthday boy</p>
@@ -628,6 +628,14 @@
   const user = getCurrentUser();
   if (user) {
     document.getElementById('welcomeName').textContent = user;
+  }
+
+  // Hide Marshall-only cards from Marshall
+  if (user === 'Marshall') {
+    const lettersCard = document.getElementById('lettersCard');
+    const memoriesCard = document.getElementById('memoriesCard');
+    if (lettersCard) lettersCard.style.display = 'none';
+    if (memoriesCard) memoriesCard.style.display = 'none';
   }
 
   // Particles
