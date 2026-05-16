@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marshall's Way — M/Y R23</title>
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/nav.css">
+<style>
+
+  /* HEADER */
+  .yacht-header {
+    background: var(--navy);
+    padding: 56px 24px 72px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .yacht-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 60px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60'%3E%3Cpath d='M0 30 Q150 0 300 30 Q450 60 600 30 Q750 0 900 30 Q1050 60 1200 30 L1200 60 L0 60 Z' fill='%23EEF6FC'/%3E%3C/svg%3E") no-repeat bottom;
+    background-size: cover;
+  }
+
+  .yacht-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 5px;
+    text-transform: uppercase; color: var(--azure-light); margin-bottom: 12px;
+  }
+
+  .yacht-header h1 {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: clamp(2.2rem, 5vw, 3.5rem); color: var(--sand); margin-bottom: 8px;
+  }
+
+  .yacht-header h1 span { color: var(--gold); }
+  .yacht-header-sub { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+
+  /* BODY */
+  .yacht-body {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 24px 100px;
+  }
+
+  /* QUICK STATS */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px;
+    margin-bottom: 56px;
+  }
+
+  .stat-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 20px 16px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(26,51,80,0.07);
+    border-top: 2px solid var(--azure);
+  }
+
+  .stat-card:nth-child(2n) { border-top-color: var(--terracotta); }
+  .stat-card:nth-child(3n) { border-top-color: var(--gold-dark); }
+
+  .stat-icon { font-size: 28px; margin-bottom: 8px; }
+
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* SECTION */
+  .yacht-section {
+    margin-bottom: 48px;
+  }
+
+  .yacht-section-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.8rem;
+    color: var(--navy);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--sand-dark);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .yacht-section-title span { font-style: normal; font-size: 1.4rem; }
+
+  /* INFO CARDS */
+  .info-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(26,51,80,0.07);
+    margin-bottom: 16px;
+  }
+
+  .info-row {
+    display: flex;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--sand-dark);
+    align-items: flex-start;
+  }
+
+  .info-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .info-row:first-child { padding-top: 0; }
+
+  .info-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    width: 140px;
+    padding-top: 2px;
+  }
+
+  .info-value {
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .info-value.placeholder {
+    color: var(--azure);
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  /* CABINS */
+  .cabins-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .cabin-card {
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(26,51,80,0.07);
+  }
+
+  .cabin-card-header {
+    background: var(--navy);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .cabin-card-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--sand);
+  }
+
+  .cabin-card-bed {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .cabin-card-body {
+    padding: 16px 20px;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .cabin-card-body strong {
+    color: var(--navy);
+    font-weight: 700;
+  }
+
+  /* TOYS GRID */
+  .toys-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+
+  .toy-item {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(26,51,80,0.06);
+  }
+
+  .toy-icon { font-size: 28px; margin-bottom: 8px; }
+
+  .toy-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.4;
+  }
+
+  /* CREW TABLE */
+  .crew-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .crew-card {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 16px 20px;
+    box-shadow: 0 2px 8px rgba(26,51,80,0.06);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .crew-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--azure-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .crew-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .crew-role {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* PENDING NOTE */
+  .pending-note {
+    background: linear-gradient(135deg, #EEF6FC, #F5FAFF);
+    border-left: 3px solid var(--azure);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--azure-dark);
+    font-style: italic;
+    margin-bottom: 16px;
+  }
+
+  /* WIFI BOX */
+  .wifi-box {
+    background: var(--navy);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .wifi-icon { font-size: 36px; flex-shrink: 0; }
+
+  .wifi-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--azure-light);
+    margin-bottom: 4px;
+  }
+
+  .wifi-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .wifi-value.placeholder {
+    color: rgba(255,255,255,0.3);
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Lato', sans-serif;
+  }
+
+  @media (max-width: 600px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .info-label { width: 100px; }
+    .yacht-body { padding: 32px 16px 80px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="yacht-header">
+  <p class="yacht-eyebrow">Marshall's Way · July 2026</p>
+  <h1>M/Y <span>R23</span></h1>
+  <p class="yacht-header-sub">47.39m · 11 Crew · Our Home on the Water</p>
+</div>
+
+<div class="yacht-body">
+
+  <!-- QUICK STATS -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📏</div>
+      <div class="stat-value">47.39m</div>
+      <div class="stat-label">Length</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">👥</div>
+      <div class="stat-value">12</div>
+      <div class="stat-label">Guests</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">⚓</div>
+      <div class="stat-value">11</div>
+      <div class="stat-label">Crew</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🛏</div>
+      <div class="stat-value">6</div>
+      <div class="stat-label">Cabins</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">⚡</div>
+      <div class="stat-value">12kn</div>
+      <div class="stat-label">Cruise Speed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🔧</div>
+      <div class="stat-value">2024</div>
+      <div class="stat-label">Last Refit</div>
+    </div>
+  </div>
+
+  <!-- WIFI -->
+  <div class="yacht-section">
+    <div class="yacht-section-title"><span>📶</span> WiFi</div>
+    <div class="wifi-box">
+      <div class="wifi-icon">📶</div>
+      <div>
+        <div style="display:flex; gap:40px; flex-wrap:wrap;">
+          <div>
+            <div class="wifi-label">Network</div>
+            <div class="wifi-value placeholder">To be confirmed by Captain Mauro</div>
+          </div>
+          <div>
+            <div class="wifi-label">Password</div>
+            <div class="wifi-value placeholder">To be confirmed by Captain Mauro</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAPTAIN & EMERGENCY -->
+  <div class="yacht-section">
+    <div class="yacht-section-title"><span>🎖</span> Captain & Emergency Contact</div>
+    <div class="info-card">
+      <div class="info-row">
+        <div class="info-label">Captain</div>
+        <div class="info-value">Mauro — Italian</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Emergency</div>
+        <div class="info-value placeholder">To be confirmed by Captain Mauro</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CREW -->
+  <div class="yacht-section">
+    <div class="yacht-section-title"><span>👨‍✈️</span> The Crew</div>
+    <div class="pending-note">Full crew list and roles to be confirmed by Captain Mauro.</div>
+    <div class="crew-grid" id="crewGrid">
+      <div class="crew-card">
+        <div class="crew-avatar">⚓</div>
+        <div>
+          <div class="crew-name">Captain Mauro</div>
+          <div class="crew-role">Captain</div>
+        </div>
+      </div>
+      <!-- Additional crew to be added when confirmed -->
+    </div>
+  </div>
+
+  <!-- CABINS -->
+  <div class="yacht-section">
+    <div class="yacht-section-title"><span>🛏</span> Cabins</div>
+    <div class="cabins-grid">
+      <div class="cabin-card">
+        <div class="cabin-card-header">
+          <span class="cabin-card-title">Owner's Suite</span>
+          <span class="cabin-card-bed">King Size</span>
+        </div>
+        <div class="cabin-card-body">
+          The full-beam master suite spanning the entire width of the yacht. Luxurious contemporary interiors by Salvagni Architetti with a private en-suite bathroom featuring double sinks and a walk-in wardrobe. <strong>Victoria & Marshall.</strong>
+        </div>
+      </div>
+      <div class="cabin-card">
+        <div class="cabin-card-header">
+          <span class="cabin-card-title">VIP Suite</span>
+          <span class="cabin-card-bed">Queen Size</span>
+        </div>
+        <div class="cabin-card-body">
+          Described as so spacious it almost qualifies as a second master suite — dramatic dark interiors with floor-to-ceiling mirrored walls and a private en-suite. A truly luxurious cabin.
+        </div>
+      </div>
+      <div class="cabin-card">
+        <div class="cabin-card-header">
+          <span class="cabin-card-title">Double Cabin A</span>
+          <span class="cabin-card-bed">Double 154×194cm</span>
+        </div>
+        <div class="cabin-card-body">
+          Elegantly appointed double cabin with en-suite bathroom and ample storage. Contemporary design throughout.
+        </div>
+      </div>
+      <div class="cabin-card">
+        <div class="cabin-card-header">
+          <span class="cabin-card-title">Double Cabin B</span>
+          <span class="cabin-card-bed">Double 154×194cm</span>
+        </div>
+        <div class="cabin-card-body">
+          Elegantly appointed double cabin with en-suite bathroom and ample storage. Contemporary design throughout.
+        </div>
+      </div>
+      <div class="cabin-card">
+        <div class="cabin-card-header">
+          <span class="cabin-card-title">Twin Cabin A</span>
+          <span class="cabin-card-bed">2 Singles 90×190cm</span>
+        </div>
+        <div class="cabin-card-body">
+          Beautifully designed twin cabin with two single beds, shared private bathroom and excellent storage. <strong>Stephanie & Selly.</strong>
+        </div>
+      </div>
+      <div class="cabin-card">
+        <div class="cabin-card-header">
+          <span class="cabin-card-title">Twin Cabin B</span>
+          <span class="cabin-card-bed">2 Singles 90×190cm</span>
+        </div>
+        <div class="cabin-card-body">
+          Beautifully designed twin cabin with two single beds, shared private bathroom and excellent storage.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ONBOARD LIFE -->
+  <div class="yacht-section">
+    <div class="yacht-section-title"><span>⚓</span> Life Aboard</div>
+    <div class="info-card">
+      <div class="info-row">
+        <div class="info-label">Dress Code</div>
+        <div class="info-value placeholder">To be confirmed by Captain Mauro</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">House Rules</div>
+        <div class="info-value placeholder">To be confirmed by Captain Mauro</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Laundry</div>
+        <div class="info-value placeholder">To be confirmed by Captain Mauro</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Phone Charging</div>
+        <div class="info-value placeholder">Adapter requirements to be confirmed by Captain Mauro</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Smoking</div>
+        <div class="info-value">Our group does not smoke.</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Dietary</div>
+        <div class="info-value">Fish, cheese and eggs only. No meat, poultry, pork or crustaceans. Chef has been briefed.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AMENITIES -->
+  <div class="yacht-section">
+    <div class="yacht-section-title"><span>✨</span> Amenities</div>
+    <div class="info-card">
+      <div class="info-row">
+        <div class="info-label">Deck</div>
+        <div class="info-value">Jacuzzi · Exterior bar · Sunpads · Sun deck (60sqm) · Swimming platform · Underwater lights</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Comfort</div>
+        <div class="info-value">Air conditioning · Stabilizers underway & at anchor · Wi-Fi</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Fitness</div>
+        <div class="info-value">TechnoGym treadmill (Run 500) · TechnoGym cycle</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Design</div>
+        <div class="info-value">Interior by Salvagni Architetti · Exterior by Soyaslan Marine · Sky lounge · Saloon with panoramic windows</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WATER TOYS -->
+  <div class="yacht-section">
+    <div class="yacht-section-title"><span>🌊</span> Water Toys & Tenders</div>
+    <div class="toys-grid">
+      <div class="toy-item">
+        <div class="toy-icon">🛥</div>
+        <div class="toy-name">Whitmarsh Limo Tender 260CV</div>
+      </div>
+      <div class="toy-item">
+        <div class="toy-icon">⛵</div>
+        <div class="toy-name">Cab Tender 220CV</div>
+      </div>
+      <div class="toy-item">
+        <div class="toy-icon">🏄</div>
+        <div class="toy-name">Sea Doo Jet Ski</div>
+      </div>
+      <div class="toy-item">
+        <div class="toy-icon">🤿</div>
+        <div class="toy-name">2× F5 Seabob</div>
+      </div>
+      <div class="toy-item">
+        <div class="toy-icon">🏂</div>
+        <div class="toy-name">Wakeboard</div>
+      </div>
+      <div class="toy-item">
+        <div class="toy-icon">🎿</div>
+        <div class="toy-name">Water Ski</div>
+      </div>
+      <div class="toy-item">
+        <div class="toy-icon">🏄</div>
+        <div class="toy-name">2× Paddleboard</div>
+      </div>
+      <div class="toy-item">
+        <div class="toy-icon">🚣</div>
+        <div class="toy-name">2× Canoe</div>
+      </div>
+      <div class="toy-item">
+        <div class="toy-icon">🍩</div>
+        <div class="toy-name">Inflatable Donut</div>
+      </div>
+      <div class="toy-item">
+        <div class="toy-icon">🏝</div>
+        <div class="toy-name">Floating Island</div>
+      </div>
+      <div class="toy-item">
+        <div class="toy-icon">🐠</div>
+        <div class="toy-name">Snorkel Equipment</div>
+      </div>
+      <div class="toy-item">
+        <div class="toy-icon">🎓</div>
+        <div class="toy-name">RYA Certified Centre</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPECS -->
+  <div class="yacht-section">
+    <div class="yacht-section-title"><span>📋</span> Full Specifications</div>
+    <div class="info-card">
+      <div class="info-row">
+        <div class="info-label">Length</div>
+        <div class="info-value">47.39m / 155'6"</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Beam</div>
+        <div class="info-value">8.30m / 27'3"</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Draft</div>
+        <div class="info-value">2.50m / 8'2"</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Built</div>
+        <div class="info-value">2002 · Refitted 2023–2024</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Builder</div>
+        <div class="info-value">Amtec / Rossinavi</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Flag</div>
+        <div class="info-value">🇮🇹 Italian</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Hull</div>
+        <div class="info-value">Steel · Displacement</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Engines</div>
+        <div class="info-value">Twin Caterpillar 2,200hp</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Speed</div>
+        <div class="info-value">12 knots cruise · 13 knots max</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Range</div>
+        <div class="info-value">11,516 nautical miles</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Classification</div>
+        <div class="info-value">RINA · MYBA Terms</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Interior Design</div>
+        <div class="info-value">Salvagni Architetti / Kathy Monaco</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Exterior Design</div>
+        <div class="info-value">Soyaslan Marine</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script type="module">
+  import { requireAuth } from './js/supabase.js';
+  import { renderNav } from './js/nav.js';
+  await requireAuth();
+  renderNav('yacht.html');
+</script>
+</body>
+</html>
