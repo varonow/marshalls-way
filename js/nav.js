@@ -6,7 +6,6 @@ export const NAV_ITEMS = [
   { label: 'Itinerary', desc: 'Day by day plan', href: 'itinerary.html', icon: '🗓' },
   { label: 'La Cocumella', desc: 'Our hotel in Sorrento', href: 'home.html#cocumella', icon: '🏨' },
   { label: 'M/Y R23', desc: 'Yacht info & crew', href: 'yacht.html', icon: '🛥' },
-  { label: 'Packing List', desc: "Don't forget a thing", href: 'packing.html', icon: '🧳' },
   { label: 'Letters to Marshall', desc: 'Read at his birthday dinner', href: 'letters.html', icon: '💌', hideFromMarshall: true },
   { label: "Marshall's Memories", desc: 'Stories from those who love him', href: 'memories.html', icon: '🧠', hideFromMarshall: true },
   { label: 'Room Draw', desc: 'Captain Mauro spins the wheel', href: 'rooms.html', icon: '🛏' },
@@ -14,9 +13,7 @@ export const NAV_ITEMS = [
   { label: 'Weather', desc: 'Amalfi Coast forecast', href: 'weather.html', icon: '☀️' },
   { label: 'Photo Album', desc: 'Share your moments', href: 'photos.html', icon: '📸' },
   { label: 'Journal', desc: 'Trip notes & thoughts', href: 'journal.html', icon: '📝' },
-  { label: 'Playlist', desc: "Marshall's Way soundtrack", href: 'playlist.html', icon: '🎵' },
   { label: 'Shopping Guide', desc: 'What to buy & where', href: 'shopping.html', icon: '💸' },
-  { label: 'Game', desc: 'Family fun & trivia', href: 'game.html', icon: '🎯' },
 ];
 
 export function renderNav(activePage = '') {
