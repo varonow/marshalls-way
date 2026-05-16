@@ -66,6 +66,11 @@ export function renderNav(activePage = '') {
   const navHTML = `
     <nav class="nav">
       <div class="nav-inner">
+        <div class="nav-left">
+          <button class="nav-hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Menu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
         <a href="home.html" class="nav-logo">
           <img src="images/logo.png" alt="Marshall's Way">
           <span class="nav-logo-text">Marshall's <span>Way</span></span>
@@ -75,9 +80,6 @@ export function renderNav(activePage = '') {
             <div class="nav-user-avatar">${emoji}</div>
             <span>${user || 'Guest'}</span>
           </div>
-          <button class="nav-hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Menu">
-            <span></span><span></span><span></span>
-          </button>
         </div>
       </div>
     </nav>
