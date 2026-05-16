@@ -90,7 +90,8 @@
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: var(--terracotta);
+  background: var(--navy-dark);
+  border: 2px solid var(--gold);
   display: flex;
   align-items: center;
   justify-content: center;
