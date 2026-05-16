@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marshall's Way — Letters to Marshall</title>
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/nav.css">
+<style>
+
+  body { background: #EEF6FC; }
+
+  /* HEADER */
+  .letters-header {
+    background: var(--navy);
+    padding: 56px 24px 72px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .letters-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 60px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60'%3E%3Cpath d='M0 30 Q150 0 300 30 Q450 60 600 30 Q750 0 900 30 Q1050 60 1200 30 L1200 60 L0 60 Z' fill='%23EEF6FC'/%3E%3C/svg%3E") no-repeat bottom;
+    background-size: cover;
+  }
+
+  .letters-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: var(--azure-light); margin-bottom: 12px; }
+  .letters-header h1 { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(2.2rem, 5vw, 3.2rem); color: var(--sand); margin-bottom: 8px; }
+  .letters-header h1 span { color: var(--gold); }
+  .letters-header-sub { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+
+  /* BODY */
+  .letters-body {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 48px 24px 100px;
+  }
+
+  /* WRITE YOUR LETTER */
+  .write-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 2px 16px rgba(26,51,80,0.08);
+    border-top: 2px solid var(--gold-dark);
+    margin-bottom: 32px;
+  }
+
+  .write-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+
+  .write-prompt {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  .letter-textarea {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid var(--sand-dark);
+    border-radius: 8px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--navy);
+    background: #FFFDF8;
+    outline: none;
+    resize: vertical;
+    min-height: 180px;
+    transition: border-color 0.2s;
+    margin-bottom: 16px;
+    line-height: 1.9;
+  }
+
+  .letter-textarea:focus { border-color: var(--gold-dark); }
+
+  .letter-btn {
+    padding: 14px 32px;
+    background: var(--navy);
+    color: var(--sand);
+    border: none;
+    border-radius: 8px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .letter-btn:hover { background: var(--azure); transform: translateY(-1px); }
+  .letter-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* YOUR LETTER SAVED */
+  .saved-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 28px 32px;
+    box-shadow: 0 2px 12px rgba(26,51,80,0.07);
+    border-top: 2px solid var(--gold-dark);
+    margin-bottom: 32px;
+  }
+
+  .saved-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin-bottom: 8px;
+  }
+
+  .saved-content {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--navy);
+    line-height: 1.9;
+    white-space: pre-wrap;
+  }
+
+  .edit-link {
+    display: inline-block;
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--text-muted);
+    cursor: pointer;
+    text-decoration: underline;
+    background: none;
+    border: none;
+    font-family: 'Lato', sans-serif;
+    padding: 0;
+  }
+
+  .edit-link:hover { color: var(--azure); }
+
+  /* LOCKED STATE */
+  .locked-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 36px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(26,51,80,0.07);
+    margin-bottom: 32px;
+  }
+
+  .locked-icon { font-size: 40px; margin-bottom: 16px; }
+  .locked-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-style: italic; color: var(--navy); margin-bottom: 8px; }
+  .locked-desc { font-size: 13px; color: var(--text-muted); line-height: 1.7; }
+
+  /* WHO HAS WRITTEN */
+  .written-section {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(26,51,80,0.07);
+    margin-bottom: 32px;
+  }
+
+  .written-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  .written-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .written-person {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .written-person.done {
+    background: #E8F5E9;
+    color: #2E7D52;
+    border: 1px solid #A8D5B8;
+  }
+
+  .written-person.pending {
+    background: var(--sand-dark);
+    color: var(--text-muted);
+    border: 1px solid transparent;
+  }
+
+  /* ADMIN REVEAL */
+  .admin-section {
+    background: var(--navy);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .admin-section p {
+    font-size: 12px;
+    color: var(--azure-light);
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+  }
+
+  .reveal-btn {
+    padding: 14px 36px;
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    border-radius: 8px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(232,200,74,0.4);
+  }
+
+  .reveal-btn:hover { background: var(--gold-dark); transform: translateY(-2px); }
+
+  /* ===== PRESENTATION MODE ===== */
+  .presentation-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--navy-dark);
+    z-index: 3000;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+
+  .presentation-overlay.active { display: flex; }
+
+  .presentation-nav {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    z-index: 3001;
+  }
+
+  .pres-btn {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--sand);
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .pres-btn:hover { background: rgba(255,255,255,0.2); }
+  .pres-btn.primary { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+  .pres-btn.primary:hover { background: var(--gold-dark); }
+
+  .pres-counter {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 2px;
+  }
+
+  .pres-close {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: var(--sand);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3001;
+  }
+
+  .letter-slide {
+    max-width: 680px;
+    width: 100%;
+    text-align: center;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .letter-slide-from {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .letter-slide-name {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    color: var(--sand);
+    margin-bottom: 40px;
+  }
+
+  .letter-divider {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 0 auto 40px;
+    opacity: 0.5;
+  }
+
+  .letter-slide-content {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: var(--sand);
+    line-height: 2;
+    white-space: pre-wrap;
+  }
+
+  /* REVEALED LETTERS */
+  .revealed-section { margin-bottom: 32px; }
+
+  .revealed-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--navy);
+    margin-bottom: 20px;
+  }
+
+  .letter-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 28px 32px;
+    box-shadow: 0 2px 12px rgba(26,51,80,0.07);
+    margin-bottom: 16px;
+    border-left: 3px solid var(--gold-dark);
+  }
+
+  .letter-card-from {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin-bottom: 12px;
+  }
+
+  .letter-card-content {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--navy);
+    line-height: 1.9;
+    white-space: pre-wrap;
+  }
+
+  .present-mode-btn {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    background: var(--navy);
+    color: var(--gold);
+    border: none;
+    border-radius: 10px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-bottom: 24px;
+    transition: all 0.2s;
+  }
+
+  .present-mode-btn:hover { background: var(--azure); color: var(--white); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<div class="letters-header">
+  <p class="letters-eyebrow">Marshall's Way · For Marshall 🤴</p>
+  <h1>Letters to <span>Marshall</span></h1>
+  <p class="letters-header-sub">To be read aloud at his birthday dinner · July 9th</p>
+</div>
+
+<div class="letters-body" id="lettersBody">
+  <div class="loading" style="padding:60px;"><div class="spinner"></div></div>
+</div>
+
+<!-- Presentation Mode -->
+<div class="presentation-overlay" id="presentationMode">
+  <button class="pres-close" onclick="closePresentationMode()">✕</button>
+  <div class="letter-slide" id="letterSlide"></div>
+  <div class="presentation-nav">
+    <button class="pres-btn" onclick="prevLetter()">← Previous</button>
+    <span class="pres-counter" id="presCounter"></span>
+    <button class="pres-btn primary" onclick="nextLetter()">Next →</button>
+  </div>
+</div>
+
+<script type="module">
+  import { requireAuth, getCurrentUser, getCurrentEmoji, db } from './js/supabase.js';
+  import { renderNav } from './js/nav.js';
+
+  await requireAuth();
+
+  const user = getCurrentUser();
+
+  // Redirect Marshall
+  if (user === 'Marshall') {
+    window.location.href = 'home.html';
+  }
+
+  renderNav('letters.html');
+
+  const isAdmin = user === 'Victoria';
+  const REVEAL_DATE = new Date('2026-07-09T19:00:00'); // Birthday dinner July 9th
+  const isRevealed_local = new Date() >= REVEAL_DATE;
+
+  const GROUP = [
+    { name: 'Victoria', emoji: '👸' },
+    { name: 'Danielle', emoji: '😂' },
+    { name: 'Mac', emoji: '🏒' },
+    { name: 'Jacob', emoji: '🏋️' },
+    { name: 'Ginger', emoji: '💎' },
+    { name: 'Kimberly', emoji: '🎨' },
+    { name: 'Moshe', emoji: '⚓' },
+    { name: 'Stephanie', emoji: '💄' },
+    { name: 'Joyce', emoji: '🍸' },
+    { name: 'Mousa', emoji: '👔' },
+    { name: 'Selly', emoji: '💅' },
+  ];
+
+  let letters = [];
+  let revealed = false;
+  let currentSlide = 0;
+
+  async function loadPage() {
+    // Get settings and letters
+    const [settingsRes, lettersRes] = await Promise.all([
+      db.from('letters_settings').select('*').eq('id', 1).single(),
+      db.from('letters_to_marshall').select('*').order('created_at', { ascending: true })
+    ]);
+
+    revealed = settingsRes.data?.revealed || isRevealed_local;
+    letters = lettersRes.data || [];
+
+    const myLetter = letters.find(l => l.author_name === user);
+    const body = document.getElementById('lettersBody');
+
+    let html = '';
+
+    if (!revealed) {
+      // === PRE-REVEAL STATE ===
+
+      // Write/edit your letter
+      if (myLetter) {
+        html += `
+          <div class="saved-card">
+            <div class="saved-label">Your letter — saved ✓</div>
+            <div class="saved-content">${myLetter.content}</div>
+            <button class="edit-link" onclick="showEditForm()">Edit your letter</button>
+          </div>
+          <div id="editForm" style="display:none;">
+            <div class="write-card">
+              <h2>Edit your letter</h2>
+              <textarea class="letter-textarea" id="letterContent">${myLetter.content}</textarea>
+              <button class="letter-btn" onclick="saveLetter(true)">SAVE CHANGES</button>
+            </div>
+          </div>
+        `;
+      } else {
+        html += `
+          <div class="write-card">
+            <h2>Dear Marshall...</h2>
+            <p class="write-prompt">Share a memory, a wish, or what Marshall means to you. Your letter will be kept private until his birthday dinner on July 9th, when all letters will be read aloud aboard M/Y R23.</p>
+            <textarea class="letter-textarea" id="letterContent" placeholder="Dear Marshall,&#10;&#10;..."></textarea>
+            <button class="letter-btn" id="saveBtn" onclick="saveLetter(false)">SEAL MY LETTER →</button>
+          </div>
+        `;
+      }
+
+      // Who has written
+      const written = letters.map(l => l.author_name);
+      html += `
+        <div class="written-section">
+          <div class="written-title">Who has written their letter</div>
+          <div class="written-grid">
+            ${GROUP.map(p => `
+              <div class="written-person ${written.includes(p.name) ? 'done' : 'pending'}">
+                ${p.emoji} ${p.name} ${written.includes(p.name) ? '✓' : ''}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+
+      // Locked state note
+      html += `
+        <div class="locked-card">
+          <div class="locked-icon">🔒</div>
+          <div class="locked-title">Letters sealed until July 9th</div>
+          <div class="locked-desc">All letters will be revealed at Marshall's birthday dinner aboard M/Y R23. The whole family will read their letters aloud — a gift that will last forever.</div>
+        </div>
+      `;
+
+      // Admin reveal button
+      if (isAdmin) {
+        html += `
+          <div class="admin-section">
+            <p>ADMIN — VICTORIA ONLY</p>
+            <button class="reveal-btn" onclick="revealLetters()">🎉 REVEAL ALL LETTERS</button>
+          </div>
+        `;
+      }
+
+    } else {
+      // === REVEALED STATE ===
+
+      if (letters.length === 0) {
+        html += `<div class="locked-card"><div class="locked-icon">💌</div><div class="locked-title">No letters yet</div></div>`;
+      } else {
+        html += `<button class="present-mode-btn" onclick="startPresentationMode()">▶ Read Aloud — Presentation Mode</button>`;
+        html += `<div class="revealed-section"><div class="revealed-title">All Letters to Marshall</div>`;
+        html += letters.map(l => `
+          <div class="letter-card">
+            <div class="letter-card-from">A letter from ${l.author_name} ${getEmoji(l.author_name)}</div>
+            <div class="letter-card-content">${l.content}</div>
+          </div>
+        `).join('');
+        html += `</div>`;
+      }
+
+      // Still let Victoria write if she hasn't
+      const myLetter = letters.find(l => l.author_name === user);
+      if (!myLetter) {
+        html += `
+          <div class="write-card">
+            <h2>Add your letter</h2>
+            <textarea class="letter-textarea" id="letterContent" placeholder="Dear Marshall,&#10;&#10;..."></textarea>
+            <button class="letter-btn" id="saveBtn" onclick="saveLetter(false)">SAVE LETTER →</button>
+          </div>
+        `;
+      }
+
+      // Admin reset (hidden, discreet)
+      if (isAdmin) {
+        html += `<div style="text-align:center; margin-top:32px;"><button onclick="resetReveal()" style="background:none;border:none;color:var(--text-muted);font-size:11px;cursor:pointer;text-decoration:underline;">Reset reveal (admin only)</button></div>`;
+      }
+    }
+
+    body.innerHTML = html;
+  }
+
+  function getEmoji(name) {
+    const found = GROUP.find(p => p.name === name);
+    return found ? found.emoji : '👤';
+  }
+
+  window.showEditForm = function() {
+    document.getElementById('editForm').style.display = 'block';
+    document.querySelector('.saved-card').style.display = 'none';
+  };
+
+  window.saveLetter = async function(isEdit) {
+    const content = document.getElementById('letterContent').value.trim();
+    if (!content) return;
+
+    const btn = document.getElementById('saveBtn') || document.querySelector('.letter-btn');
+    if (btn) { btn.disabled = true; btn.textContent = 'SAVING...'; }
+
+    const existing = letters.find(l => l.author_name === user);
+
+    if (existing) {
+      await db.from('letters_to_marshall').update({ content, updated_at: new Date().toISOString() }).eq('id', existing.id);
+    } else {
+      await db.from('letters_to_marshall').insert({ author_name: user, content });
+    }
+
+    await loadPage();
+  };
+
+  window.revealLetters = async function() {
+    if (!confirm('Reveal all letters to the family? This will show everyone\'s letters. Are you sure?')) return;
+    await db.from('letters_settings').update({ revealed: true, revealed_at: new Date().toISOString() }).eq('id', 1);
+    await loadPage();
+  };
+
+  window.resetReveal = async function() {
+    if (!confirm('Reset reveal? Letters will be hidden again.')) return;
+    await db.from('letters_settings').update({ revealed: false }).eq('id', 1);
+    await loadPage();
+  };
+
+  // PRESENTATION MODE
+  window.startPresentationMode = function() {
+    currentSlide = 0;
+    document.getElementById('presentationMode').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    renderSlide();
+  };
+
+  window.closePresentationMode = function() {
+    document.getElementById('presentationMode').classList.remove('active');
+    document.body.style.overflow = '';
+  };
+
+  window.nextLetter = function() {
+    if (currentSlide < letters.length - 1) { currentSlide++; renderSlide(); }
+    else closePresentationMode();
+  };
+
+  window.prevLetter = function() {
+    if (currentSlide > 0) { currentSlide--; renderSlide(); }
+  };
+
+  function renderSlide() {
+    const letter = letters[currentSlide];
+    const slide = document.getElementById('letterSlide');
+    const counter = document.getElementById('presCounter');
+
+    slide.innerHTML = `
+      <div class="letter-slide-from">A letter from</div>
+      <div class="letter-slide-name">${getEmoji(letter.author_name)} ${letter.author_name}</div>
+      <div class="letter-divider"></div>
+      <div class="letter-slide-content">${letter.content}</div>
+    `;
+
+    counter.textContent = `${currentSlide + 1} of ${letters.length}`;
+
+    // Update next button text on last slide
+    const nextBtn = document.querySelector('.pres-btn.primary');
+    nextBtn.textContent = currentSlide === letters.length - 1 ? 'Done ✓' : 'Next →';
+  }
+
+  // Keyboard nav in presentation mode
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('presentationMode').classList.contains('active')) return;
+    if (e.key === 'ArrowRight' || e.key === 'Space') nextLetter();
+    if (e.key === 'ArrowLeft') prevLetter();
+    if (e.key === 'Escape') closePresentationMode();
+  });
+
+  loadPage();
+</script>
+</body>
+</html>
