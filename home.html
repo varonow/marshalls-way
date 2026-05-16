@@ -200,14 +200,12 @@
   }
 
   .flights-title {
-    font-family: 'Lato', sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--text-muted);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.6rem;
+    color: var(--navy);
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: 28px;
   }
 
   .flights-grid {
@@ -217,27 +215,25 @@
   }
 
   .flight-card {
-    background: var(--sand);
-    border: 1px solid var(--sand-dark);
-    border-top: 3px solid var(--azure);
+    background: var(--white);
     border-radius: 12px;
-    padding: 20px;
-    box-shadow: var(--shadow);
+    padding: 28px 24px;
+    box-shadow: 0 2px 16px rgba(26,51,80,0.07);
+    border-top: 2px solid var(--azure);
   }
 
-  .flight-card:nth-child(2) { border-top-color: var(--terracotta); }
-  .flight-card:nth-child(3) { border-top-color: var(--gold-dark); }
+  .flight-card:last-child { border-top-color: var(--terracotta); }
 
   .flight-header {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 14px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid var(--sand-dark);
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #EEF6FC;
   }
 
-  .flight-icon { font-size: 22px; }
+  .flight-icon { font-size: 20px; }
 
   .flight-number {
     font-family: 'Lato', sans-serif;
@@ -248,40 +244,44 @@
   }
 
   .flight-route {
-    font-family: 'Lato', sans-serif;
     font-size: 11px;
     color: var(--text-muted);
     letter-spacing: 0.5px;
+    margin-top: 2px;
   }
 
   .flight-times {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
   }
 
   .flight-time { text-align: center; }
 
   .flight-time-value {
     font-family: 'Playfair Display', serif;
-    font-size: 20px;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--navy);
+    line-height: 1;
+  }
+
+  .flight-time-date {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--terracotta);
+    letter-spacing: 0.5px;
+    margin-top: 3px;
   }
 
   .flight-time-label {
     font-size: 9px;
-    color: var(--text-muted);
-    letter-spacing: 1.5px;
+    font-weight: 700;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    font-weight: 700;
-  }
-
-  .flight-time-date {
-    font-size: 11px;
-    color: var(--terracotta);
-    font-weight: 700;
+    color: var(--text-muted);
+    margin-top: 2px;
   }
 
   .flight-arrow {
@@ -303,27 +303,10 @@
     top: -9px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 14px;
+    font-size: 13px;
     color: var(--azure);
-  }
-
-  .flight-passengers {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .flight-passenger {
     background: var(--white);
-    border: 1px solid var(--sand-dark);
-    border-radius: 20px;
-    padding: 4px 10px;
-    font-size: 11px;
-    color: var(--navy);
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 4px;
+    padding: 0 4px;
   }
 
   @media (max-width: 600px) {
