@@ -124,6 +124,23 @@
 
   <div class="login-card">
 
+    <!-- SET PASSWORD FORM (for invite & reset links) -->
+    <div id="setPasswordForm" style="display:none;">
+      <h2>Set Your Password</h2>
+      <p>Choose a password to access Marshall's Way</p>
+      <div class="form-group">
+        <label class="form-label" for="newPassword">New Password</label>
+        <input type="password" class="login-input" id="newPassword" placeholder="Choose a password" autocomplete="new-password">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="confirmPassword">Confirm Password</label>
+        <input type="password" class="login-input" id="confirmPassword" placeholder="Confirm your password" autocomplete="new-password">
+      </div>
+      <button class="login-btn" onclick="handleSetPassword()">SET MY PASSWORD →</button>
+      <p class="error-msg" id="setPasswordError"></p>
+      <p class="success-msg" id="setPasswordSuccess"></p>
+    </div>
+
     <!-- LOGIN FORM -->
     <div id="loginForm">
       <h2>Welcome, Family</h2>
@@ -164,11 +181,66 @@
 <script type="module">
   import { db, signIn, getSession, getCurrentUser } from './js/supabase.js';
 
-  // Redirect if already logged in
-  const session = await getSession();
-  if (session && getCurrentUser()) {
-    window.location.href = 'home.html';
+  // Check for invite or recovery token in URL hash
+  const hash = window.location.hash;
+  const params = new URLSearchParams(hash.replace('#', '?'));
+  const type = params.get('type');
+  const accessToken = params.get('access_token');
+
+  if ((type === 'invite' || type === 'recovery') && accessToken) {
+    // Set the session from the token
+    await db.auth.setSession({
+      access_token: accessToken,
+      refresh_token: params.get('refresh_token') || ''
+    });
+    // Show set password form
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('setPasswordForm').style.display = 'block';
+  } else {
+    // Normal login — redirect if already logged in
+    const session = await getSession();
+    if (session && getCurrentUser()) {
+      window.location.href = 'home.html';
+    }
   }
+
+  window.handleSetPassword = async function() {
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const errorMsg = document.getElementById('setPasswordError');
+    const successMsg = document.getElementById('setPasswordSuccess');
+
+    if (!newPassword || newPassword.length < 6) {
+      errorMsg.textContent = 'Password must be at least 6 characters.';
+      errorMsg.style.display = 'block';
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      errorMsg.textContent = 'Passwords do not match — try again!';
+      errorMsg.style.display = 'block';
+      return;
+    }
+
+    const { error } = await db.auth.updateUser({ password: newPassword });
+    if (error) {
+      errorMsg.textContent = 'Something went wrong — please try again.';
+      errorMsg.style.display = 'block';
+      return;
+    }
+
+    // Get profile and cache locally
+    const { data: { user } } = await db.auth.getUser();
+    const { data: profile } = await db.from('profiles').select('*').eq('id', user.id).single();
+    if (profile) {
+      localStorage.setItem('mw_user', profile.name);
+      localStorage.setItem('mw_emoji', profile.emoji);
+    }
+
+    successMsg.textContent = 'Password set! Welcome aboard — redirecting...';
+    successMsg.style.display = 'block';
+    setTimeout(() => window.location.href = 'home.html', 1500);
+  };
 
   // Animated dots
   const dotsContainer = document.getElementById('dots');
