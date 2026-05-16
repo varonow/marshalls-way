@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marshall's Way — Room Draw</title>
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/nav.css">
+<style>
+  body { background: #EEF6FC; }
+
+  .rooms-header {
+    background: var(--navy);
+    padding: 56px 24px 72px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .rooms-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0; height: 60px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60'%3E%3Cpath d='M0 30 Q150 0 300 30 Q450 60 600 30 Q750 0 900 30 Q1050 60 1200 30 L1200 60 L0 60 Z' fill='%23EEF6FC'/%3E%3C/svg%3E") no-repeat bottom;
+    background-size: cover;
+  }
+
+  .rooms-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: var(--azure-light); margin-bottom: 12px; }
+  .rooms-header h1 { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(2.2rem, 5vw, 3.2rem); color: var(--sand); margin-bottom: 8px; }
+  .rooms-header h1 span { color: var(--gold); }
+  .rooms-header-sub { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+
+  /* BODY */
+  .rooms-body {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 48px 24px 100px;
+  }
+
+  /* INTRO CARD */
+  .intro-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 2px 16px rgba(26,51,80,0.08);
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .intro-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  .intro-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  /* ROOMS GRID */
+  .rooms-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+
+  .room-row {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 20px 24px;
+    box-shadow: 0 2px 12px rgba(26,51,80,0.07);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .room-position {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.2rem;
+    color: var(--azure-light);
+    flex-shrink: 0;
+    width: 52px;
+    text-align: center;
+    line-height: 1;
+  }
+
+  .room-row.fixed-1 .room-position { color: var(--gold); }
+  .room-row.fixed-6 .room-position { color: var(--azure-light); }
+  .room-row.landed .room-position { color: var(--terracotta); }
+
+  .room-cabin {
+    flex-shrink: 0;
+    min-width: 180px;
+  }
+
+  .room-cabin-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 2px;
+  }
+
+  .room-cabin-bed {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* SLOT MACHINE */
+  .slot-wrap {
+    flex: 1;
+    height: 52px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 8px;
+    background: #EEF6FC;
+    border: 2px solid var(--azure-light);
+  }
+
+  .slot-wrap.spinning { border-color: var(--azure); background: #E0EEF8; }
+  .slot-wrap.landed { border-color: var(--terracotta); background: #FEF0E8; }
+  .slot-wrap.fixed { border: none; background: none; }
+
+  .slot-display {
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    font-family: 'Playfair Display', serif;
+    transition: none;
+    padding: 0 16px;
+    text-align: center;
+  }
+
+  .slot-display.spinning-anim {
+    animation: slotSpin 0.08s linear infinite;
+  }
+
+  @keyframes slotSpin {
+    0% { transform: translateY(0); opacity: 1; }
+    49% { transform: translateY(-6px); opacity: 0; }
+    50% { transform: translateY(6px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  .slot-display.landed-anim {
+    animation: landBounce 0.4s ease both;
+  }
+
+  @keyframes landBounce {
+    0% { transform: scale(1.15); }
+    60% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+  }
+
+  /* DRAW BUTTON */
+  .draw-section {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .draw-btn {
+    padding: 20px 56px;
+    background: var(--terracotta);
+    color: var(--white);
+    border: none;
+    border-radius: 12px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 6px 24px rgba(196,98,45,0.4);
+  }
+
+  .draw-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(196,98,45,0.5); }
+  .draw-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .draw-btn-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 10px;
+    letter-spacing: 1px;
+  }
+
+  /* NOT ADMIN MESSAGE */
+  .not-admin-msg {
+    display: none;
+    background: var(--white);
+    border-radius: 10px;
+    padding: 16px 20px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 12px;
+    box-shadow: 0 2px 8px rgba(26,51,80,0.06);
+  }
+
+  /* CONFETTI CANVAS */
+  #confettiCanvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 5000;
+  }
+
+  /* RESET */
+  .reset-wrap {
+    text-align: center;
+    margin-top: 16px;
+  }
+
+  .reset-link {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 11px;
+    cursor: pointer;
+    text-decoration: underline;
+    font-family: 'Lato', sans-serif;
+  }
+
+  .reset-link:hover { color: var(--terracotta); }
+
+  @media (max-width: 600px) {
+    .room-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .room-cabin { min-width: auto; }
+    .slot-wrap { width: 100%; }
+    .rooms-body { padding: 32px 16px 80px; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confettiCanvas"></canvas>
+
+<div class="rooms-header">
+  <p class="rooms-eyebrow">Marshall's Way · M/Y R23</p>
+  <h1>The <span>Room Draw</span></h1>
+  <p class="rooms-header-sub">Captain Mauro spins the wheel · M/Y R23 · July 2026</p>
+</div>
+
+<div class="rooms-body">
+
+  <div class="intro-card">
+    <h2>Who Gets Which Cabin?</h2>
+    <p>Victoria & Marshall have first pick as always. Stephanie & Selly have the twin cabin. The remaining four couples draw randomly for positions 2 through 5. May the best cabin win!</p>
+  </div>
+
+  <!-- Rooms grid -->
+  <div class="rooms-grid" id="roomsGrid"></div>
+
+  <!-- Draw button -->
+  <div class="draw-section" id="drawSection">
+    <button class="draw-btn" id="drawBtn" onclick="handleDraw()">🎰 DRAW ROOMS</button>
+    <div class="draw-btn-sub" id="drawBtnSub">Captain Mauro presses this button</div>
+    <div class="not-admin-msg" id="notAdminMsg">Only Victoria can activate the draw — hand her the phone!</div>
+  </div>
+
+  <!-- Reset (Victoria only) -->
+  <div class="reset-wrap" id="resetWrap" style="display:none;">
+    <button class="reset-link" onclick="resetDraw()">Reset draw (admin only)</button>
+  </div>
+
+</div>
+
+<script type="module">
+  import { requireAuth, getCurrentUser, db } from './js/supabase.js';
+  import { renderNav } from './js/nav.js';
+
+  await requireAuth();
+  renderNav('rooms.html');
+
+  const user = getCurrentUser();
+  const isAdmin = user === 'Victoria';
+
+  const CABINS = [
+    { pos: 1, name: "Owner's Suite", bed: 'King Size', fixed: 'Victoria & Marshall 👸🤴', fixedEmoji: '👸🤴' },
+    { pos: 2, name: 'VIP Suite', bed: 'Queen Size', fixed: null },
+    { pos: 3, name: 'Double Cabin A', bed: 'Double 154×194cm', fixed: null },
+    { pos: 4, name: 'Double Cabin B', bed: 'Double 154×194cm', fixed: null },
+    { pos: 5, name: 'Twin Cabin B', bed: '2 Singles 90×190cm', fixed: null },
+    { pos: 6, name: 'Twin Cabin A', bed: '2 Singles 90×190cm', fixed: 'Stephanie & Selly 💄💅', fixedEmoji: '💄💅' },
+  ];
+
+  const COUPLES = [
+    { name: 'Joyce & Mousa Saad', emoji: '🍸👔' },
+    { name: 'Danielle & Mac Dabah', emoji: '😂🏒' },
+    { name: 'Ginger & Jacob Aronow', emoji: '💎🏋️' },
+    { name: 'Kimberly & Moshe Dabah', emoji: '🎨⚓' },
+  ];
+
+  let drawState = null;
+  let isDrawing = false;
+
+  // Audio context for sounds
+  let audioCtx = null;
+
+  function getAudioCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    return audioCtx;
+  }
+
+  function playTick() {
+    try {
+      const ctx = getAudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.frequency.value = 800;
+      gain.gain.setValueAtTime(0.1, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.05);
+    } catch(e) {}
+  }
+
+  function playLand() {
+    try {
+      const ctx = getAudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(400, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.15);
+      gain.gain.setValueAtTime(0.3, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.3);
+    } catch(e) {}
+  }
+
+  function renderGrid(drawn = false, positions = null) {
+    const grid = document.getElementById('roomsGrid');
+    grid.innerHTML = CABINS.map((cabin, i) => {
+      const isFixed = cabin.fixed !== null;
+      const drawPos = cabin.pos - 2; // 0-3 for drawn positions
+
+      let slotContent = '';
+      let slotClass = '';
+
+      if (isFixed) {
+        slotContent = `<div class="slot-display">${cabin.fixed}</div>`;
+        slotClass = 'fixed';
+      } else if (drawn && positions) {
+        const couple = positions[drawPos];
+        slotContent = `<div class="slot-display landed-anim">${couple.emoji} ${couple.name}</div>`;
+        slotClass = 'landed';
+      } else {
+        slotContent = `<div class="slot-display" id="slot-${cabin.pos}">?</div>`;
+        slotClass = '';
+      }
+
+      const rowClass = cabin.pos === 1 ? 'fixed-1' : cabin.pos === 6 ? 'fixed-6' : (drawn && positions ? 'landed' : '');
+
+      return `
+        <div class="room-row ${rowClass}" id="row-${cabin.pos}">
+          <div class="room-position">${cabin.pos}</div>
+          <div class="room-cabin">
+            <div class="room-cabin-name">${cabin.name}</div>
+            <div class="room-cabin-bed">${cabin.bed}</div>
+          </div>
+          <div class="slot-wrap ${slotClass}" id="slot-wrap-${cabin.pos}">
+            ${slotContent}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  async function loadDraw() {
+    const { data } = await db.from('room_draw').select('*').eq('id', 1).single();
+    drawState = data;
+
+    if (data?.drawn && data?.positions) {
+      renderGrid(true, data.positions);
+      document.getElementById('drawSection').style.display = 'none';
+      if (isAdmin) {
+        document.getElementById('resetWrap').style.display = 'block';
+      }
+    } else {
+      renderGrid(false);
+      // Show draw button
+      const btn = document.getElementById('drawBtn');
+      const notAdmin = document.getElementById('notAdminMsg');
+      if (!isAdmin) {
+        btn.disabled = true;
+        notAdmin.style.display = 'block';
+        document.getElementById('drawBtnSub').style.display = 'none';
+      }
+      if (isAdmin) {
+        document.getElementById('resetWrap').style.display = 'block';
+      }
+    }
+  }
+
+  window.handleDraw = async function() {
+    if (!isAdmin) {
+      document.getElementById('notAdminMsg').style.display = 'block';
+      return;
+    }
+    if (isDrawing) return;
+    isDrawing = true;
+
+    // Shuffle couples
+    const shuffled = [...COUPLES].sort(() => Math.random() - 0.5);
+
+    const btn = document.getElementById('drawBtn');
+    btn.disabled = true;
+    btn.textContent = '🎰 DRAWING...';
+
+    // Animate each slot one by one
+    const drawPositions = [2, 3, 4, 5];
+
+    for (let i = 0; i < drawPositions.length; i++) {
+      const pos = drawPositions[i];
+      const winner = shuffled[i];
+      const slotWrap = document.getElementById(`slot-wrap-${pos}`);
+      const slotEl = document.getElementById(`slot-${pos}`);
+
+      if (!slotEl) continue;
+
+      // Start spinning
+      slotWrap.classList.add('spinning');
+      slotEl.classList.add('spinning-anim');
+
+      let tickInterval = setInterval(playTick, 80);
+      let spinCount = 0;
+      const spinDuration = 1200 + (i * 600); // Each slot spins longer
+      const nameInterval = setInterval(() => {
+        const randomCouple = COUPLES[spinCount % COUPLES.length];
+        slotEl.textContent = `${randomCouple.emoji} ${randomCouple.name}`;
+        spinCount++;
+      }, 80);
+
+      await new Promise(r => setTimeout(r, spinDuration));
+
+      // Land!
+      clearInterval(tickInterval);
+      clearInterval(nameInterval);
+      slotEl.classList.remove('spinning-anim');
+      slotWrap.classList.remove('spinning');
+      slotWrap.classList.add('landed');
+      document.getElementById(`row-${pos}`).classList.add('landed');
+      slotEl.textContent = `${winner.emoji} ${winner.name}`;
+      slotEl.classList.add('landed-anim');
+      playLand();
+      launchConfetti();
+
+      await new Promise(r => setTimeout(r, 800));
+    }
+
+    // Save to Supabase
+    await db.from('room_draw').update({
+      drawn: true,
+      positions: shuffled,
+      drawn_at: new Date().toISOString()
+    }).eq('id', 1);
+
+    btn.textContent = '🎉 ROOMS DRAWN!';
+    document.getElementById('drawBtnSub').textContent = 'The draw is complete and saved!';
+
+    // Show reset for admin
+    document.getElementById('resetWrap').style.display = isAdmin ? 'block' : 'none';
+
+    isDrawing = false;
+  };
+
+  window.resetDraw = async function() {
+    if (!confirm('Reset the room draw? This will clear the results.')) return;
+    await db.from('room_draw').update({ drawn: false, positions: null, drawn_at: null }).eq('id', 1);
+    await loadDraw();
+    document.getElementById('drawSection').style.display = 'block';
+    document.getElementById('drawBtn').disabled = false;
+    document.getElementById('drawBtn').textContent = '🎰 DRAW ROOMS';
+  };
+
+  // CONFETTI
+  const canvas = document.getElementById('confettiCanvas');
+  const ctx2 = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+
+  let confettiParticles = [];
+
+  function launchConfetti() {
+    const colors = ['#E8C84A', '#C4622D', '#1A7BB8', '#1A3350', '#FAF3E2'];
+    for (let i = 0; i < 80; i++) {
+      confettiParticles.push({
+        x: Math.random() * canvas.width,
+        y: -10,
+        w: 6 + Math.random() * 8,
+        h: 10 + Math.random() * 6,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        vx: (Math.random() - 0.5) * 4,
+        vy: 2 + Math.random() * 4,
+        rot: Math.random() * 360,
+        rotV: (Math.random() - 0.5) * 6,
+        opacity: 1,
+      });
+    }
+    requestAnimationFrame(animateConfetti);
+  }
+
+  function animateConfetti() {
+    ctx2.clearRect(0, 0, canvas.width, canvas.height);
+    confettiParticles = confettiParticles.filter(p => p.opacity > 0.05);
+    confettiParticles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += p.rotV;
+      p.vy += 0.08;
+      if (p.y > canvas.height * 0.7) p.opacity -= 0.02;
+      ctx2.save();
+      ctx2.globalAlpha = p.opacity;
+      ctx2.translate(p.x, p.y);
+      ctx2.rotate((p.rot * Math.PI) / 180);
+      ctx2.fillStyle = p.color;
+      ctx2.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      ctx2.restore();
+    });
+    if (confettiParticles.length > 0) requestAnimationFrame(animateConfetti);
+  }
+
+  loadDraw();
+</script>
+</body>
+</html>
