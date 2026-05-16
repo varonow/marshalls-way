@@ -483,9 +483,9 @@
 </div>
 
 <!-- Flight Details Section -->
-<div style="background: var(--white); padding: 60px 24px;">
+<div id="flights" style="background: var(--white); padding: 60px 24px;">
   <div style="max-width: 1000px; margin: 0 auto;">
-    <div id="flights"></div>
+    <div id="flightsContent"></div>
   </div>
 </div>
 
@@ -616,65 +616,39 @@
   }
 
   // Render flight section
+  const isSaad = ['Joyce', 'Mousa', 'Selly'].includes(user);
+
   const flights = [
-    {
+    isSaad ? {
       icon: '✈️',
       number: 'UA 966',
       route: 'Newark (EWR) → Naples (NAP)',
-      depart: { time: '8:40 PM', date: 'Jul 2' },
-      arrive: { time: '11:40 AM', date: 'Jul 3' },
-      passengers: [
-        { name: 'Victoria', emoji: '👸' },
-        { name: 'Marshall', emoji: '🤴' },
-        { name: 'Danielle', emoji: '😂' },
-        { name: 'Mac', emoji: '🏒' },
-        { name: 'Jacob', emoji: '🏋️' },
-        { name: 'Ginger', emoji: '💎' },
-        { name: 'Kimberly', emoji: '🎨' },
-        { name: 'Moshe', emoji: '⚓' },
-        { name: 'Stephanie', emoji: '💄' },
-      ]
-    },
-    {
+      depart: { time: '8:40 PM', date: 'Sat Jul 5' },
+      arrive: { time: '11:40 AM', date: 'Sun Jul 6' },
+      flightaware: 'https://flightaware.com/live/flight/UAL966',
+    } : {
       icon: '✈️',
       number: 'UA 966',
       route: 'Newark (EWR) → Naples (NAP)',
-      depart: { time: '8:40 PM', date: 'Jul 5' },
-      arrive: { time: '11:40 AM', date: 'Jul 6' },
-      passengers: [
-        { name: 'Joyce', emoji: '🍸' },
-        { name: 'Mousa', emoji: '👔' },
-        { name: 'Selly', emoji: '💅' },
-      ]
+      depart: { time: '8:40 PM', date: 'Wed Jul 2' },
+      arrive: { time: '11:40 AM', date: 'Thu Jul 3' },
+      flightaware: 'https://flightaware.com/live/flight/UAL966',
     },
     {
       icon: '🏠',
       number: 'UA 967',
       route: 'Naples (NAP) → Newark (EWR)',
-      depart: { time: '2:00 PM', date: 'Jul 12' },
-      arrive: { time: '6:25 PM', date: 'Jul 12' },
-      passengers: [
-        { name: 'Victoria', emoji: '👸' },
-        { name: 'Marshall', emoji: '🤴' },
-        { name: 'Danielle', emoji: '😂' },
-        { name: 'Mac', emoji: '🏒' },
-        { name: 'Jacob', emoji: '🏋️' },
-        { name: 'Ginger', emoji: '💎' },
-        { name: 'Kimberly', emoji: '🎨' },
-        { name: 'Moshe', emoji: '⚓' },
-        { name: 'Stephanie', emoji: '💄' },
-        { name: 'Joyce', emoji: '🍸' },
-        { name: 'Mousa', emoji: '👔' },
-        { name: 'Selly', emoji: '💅' },
-      ]
+      depart: { time: '2:00 PM', date: 'Sun Jul 12' },
+      arrive: { time: '6:25 PM', date: 'Sun Jul 12' },
+      flightaware: 'https://flightaware.com/live/flight/UAL967',
     }
   ];
 
-  const flightsEl = document.getElementById('flights');
+  const flightsEl = document.getElementById('flightsContent');
   flightsEl.innerHTML = `
-    <p class="flights-title">✈ Flight Details</p>
+    <p class="flights-title">✈ ${isSaad ? 'Your Flights' : 'Flight Details'}</p>
     <div class="flights-grid">
-      ${flights.map(f => `
+      ${flights.map((f, i) => `
         <div class="flight-card">
           <div class="flight-header">
             <span class="flight-icon">${f.icon}</span>
@@ -698,11 +672,9 @@
               <div class="flight-time-label">ARRIVE</div>
             </div>
           </div>
-          <div class="flight-passengers">
-            ${f.passengers.map(p => `
-              <div class="flight-passenger">${p.emoji} ${p.name}</div>
-            `).join('')}
-          </div>
+          <a href="${f.flightaware}" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;background:#EEF6FC;border:1px solid var(--azure-light);border-radius:6px;color:var(--azure);font-size:11px;font-weight:700;letter-spacing:1px;text-decoration:none;margin-top:12px;transition:all 0.2s;">
+            ✈ Live Flight Status on FlightAware
+          </a>
         </div>
       `).join('')}
     </div>

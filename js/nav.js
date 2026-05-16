@@ -6,7 +6,7 @@ export const NAV_ITEMS = [
     items: [
       { label: 'Home', desc: 'Countdown & overview', href: 'home.html', icon: '🏠' },
       { label: 'Itinerary', desc: 'Day by day plan', href: 'itinerary.html', icon: '🗓' },
-      { label: 'Flights', desc: 'All flight details', href: 'flights.html', icon: '✈️' },
+      { label: 'Flights', desc: 'All flight details', href: 'home.html#flights', icon: '✈️' },
       { label: 'M/Y R23', desc: 'Yacht info & crew', href: 'yacht.html', icon: '🛥' },
       { label: 'Map', desc: 'Our voyage route', href: 'map.html', icon: '📍' },
       { label: '☀️ Weather', desc: 'Amalfi Coast forecast', href: 'weather.html', icon: '☀️' },
