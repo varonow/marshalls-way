@@ -51,6 +51,68 @@
     color: rgba(255,255,255,0.4); position: relative; z-index: 1;
   }
 
+  /* AT A GLANCE */
+  .glance-wrap {
+    max-width: 720px;
+    margin: -30px auto 24px;
+    padding: 0 24px;
+    position: relative;
+    z-index: 5;
+  }
+
+  .glance-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 24px 28px;
+    box-shadow: 0 8px 32px rgba(26,51,80,0.14);
+    border: 1px solid var(--sand-dark);
+    text-align: center;
+  }
+
+  .glance-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 4px;
+  }
+
+  .glance-title {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 1.3rem; color: var(--navy); margin-bottom: 20px;
+  }
+
+  .glance-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+    text-align: left;
+  }
+
+  .glance-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px;
+    background: var(--sand);
+    border-radius: 10px;
+    border-left: 3px solid var(--terracotta);
+  }
+
+  .glance-item:nth-child(even) { border-left-color: var(--azure); }
+
+  .glance-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 700;
+    color: var(--navy); line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .glance-label {
+    font-size: 12px; color: var(--text); line-height: 1.3;
+    font-weight: 700;
+  }
+
+  .glance-label em {
+    font-style: italic; color: var(--text-muted);
+    font-weight: 400; font-size: 11px; display: block; margin-top: 2px;
+  }
+
   /* STICKY TABS */
   .day-tabs-wrap {
     background: var(--white);
@@ -360,6 +422,21 @@
   <h1>Packing <span>List</span></h1>
   <div class="pack-header-sub">10 Days · 9 Nights · Amalfi Coast</div>
 </header>
+
+<!-- At a Glance -->
+<div class="glance-wrap">
+  <div class="glance-card">
+    <div class="glance-eyebrow">At a Glance</div>
+    <div class="glance-title">What You're Packing</div>
+    <div class="glance-grid">
+      <div class="glance-item"><span class="glance-num">7</span><span class="glance-label">Beach / Pool outfits</span></div>
+      <div class="glance-item"><span class="glance-num">2</span><span class="glance-label">Touring / Shopping outfits</span></div>
+      <div class="glance-item"><span class="glance-num">3–5</span><span class="glance-label">Gym / Lounge outfits</span></div>
+      <div class="glance-item"><span class="glance-num">9</span><span class="glance-label">Dinner outfits <em>(3 club nights)</em></span></div>
+      <div class="glance-item"><span class="glance-num">1</span><span class="glance-label">Airport outfit</span></div>
+    </div>
+  </div>
+</div>
 
 <div class="day-tabs-wrap">
   <div class="day-tabs" id="dayTabs"></div>
