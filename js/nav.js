@@ -14,6 +14,7 @@ export const NAV_ITEMS = [
   { label: 'Photo Album', desc: 'Share your moments', href: 'photos.html', icon: '📸' },
   { label: 'Journal', desc: 'Trip notes & thoughts', href: 'journal.html', icon: '📝' },
   { label: 'Shopping Guide', desc: 'What to buy & where', href: 'shopping.html', icon: '💸' },
+  { label: 'Packing List', desc: 'What to pack each day', href: 'packing.html', icon: '🧳' },
 ];
 
 export function renderNav(activePage = '') {

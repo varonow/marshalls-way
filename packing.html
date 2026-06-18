@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marshall's Way — Packing List</title>
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/nav.css">
+<style>
+
+  /* HEADER */
+  .pack-header {
+    background: var(--navy);
+    padding: 56px 24px 72px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pack-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, rgba(26,123,184,0.2) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .pack-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 60px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60'%3E%3Cpath d='M0 30 Q150 0 300 30 Q450 60 600 30 Q750 0 900 30 Q1050 60 1200 30 L1200 60 L0 60 Z' fill='%23FAF3E2'/%3E%3C/svg%3E") no-repeat bottom;
+    background-size: cover;
+  }
+
+  .pack-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 5px;
+    text-transform: uppercase; color: var(--azure-light); margin-bottom: 12px;
+    position: relative; z-index: 1;
+  }
+
+  .pack-header h1 {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: clamp(2.2rem, 5vw, 3.5rem); color: var(--sand); margin-bottom: 8px;
+    position: relative; z-index: 1;
+  }
+
+  .pack-header h1 span { color: var(--gold); }
+
+  .pack-header-sub {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); position: relative; z-index: 1;
+  }
+
+  /* STICKY TABS */
+  .day-tabs-wrap {
+    background: var(--white);
+    position: sticky;
+    top: 64px;
+    z-index: 100;
+    border-bottom: 2px solid var(--sand-dark);
+    box-shadow: 0 2px 12px rgba(26,51,80,0.08);
+  }
+
+  .day-tabs {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 12px;
+  }
+
+  .day-tabs::-webkit-scrollbar { display: none; }
+
+  .day-tab {
+    flex-shrink: 0;
+    padding: 12px 16px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    text-align: center;
+    min-width: 72px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .day-tab:hover { background: var(--sand); }
+  .day-tab.active { border-bottom-color: var(--terracotta); background: var(--sand); }
+
+  .day-tab-date {
+    font-size: 10px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--text-muted);
+  }
+
+  .day-tab.active .day-tab-date { color: var(--terracotta); }
+
+  .day-tab-name {
+    font-size: 11px; font-weight: 700; color: var(--navy); margin-top: 2px;
+  }
+
+  /* PROGRESS BAR */
+  .scroll-progress {
+    position: fixed;
+    top: 64px; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--terracotta), var(--gold));
+    z-index: 200;
+    transition: width 0.1s;
+    width: 0%;
+  }
+
+  /* SAVE STATUS */
+  .save-status {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    background: var(--navy);
+    color: var(--sand);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 500;
+    pointer-events: none;
+  }
+
+  .save-status.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .save-status.saved { background: #2E7D52; }
+  .save-status.error { background: var(--terracotta); }
+
+  /* MAIN BODY */
+  .pack-body {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px 120px;
+    background: var(--sand);
+  }
+
+  /* DAY SECTION */
+  .day-section {
+    padding: 56px 0 40px;
+    border-bottom: 1px solid var(--sand-dark);
+    scroll-margin-top: 130px;
+  }
+
+  .day-section:last-child { border-bottom: none; }
+
+  /* Day header */
+  .day-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  .day-num {
+    font-family: 'Pacifico', cursive;
+    font-size: 72px;
+    line-height: 0.9;
+    color: var(--sand-dark);
+    flex-shrink: 0;
+    width: 80px;
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .day-section:nth-child(even) .day-num { color: var(--terracotta-light); }
+
+  .day-section-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--azure); margin-bottom: 4px;
+  }
+
+  .day-section:nth-child(even) .day-section-label { color: var(--terracotta); }
+
+  .day-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 700; color: var(--navy); line-height: 1.1; margin-bottom: 4px;
+  }
+
+  .day-section-date {
+    font-size: 11px; color: var(--text-muted); letter-spacing: 1.5px;
+    text-transform: uppercase; margin-bottom: 6px;
+  }
+
+  .day-location {
+    display: inline-block;
+    font-size: 10px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--navy);
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 3px; margin-top: 6px;
+  }
+
+  /* OUTFIT CARDS */
+  .outfits-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 0;
+  }
+
+  .outfit-card {
+    background: var(--white);
+    border-radius: 12px;
+    border: 1px solid var(--sand-dark);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+
+  .outfit-card:hover { box-shadow: 0 2px 16px rgba(26,51,80,0.09); }
+
+  .outfit-card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+
+  .outfit-card-header:hover { background: #F5FAFE; }
+  .outfit-card.open .outfit-card-header { background: #EEF6FC; }
+  .day-section:nth-child(even) .outfit-card.open .outfit-card-header { background: #FEF6F2; }
+
+  .outfit-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    width: 32px;
+    text-align: center;
+  }
+
+  .outfit-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--navy);
+    flex: 1;
+  }
+
+  .outfit-context {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 2px;
+  }
+
+  .outfit-check-summary {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-right: 4px;
+  }
+
+  .outfit-check-summary.complete { color: #2E7D52; }
+
+  .outfit-toggle-icon {
+    font-size: 16px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+
+  .outfit-card.open .outfit-toggle-icon { transform: rotate(180deg); color: var(--azure); }
+  .day-section:nth-child(even) .outfit-card.open .outfit-toggle-icon { color: var(--terracotta); }
+
+  .outfit-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+
+  .outfit-card.open .outfit-body { max-height: 600px; }
+
+  .outfit-body-inner {
+    padding: 4px 20px 20px;
+    border-top: 1px solid var(--sand-dark);
+  }
+
+  /* CHECKLIST ITEMS */
+  .checklist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--sand-dark);
+    transition: opacity 0.2s;
+  }
+
+  .checklist-item:last-child { border-bottom: none; }
+
+  .checklist-item.checked { opacity: 0.45; }
+
+  .checklist-item label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  /* Custom checkbox */
+  .checklist-item input[type="checkbox"] {
+    display: none;
+  }
+
+  .custom-check {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--sand-dark);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    background: var(--white);
+  }
+
+  .checklist-item.checked .custom-check {
+    background: #2E7D52;
+    border-color: #2E7D52;
+  }
+
+  .custom-check::after {
+    content: '✓';
+    font-size: 12px;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.2s;
+    font-weight: 700;
+  }
+
+  .checklist-item.checked .custom-check::after { opacity: 1; }
+
+  .checklist-item-text {
+    flex: 1;
+  }
+
+  .checklist-item.checked .checklist-item-text {
+    text-decoration: line-through;
+    color: var(--text-muted);
+  }
+
+  /* OTHER ITEMS SECTION */
+  .other-section {
+    margin-top: 60px;
+    padding-top: 60px;
+    border-top: 2px solid var(--sand-dark);
+  }
+
+  .other-section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .other-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--navy);
+  }
+
+  .other-section-title::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--terracotta), transparent);
+  }
+
+  .other-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 16px;
+  }
+
+  .other-category {
+    background: var(--white);
+    border-radius: 12px;
+    border: 1px solid var(--sand-dark);
+    overflow: hidden;
+  }
+
+  .other-category-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--sand-dark);
+    background: linear-gradient(135deg, #FFFDF8, #FBF5E8);
+  }
+
+  .other-category-icon { font-size: 22px; }
+
+  .other-category-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--navy);
+    flex: 1;
+  }
+
+  .other-category-count {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .other-category-count.complete { color: #2E7D52; }
+
+  .other-checklist {
+    padding: 8px 20px 16px;
+  }
+
+  /* PROGRESS STATS BAR */
+  .pack-stats {
+    position: sticky;
+    bottom: 0;
+    background: var(--navy);
+    padding: 12px 24px;
+    z-index: 90;
+    box-shadow: 0 -4px 20px rgba(26,51,80,0.2);
+  }
+
+  .pack-stats-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .pack-stats-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--azure-light);
+    flex-shrink: 0;
+  }
+
+  .pack-stats-bar-wrap {
+    flex: 1;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50px;
+    height: 8px;
+    overflow: hidden;
+  }
+
+  .pack-stats-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--azure), var(--gold));
+    border-radius: 50px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .pack-stats-pct {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gold);
+    flex-shrink: 0;
+    min-width: 36px;
+    text-align: right;
+  }
+
+  /* MOBILE */
+  @media (max-width: 600px) {
+    .day-header { gap: 14px; }
+    .day-num { font-size: 52px; width: 56px; }
+    .day-tab { min-width: 64px; padding: 10px 8px; }
+    .other-categories { grid-template-columns: 1fr; }
+    .outfit-label { font-size: 0.95rem; }
+  }
+
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="save-status" id="saveStatus"></div>
+
+<!-- Header -->
+<header class="pack-header">
+  <div class="pack-eyebrow">Marshall's Way · July 2026</div>
+  <h1>Packing <span>List</span></h1>
+  <div class="pack-header-sub">10 Days · 9 Nights · Amalfi Coast</div>
+</header>
+
+<!-- Sticky day tabs -->
+<div class="day-tabs-wrap">
+  <div class="day-tabs" id="dayTabs"></div>
+</div>
+
+<!-- Main content -->
+<div class="pack-body" id="packBody"></div>
+
+<!-- Sticky progress bar -->
+<div class="pack-stats">
+  <div class="pack-stats-inner">
+    <div class="pack-stats-label">Packed</div>
+    <div class="pack-stats-bar-wrap">
+      <div class="pack-stats-bar" id="statsBar"></div>
+    </div>
+    <div class="pack-stats-pct" id="statsPct">0%</div>
+  </div>
+</div>
+
+<script type="module">
+  import { db, requireAuth, getCurrentUser } from './js/supabase.js';
+  import { renderNav } from './js/nav.js';
+
+  await requireAuth();
+  renderNav('packing.html');
+
+  const userName = getCurrentUser();
+  const STORAGE_KEY = `packing_${userName}`;
+
+  // ─── DATA ───────────────────────────────────────────────────────────────────
+
+  const DAYS = [
+    {
+      id: 'day1', tabDate: 'Jul 3', tabName: 'Arrival',
+      label: 'Pre-Voyage · La Cocumella', title: 'Arrival Day',
+      date: 'Friday, July 3rd', location: 'Sant\'Agnello, Sorrento',
+      outfits: [
+        {
+          id: 'day1_touring',
+          icon: '☀️',
+          label: 'Day Touring Outfit',
+          context: 'Cooking class · Corso Italia stroll · hot outside',
+          items: ['Light top or linen shirt', 'Comfortable pants or linen trousers', 'Walking sandals or sneakers', 'Sun hat', 'Small crossbody bag', 'Sunglasses'],
+        },
+        {
+          id: 'day1_dinner',
+          icon: '🍽️',
+          label: 'Dinner Outfit',
+          context: 'Ristorante Tasso — first night in Italy',
+          items: ['Dinner dress or elegant separates', 'Heels or dressy sandals', 'Evening bag', 'Light wrap or jacket'],
+        },
+      ],
+    },
+    {
+      id: 'day2', tabDate: 'Jul 4', tabName: 'Sorrento',
+      label: 'Pre-Voyage · La Cocumella', title: 'A Day in Sorrento',
+      date: 'Saturday, July 4th', location: 'Sant\'Agnello & Sorrento',
+      outfits: [
+        {
+          id: 'day2_beach',
+          icon: '🏖️',
+          label: 'Beach Outfit',
+          context: 'La Cocumella private beach · pool',
+          items: ['Swimsuit', 'Cover-up or kaftan', 'Beach sandals', 'Beach bag', 'SPF', 'Sun hat'],
+        },
+        {
+          id: 'day2_gym',
+          icon: '🎾',
+          label: 'Gym / Tennis / Spa',
+          context: 'Spa · tennis · leisure afternoon',
+          items: ['Workout leggings or shorts', 'Sports top', 'Sneakers', 'Gym socks', 'Hair tie'],
+        },
+        {
+          id: 'day2_dinner',
+          icon: '🍽️',
+          label: 'Dinner Outfit',
+          context: 'L\'Abate dinner · Sorrento nightlife after',
+          items: ['Dress or stylish separates', 'Heels or dressy sandals', 'Evening bag', 'Light jacket for evening'],
+        },
+      ],
+    },
+    {
+      id: 'day3', tabDate: 'Jul 5', tabName: 'Procida',
+      label: 'Aboard M/Y R23', title: 'Set Sail — Procida',
+      date: 'Sunday, July 5th', location: 'Sorrento → Procida',
+      outfits: [
+        {
+          id: 'day3_beach',
+          icon: '🏖️',
+          label: 'Beach / Boat Outfit',
+          context: 'Boarding M/Y R23 · first day at sea',
+          items: ['Swimsuit', 'Cover-up or resort dress', 'Deck sandals (non-marking soles)', 'Beach bag', 'SPF', 'Sun hat', 'Sunglasses'],
+        },
+        {
+          id: 'day3_dinner',
+          icon: '🎂',
+          label: 'Dinner Outfit',
+          context: 'Il Pescatore, Corricella · Marshall\'s birthday',
+          items: ['Festive dinner dress', 'Heels or dressy sandals', 'Evening bag', 'Wrap or light layer for evening'],
+        },
+      ],
+    },
+    {
+      id: 'day4', tabDate: 'Jul 6', tabName: 'Ischia',
+      label: 'Aboard M/Y R23', title: 'Ischia',
+      date: 'Monday, July 6th', location: 'Ischia',
+      outfits: [
+        {
+          id: 'day4_beach',
+          icon: '🏖️',
+          label: 'Beach Outfit',
+          context: 'Sant\'Angelo village · thermal gardens',
+          items: ['Swimsuit', 'Cover-up or resort dress', 'Deck sandals', 'Beach bag', 'SPF', 'Sun hat'],
+        },
+        {
+          id: 'day4_dinner',
+          icon: '⭐',
+          label: 'Dinner Outfit',
+          context: 'Indaco (Michelin star) · Valentino Club after',
+          items: ['Elegant dinner dress', 'Heels', 'Evening bag', 'Wrap or layer for air conditioning'],
+        },
+      ],
+    },
+    {
+      id: 'day5', tabDate: 'Jul 7', tabName: 'Capri',
+      label: 'Aboard M/Y R23', title: 'Capri',
+      date: 'Tuesday, July 7th', location: 'Capri',
+      outfits: [
+        {
+          id: 'day5_beach',
+          icon: '🏖️',
+          label: 'Beach Outfit',
+          context: 'Da Luigi ai Faraglioni · swimming at the sea stacks',
+          items: ['Swimsuit', 'Chic cover-up', 'Deck sandals', 'Beach bag', 'SPF', 'Sun hat', 'Sunglasses'],
+        },
+        {
+          id: 'day5_club',
+          icon: '🎶',
+          label: 'Dinner / Club Outfit',
+          context: 'Ristorante Panorama dinner · Taverna Anema e Core',
+          items: ['Glamorous dinner dress', 'Heels', 'Small evening bag', 'Wrap or light jacket'],
+        },
+      ],
+    },
+    {
+      id: 'day6', tabDate: 'Jul 8', tabName: 'Positano',
+      label: 'Aboard M/Y R23', title: 'Capri to Positano',
+      date: 'Wednesday, July 8th', location: 'Positano',
+      outfits: [
+        {
+          id: 'day6_beach',
+          icon: '🏖️',
+          label: 'Beach Outfit',
+          context: 'Conca del Sogno lunch · Spiaggia Grande · Franco\'s Bar Le Sirenuse',
+          items: ['Swimsuit', 'Elegant cover-up (Franco\'s Bar level)', 'Deck sandals', 'Beach bag', 'SPF', 'Sun hat'],
+        },
+        {
+          id: 'day6_dinner',
+          icon: '🌙',
+          label: 'Dinner Outfit',
+          context: 'Chic Mama, Montepertuso — high above Positano',
+          items: ['Dinner dress or chic separates', 'Comfortable heels or wedges', 'Evening bag', 'Layer for mountain village evening'],
+        },
+      ],
+    },
+    {
+      id: 'day7', tabDate: 'Jul 9', tabName: 'Ravello',
+      label: 'Aboard M/Y R23', title: 'Amalfi & Ravello',
+      date: 'Thursday, July 9th', location: 'Amalfi & Ravello',
+      outfits: [
+        {
+          id: 'day7_town',
+          icon: '🛍️',
+          label: 'Town / Shopping Outfit',
+          context: 'Amalfi town · Ravello · Villa Cimbrone · Salvatore 1958 birthday lunch',
+          items: ['Stylish day dress or smart casual outfit', 'Comfortable wedges or chic flat sandals', 'Small handbag', 'Sun hat', 'Sunglasses'],
+        },
+        {
+          id: 'day7_beach',
+          icon: '🏖️',
+          label: 'Beach Outfit',
+          context: 'Morning wakeboard & water ski',
+          items: ['Swimsuit', 'Sporty cover-up', 'Deck sandals', 'SPF'],
+        },
+        {
+          id: 'day7_disco',
+          icon: '🪩',
+          label: 'Birthday Party / Disco Outfit',
+          context: 'Marshall\'s birthday party onboard · disco ball · dancing under the stars',
+          items: ['Show-stopping party dress', 'Heels or dressy sandals', 'Small evening bag', 'Statement jewelry', 'Something gold or festive'],
+        },
+      ],
+    },
+    {
+      id: 'day8', tabDate: 'Jul 10', tabName: 'Shabbat',
+      label: 'Aboard M/Y R23', title: 'Salerno & Shabbat',
+      date: 'Friday, July 10th', location: 'Vietri sul Mare · Sorrento',
+      outfits: [
+        {
+          id: 'day8_beach',
+          icon: '🏖️',
+          label: 'Beach Outfit',
+          context: 'Vietri sul Mare swim · Riva Beach Club at Giardini del Fuenti',
+          items: ['Swimsuit', 'Resort cover-up', 'Deck sandals', 'Beach bag', 'SPF', 'Sun hat'],
+        },
+        {
+          id: 'day8_shabbat',
+          icon: '🕯️',
+          label: 'Shabbat Dinner Outfit',
+          context: 'Formal Shabbat dinner onboard · candlelit on the water',
+          items: ['Elegant Shabbat dress', 'Dressy flats or heels', 'Pearls or fine jewelry', 'Shawl or wrap', 'Shabbat candles & matches'],
+        },
+      ],
+    },
+    {
+      id: 'day9', tabDate: 'Jul 11', tabName: 'Last Night',
+      label: 'Aboard M/Y R23', title: 'Shabbat to Positano',
+      date: 'Saturday, July 11th', location: 'Sorrento · Positano',
+      outfits: [
+        {
+          id: 'day9_beach',
+          icon: '🛥️',
+          label: 'Beach / Boat Outfit',
+          context: 'Shabbat day on the water — rest, swim, sun',
+          items: ['Swimsuit', 'Comfortable kaftan or cover-up', 'Deck sandals', 'SPF', 'Book or reading material'],
+        },
+        {
+          id: 'day9_club',
+          icon: '🎵',
+          label: 'Dinner / Club Outfit',
+          context: 'Final dinner onboard · Music on the Rocks (inside the cliffs!) · last night',
+          items: ['Unforgettable going-out dress', 'Comfortable heels or wedge (cave dancing!)', 'Small crossbody or clutch', 'Statement jewelry', 'Something you\'ll want to remember wearing'],
+        },
+      ],
+    },
+    {
+      id: 'day10', tabDate: 'Jul 12', tabName: 'Home',
+      label: 'Naples → Newark', title: 'Arrivederci',
+      date: 'Sunday, July 12th', location: 'Naples Airport',
+      outfits: [
+        {
+          id: 'day10_airport',
+          icon: '✈️',
+          label: 'Airport Outfit',
+          context: 'UA 967 Naples → Newark · long flight home',
+          items: ['Comfortable travel outfit', 'Layers (plane is cold)', 'Slip-on shoes', 'Compression socks', 'Travel pillow & eye mask in carry-on'],
+        },
+      ],
+    },
+  ];
+
+  const OTHER_CATEGORIES = [
+    {
+      id: 'cat_beauty',
+      icon: '💄',
+      title: 'Beauty & Skincare',
+      items: [
+        'SPF 50 face + body sunscreen', 'After-sun lotion / aloe', 'Full skincare routine (travel sizes)',
+        'Makeup essentials', 'Makeup remover wipes', 'Perfume', 'Nail polish & remover',
+        'Hair products (travel size)', 'Hair dryer adapter (Italy uses Type F)',
+        'Hair accessories — ties, clips, headbands', 'Razor', 'Dry shampoo',
+      ],
+    },
+    {
+      id: 'cat_docs',
+      icon: '📄',
+      title: 'Documents & Money',
+      items: [
+        'Passport (valid 6+ months)', 'Passport photocopy (separate bag)', 'Travel insurance info',
+        'Flight confirmations (UA 966 & UA 967)', 'Hotel confirmation — La Cocumella',
+        'Euros — cash for tips & small shops', 'Credit cards (notify bank of travel)',
+        'Emergency contact numbers', 'aronow.tours login info',
+      ],
+    },
+    {
+      id: 'cat_meds',
+      icon: '💊',
+      title: 'Health & Medications',
+      items: [
+        'Prescription medications (full supply + extra)', 'Pain relievers (Advil / Tylenol)',
+        'Antacids / Pepto-Bismol', 'Anti-nausea (sea sickness — just in case)',
+        'Antihistamines / allergy medication', 'Band-aids & blister plasters',
+        'Insect repellent', 'Sunburn relief', 'Hand sanitizer',
+      ],
+    },
+    {
+      id: 'cat_beach',
+      icon: '🏖️',
+      title: 'Beach & Water',
+      items: [
+        'Waterproof phone pouch', 'Snorkel mask', 'Waterproof sandals',
+        'Large beach towel (yacht provides but extra handy)', 'Reusable water bottle',
+        'Polarized sunglasses', 'Underwater camera or GoPro',
+      ],
+    },
+    {
+      id: 'cat_electronics',
+      icon: '🔌',
+      title: 'Electronics',
+      items: [
+        'Phone + charger', 'Power bank / portable charger', 'European plug adapter (Type F)',
+        'Camera + charging cable + memory cards', 'AirPods / headphones',
+        'Kindle or iPad (Shabbat reading)', 'Laptop (if needed)',
+        'Universal surge protector', 'Watch charger',
+      ],
+    },
+    {
+      id: 'cat_yacht',
+      icon: '🛥️',
+      title: 'Yacht Essentials',
+      items: [
+        'Non-marking deck shoes (required on teak decks)', 'Motion sickness patches / bands',
+        'Lightweight robe (yacht provides but personal is nice)', 'Small day bag for tenders',
+        'Zip-lock bags (keep phone/wallet dry on tenders)', 'Extra swimsuit (you\'ll be in the water a lot)',
+        'Sarong / pareo (versatile on deck)', 'Reading glasses if needed',
+      ],
+    },
+    {
+      id: 'cat_shabbat',
+      icon: '🕯️',
+      title: 'Shabbat',
+      items: [
+        'Shabbat candles', 'Matches or lighter', 'Kiddush cup',
+        'Havdalah candle & spices', 'Siddur / bentcher', 'Challah cover',
+        'White Shabbat tablecloth (optional — captain aware)',
+      ],
+    },
+    {
+      id: 'cat_misc',
+      icon: '🎒',
+      title: 'Extras & Miscellaneous',
+      items: [
+        'Small evening clutch (for nights out)', 'Jewelry organizer / travel roll',
+        'Laundry bags', 'Collapsible extra tote bag (for shopping in Capri!)',
+        'Portable steamer or wrinkle spray', 'Safety pins & fashion tape',
+        'Small sewing kit', 'Chapstick / lip balm with SPF',
+        'Gifts for crew (customary to tip in cash + small gift at end)',
+      ],
+    },
+  ];
+
+  // ─── STATE ───────────────────────────────────────────────────────────────────
+
+  let checkedItems = {};
+  let saveTimer = null;
+
+  // ─── SUPABASE LOAD/SAVE ──────────────────────────────────────────────────────
+
+  async function loadChecked() {
+    try {
+      const { data, error } = await db
+        .from('packing_list')
+        .select('checked_items')
+        .eq('user_name', userName)
+        .single();
+      if (data?.checked_items) {
+        checkedItems = data.checked_items;
+      }
+    } catch (e) {
+      // No row yet — start fresh
+    }
+  }
+
+  function scheduleSave() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveChecked, 1200);
+  }
+
+  async function saveChecked() {
+    showSaveStatus('saving');
+    try {
+      const { error } = await db
+        .from('packing_list')
+        .upsert({ user_name: userName, checked_items: checkedItems, updated_at: new Date().toISOString() },
+                 { onConflict: 'user_name' });
+      if (error) throw error;
+      showSaveStatus('saved');
+    } catch (e) {
+      showSaveStatus('error');
+    }
+  }
+
+  function showSaveStatus(state) {
+    const el = document.getElementById('saveStatus');
+    el.classList.remove('saved', 'error', 'show');
+    if (state === 'saving') {
+      el.textContent = '💾  Saving…';
+      el.classList.add('show');
+    } else if (state === 'saved') {
+      el.textContent = '✓  Saved';
+      el.classList.add('saved', 'show');
+      setTimeout(() => el.classList.remove('show'), 2000);
+    } else {
+      el.textContent = '⚠ Save failed';
+      el.classList.add('error', 'show');
+      setTimeout(() => el.classList.remove('show'), 3000);
+    }
+  }
+
+  // ─── RENDER ──────────────────────────────────────────────────────────────────
+
+  function makeChecklistItem(itemId, label) {
+    const isChecked = !!checkedItems[itemId];
+    return `
+      <li class="checklist-item ${isChecked ? 'checked' : ''}" id="li-${itemId}">
+        <label>
+          <input type="checkbox" id="${itemId}" ${isChecked ? 'checked' : ''} onchange="toggleItem('${itemId}')">
+          <span class="custom-check"></span>
+          <span class="checklist-item-text">${label}</span>
+        </label>
+      </li>`;
+  }
+
+  function getOutfitSummary(outfit) {
+    const total = outfit.items.length;
+    const done = outfit.items.filter((_, i) => !!checkedItems[`${outfit.id}_${i}`]).length;
+    return { done, total };
+  }
+
+  function renderDays() {
+    const tabsEl = document.getElementById('dayTabs');
+    const bodyEl = document.getElementById('packBody');
+    tabsEl.innerHTML = '';
+    bodyEl.innerHTML = '';
+
+    DAYS.forEach((day, di) => {
+      // Tab
+      const tab = document.createElement('a');
+      tab.className = 'day-tab';
+      tab.href = `#${day.id}`;
+      tab.dataset.id = day.id;
+      tab.innerHTML = `<div class="day-tab-date">${day.tabDate}</div><div class="day-tab-name">${day.tabName}</div>`;
+      tab.addEventListener('click', e => {
+        e.preventDefault();
+        document.getElementById(day.id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      tabsEl.appendChild(tab);
+
+      // Outfits HTML
+      const outfitsHTML = day.outfits.map(outfit => {
+        const { done, total } = getOutfitSummary(outfit);
+        const complete = done === total;
+        const itemsHTML = outfit.items.map((item, i) => makeChecklistItem(`${outfit.id}_${i}`, item)).join('');
+        return `
+          <div class="outfit-card" id="card-${outfit.id}">
+            <div class="outfit-card-header" onclick="toggleOutfit('card-${outfit.id}')">
+              <span class="outfit-icon">${outfit.icon}</span>
+              <div style="flex:1; min-width:0;">
+                <div class="outfit-label">${outfit.label}</div>
+                <div class="outfit-context">${outfit.context}</div>
+              </div>
+              <span class="outfit-check-summary ${complete ? 'complete' : ''}">${done}/${total}</span>
+              <span class="outfit-toggle-icon">▾</span>
+            </div>
+            <div class="outfit-body">
+              <div class="outfit-body-inner">
+                <ul class="checklist">${itemsHTML}</ul>
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+
+      // Day section
+      const section = document.createElement('div');
+      section.className = 'day-section';
+      section.id = day.id;
+      section.innerHTML = `
+        <div class="day-header">
+          <div class="day-num">${day.tabDate.split(' ')[1]}</div>
+          <div class="day-meta">
+            <div class="day-section-label">${day.label}</div>
+            <div class="day-section-title">${day.title}</div>
+            <div class="day-section-date">${day.date}</div>
+            <span class="day-location">${day.location}</span>
+          </div>
+        </div>
+        <div class="outfits-grid">${outfitsHTML}</div>`;
+      bodyEl.appendChild(section);
+    });
+
+    // Other items section
+    const otherEl = document.createElement('div');
+    otherEl.className = 'other-section';
+    otherEl.id = 'other';
+
+    const catHTML = OTHER_CATEGORIES.map(cat => {
+      const total = cat.items.length;
+      const done = cat.items.filter((_, i) => !!checkedItems[`${cat.id}_${i}`]).length;
+      const itemsHTML = cat.items.map((item, i) => makeChecklistItem(`${cat.id}_${i}`, item)).join('');
+      return `
+        <div class="other-category" id="othercat-${cat.id}">
+          <div class="other-category-header">
+            <span class="other-category-icon">${cat.icon}</span>
+            <span class="other-category-title">${cat.title}</span>
+            <span class="other-category-count ${done === total ? 'complete' : ''}" id="count-${cat.id}">${done}/${total}</span>
+          </div>
+          <div class="other-checklist">
+            <ul class="checklist">${itemsHTML}</ul>
+          </div>
+        </div>`;
+    }).join('');
+
+    otherEl.innerHTML = `
+      <div class="other-section-header">
+        <h2 class="other-section-title">Everything Else</h2>
+      </div>
+      <div class="other-categories">${catHTML}</div>`;
+    bodyEl.appendChild(otherEl);
+
+    // Add "Other" tab
+    const otherTab = document.createElement('a');
+    otherTab.className = 'day-tab';
+    otherTab.href = '#other';
+    otherTab.dataset.id = 'other';
+    otherTab.innerHTML = `<div class="day-tab-date">All</div><div class="day-tab-name">Other</div>`;
+    otherTab.addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById('other').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    tabsEl.appendChild(otherTab);
+  }
+
+  function updateProgress() {
+    let total = 0, done = 0;
+    DAYS.forEach(day => {
+      day.outfits.forEach(outfit => {
+        outfit.items.forEach((_, i) => {
+          total++;
+          if (checkedItems[`${outfit.id}_${i}`]) done++;
+        });
+      });
+    });
+    OTHER_CATEGORIES.forEach(cat => {
+      cat.items.forEach((_, i) => {
+        total++;
+        if (checkedItems[`${cat.id}_${i}`]) done++;
+      });
+    });
+    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+    document.getElementById('statsBar').style.width = pct + '%';
+    document.getElementById('statsPct').textContent = pct + '%';
+  }
+
+  function updateOutfitSummary(outfitId) {
+    const card = document.getElementById(`card-${outfitId}`);
+    if (!card) return;
+    const outfit = DAYS.flatMap(d => d.outfits).find(o => o.id === outfitId);
+    if (!outfit) return;
+    const { done, total } = getOutfitSummary(outfit);
+    const summaryEl = card.querySelector('.outfit-check-summary');
+    summaryEl.textContent = `${done}/${total}`;
+    summaryEl.classList.toggle('complete', done === total);
+  }
+
+  function updateCategoryCount(catId) {
+    const cat = OTHER_CATEGORIES.find(c => c.id === catId);
+    if (!cat) return;
+    const done = cat.items.filter((_, i) => !!checkedItems[`${catId}_${i}`]).length;
+    const total = cat.items.length;
+    const el = document.getElementById(`count-${catId}`);
+    if (el) {
+      el.textContent = `${done}/${total}`;
+      el.classList.toggle('complete', done === total);
+    }
+  }
+
+  // ─── TOGGLE ──────────────────────────────────────────────────────────────────
+
+  window.toggleItem = function(itemId) {
+    const cb = document.getElementById(itemId);
+    const li = document.getElementById(`li-${itemId}`);
+    checkedItems[itemId] = cb.checked;
+    li.classList.toggle('checked', cb.checked);
+
+    // Figure out which outfit or category this belongs to
+    // itemId format: outfitId_index or catId_index
+    const lastUnderscore = itemId.lastIndexOf('_');
+    const parentId = itemId.substring(0, lastUnderscore);
+
+    updateOutfitSummary(parentId);
+    updateCategoryCount(parentId);
+    updateProgress();
+    scheduleSave();
+  };
+
+  window.toggleOutfit = function(cardId) {
+    document.getElementById(cardId).classList.toggle('open');
+  };
+
+  // ─── SCROLL TABS ─────────────────────────────────────────────────────────────
+
+  const allSectionIds = [...DAYS.map(d => d.id), 'other'];
+
+  const tabObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        document.querySelectorAll('.day-tab').forEach(t =>
+          t.classList.toggle('active', t.dataset.id === id));
+        const activeTab = document.querySelector(`.day-tab[data-id="${id}"]`);
+        if (activeTab) activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+
+  // ─── SCROLL PROGRESS ─────────────────────────────────────────────────────────
+
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('scrollProgress').style.width = ((scrollTop / docHeight) * 100) + '%';
+  });
+
+  // ─── INIT ─────────────────────────────────────────────────────────────────────
+
+  await loadChecked();
+  renderDays();
+  updateProgress();
+
+  // Observe all sections after render
+  allSectionIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) tabObserver.observe(el);
+  });
+
+</script>
+</body>
+</html>
