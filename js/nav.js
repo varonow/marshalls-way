@@ -15,6 +15,7 @@ export const NAV_ITEMS = [
   { label: 'Journal', desc: 'Trip notes & thoughts', href: 'journal.html', icon: '📝' },
   { label: 'Shopping Guide', desc: 'What to buy & where', href: 'shopping.html', icon: '💸' },
   { label: 'Packing List', desc: 'What to pack each day', href: 'packing.html', icon: '🧳' },
+  { label: 'Airport Swap', desc: 'Secret shirt Santa for the flight', href: 'airport-swap.html', icon: '👕' },
 ];
 
 export function renderNav(activePage = '') {

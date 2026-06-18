@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marshall's Way — Airport Shirt Swap</title>
+<link rel="icon" type="image/png" href="images/logo.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/nav.css">
+<style>
+
+  /* HEADER */
+  .swap-header {
+    background: var(--navy);
+    padding: 56px 24px 72px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .swap-header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(26,123,184,0.25) 0%, rgba(196,98,45,0.15) 100%);
+    pointer-events: none;
+  }
+
+  .swap-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 60px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60'%3E%3Cpath d='M0 30 Q150 0 300 30 Q450 60 600 30 Q750 0 900 30 Q1050 60 1200 30 L1200 60 L0 60 Z' fill='%23FAF3E2'/%3E%3C/svg%3E") no-repeat bottom;
+    background-size: cover;
+  }
+
+  .swap-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 5px;
+    text-transform: uppercase; color: var(--azure-light);
+    margin-bottom: 12px; position: relative; z-index: 1;
+  }
+
+  .swap-header h1 {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: clamp(2.2rem, 5vw, 3.5rem); color: var(--sand);
+    margin-bottom: 8px; position: relative; z-index: 1;
+  }
+
+  .swap-header h1 span { color: var(--gold); }
+
+  .swap-header-sub {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); position: relative; z-index: 1;
+  }
+
+  /* COUNTDOWN */
+  .countdown-box {
+    background: var(--white);
+    max-width: 640px; margin: -20px auto 32px;
+    padding: 24px 20px; border-radius: 14px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(26,51,80,0.14);
+    border: 1px solid var(--sand-dark);
+    position: relative; z-index: 5;
+  }
+
+  .countdown-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px;
+  }
+
+  .countdown-grid {
+    display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+  }
+
+  .countdown-cell {
+    display: flex; flex-direction: column; align-items: center; min-width: 64px;
+  }
+
+  .countdown-num {
+    font-family: 'Playfair Display', serif; font-size: 2.4rem;
+    color: var(--navy); font-weight: 700; line-height: 1;
+  }
+
+  .countdown-unit {
+    font-size: 9px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--text-muted); margin-top: 4px;
+  }
+
+  /* CONTENT */
+  .content {
+    max-width: 860px; margin: 0 auto; padding: 0 24px 100px;
+  }
+
+  /* BANNERS */
+  .info-banner {
+    background: var(--white); border-radius: 12px;
+    padding: 20px 24px; margin: 0 auto 24px;
+    border: 1px solid var(--sand-dark); text-align: center;
+  }
+
+  .info-banner.warning { border-left: 4px solid var(--gold); text-align: left; }
+
+  .info-banner-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 6px;
+  }
+
+  .info-banner-title {
+    font-family: 'Playfair Display', serif; font-size: 1.15rem;
+    color: var(--navy); margin-bottom: 6px;
+  }
+
+  .info-banner-text {
+    font-size: 14px; color: var(--text-muted); line-height: 1.6;
+  }
+
+  /* ADMIN PANEL */
+  .admin-panel {
+    background: var(--white); border-radius: 12px;
+    padding: 24px; margin-bottom: 24px;
+    border: 1px solid var(--sand-dark);
+    border-left: 4px solid var(--gold);
+  }
+
+  .admin-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 6px;
+  }
+
+  .admin-title {
+    font-family: 'Playfair Display', serif; font-size: 1.2rem;
+    color: var(--navy); margin-bottom: 10px;
+  }
+
+  .admin-status {
+    font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;
+  }
+
+  .admin-btn {
+    background: var(--navy); color: var(--white); border: none;
+    padding: 12px 28px; border-radius: 50px; cursor: pointer;
+    font-family: 'Lato', sans-serif; font-size: 12px;
+    letter-spacing: 2px; text-transform: uppercase; font-weight: 700;
+    transition: all 0.2s;
+  }
+
+  .admin-btn:hover { background: var(--terracotta); transform: translateY(-1px); }
+  .admin-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; background: var(--text-muted); }
+
+  /* MISSION SECTION (pre-reveal) */
+  .mission-section { text-align: center; padding: 32px 0 16px; }
+
+  .mission-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 8px;
+  }
+
+  .mission-title {
+    font-family: 'Playfair Display', serif; font-size: 1.8rem;
+    color: var(--navy); margin-bottom: 6px;
+  }
+
+  .mission-subtitle {
+    font-size: 14px; color: var(--text-muted); font-style: italic; margin-bottom: 32px;
+  }
+
+  /* FLIP CARD */
+  .mission-card-wrap { max-width: 300px; margin: 0 auto 32px; }
+
+  .flip-card { height: 380px; perspective: 1000px; cursor: pointer; }
+
+  .flip-card-inner {
+    position: relative; width: 100%; height: 100%;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+
+  .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+
+  .flip-front, .flip-back {
+    position: absolute; inset: 0; backface-visibility: hidden;
+    border-radius: 16px; overflow: hidden;
+  }
+
+  .flip-front {
+    background: var(--white);
+    box-shadow: 0 4px 24px rgba(26,51,80,0.12);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 14px; padding: 28px;
+    border: 2px solid var(--gold);
+  }
+
+  .flip-photo-wrap {
+    width: 140px; height: 140px; border-radius: 50%;
+    overflow: hidden; border: 3px solid var(--sand-dark);
+    box-shadow: 0 4px 16px rgba(26,51,80,0.1);
+    flex-shrink: 0;
+  }
+
+  .flip-photo-wrap img { width: 100%; height: 100%; object-fit: cover; }
+
+  .flip-mission-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--gold);
+  }
+
+  .flip-name {
+    font-family: 'Playfair Display', serif; font-size: 1.4rem;
+    color: var(--navy); text-align: center;
+  }
+
+  .flip-hint {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--text-muted); opacity: 0.6;
+  }
+
+  .flip-back {
+    transform: rotateY(180deg);
+    background: var(--navy);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 16px; padding: 28px;
+    box-shadow: 0 4px 24px rgba(26,51,80,0.2);
+    text-align: center;
+  }
+
+  .flip-back-photo {
+    width: 100px; height: 100px; border-radius: 50%;
+    overflow: hidden; border: 3px solid var(--gold);
+  }
+
+  .flip-back-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+  .flip-back-name {
+    font-family: 'Playfair Display', serif; font-size: 1.3rem;
+    color: var(--sand);
+  }
+
+  .flip-back-sub {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--azure-light);
+  }
+
+  .flip-back-hint {
+    font-size: 12px; color: rgba(255,255,255,0.5); font-style: italic;
+    line-height: 1.5;
+  }
+
+  /* TIPS PANEL */
+  .tips-panel {
+    background: var(--white); border-radius: 12px;
+    padding: 24px; margin: 0 auto 24px;
+    border: 1px solid var(--sand-dark);
+    max-width: 560px;
+  }
+
+  .tips-title {
+    font-family: 'Playfair Display', serif; font-size: 1.15rem;
+    color: var(--navy); text-align: center; margin-bottom: 16px;
+  }
+
+  .tips-list { list-style: none; }
+
+  .tips-list li {
+    font-size: 14px; color: var(--text); line-height: 1.6;
+    padding: 6px 0 6px 20px; position: relative;
+    border-bottom: 1px solid var(--sand-dark);
+  }
+
+  .tips-list li:last-child { border-bottom: none; }
+
+  .tips-list li::before {
+    content: '✦'; position: absolute; left: 0; color: var(--gold); font-size: 10px; top: 10px;
+  }
+
+  .secret-banner {
+    background: linear-gradient(135deg, var(--navy) 0%, #0D1F33 100%);
+    color: white; padding: 20px 24px; border-radius: 12px;
+    text-align: center; max-width: 560px; margin: 0 auto 32px;
+    border: 1px solid rgba(232,200,74,0.3);
+  }
+
+  .secret-banner-title {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 1.15rem; color: var(--gold); margin-bottom: 6px;
+  }
+
+  .secret-banner-text {
+    font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.6;
+  }
+
+  /* POST-REVEAL: MATRIX */
+  .matrix-section {
+    background: var(--white); border-radius: 12px;
+    padding: 32px 24px; margin: 32px 0;
+    border: 1px solid var(--sand-dark);
+  }
+
+  .matrix-title {
+    font-family: 'Playfair Display', serif; font-size: 1.5rem;
+    color: var(--navy); text-align: center; margin-bottom: 6px;
+  }
+
+  .matrix-subtitle {
+    font-size: 12px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--text-muted);
+    text-align: center; margin-bottom: 28px;
+  }
+
+  .matrix-grid {
+    display: grid; gap: 10px;
+    grid-template-columns: 1fr;
+    max-width: 560px; margin: 0 auto;
+  }
+
+  .matrix-row {
+    display: flex; align-items: center; justify-content: center;
+    gap: 12px; padding: 10px 16px;
+    background: var(--sand); border-radius: 10px;
+  }
+
+  .matrix-name {
+    font-family: 'Playfair Display', serif; font-size: 1rem;
+    color: var(--navy); flex: 1; text-align: right;
+  }
+
+  .matrix-name.right { text-align: left; }
+
+  .matrix-arrow { font-size: 1.1rem; color: var(--gold); }
+
+  .matrix-pic {
+    width: 36px; height: 36px; border-radius: 50%;
+    object-fit: cover; border: 2px solid var(--sand-dark);
+    flex-shrink: 0;
+  }
+
+  /* POST-REVEAL: SHIRT GRID */
+  .shirt-section { margin-top: 32px; }
+
+  .shirt-section-header { text-align: center; margin-bottom: 24px; }
+
+  .shirt-section-title {
+    font-family: 'Playfair Display', serif; font-size: 1.6rem;
+    color: var(--navy); margin-bottom: 6px;
+  }
+
+  .shirt-section-subtitle {
+    font-size: 13px; color: var(--text-muted); font-style: italic;
+  }
+
+  .shirt-grid {
+    display: grid; gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+
+  .shirt-card {
+    background: var(--white); border-radius: 12px; overflow: hidden;
+    border: 1px solid var(--sand-dark);
+    box-shadow: 0 2px 10px rgba(26,51,80,0.06);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .shirt-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(26,51,80,0.12); }
+  .shirt-card.is-me { border: 2px solid var(--gold); }
+
+  .shirt-photo {
+    width: 100%; aspect-ratio: 1;
+    background: var(--sand);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; position: relative;
+  }
+
+  .shirt-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .shirt-photo-empty {
+    color: var(--text-muted); font-style: italic; font-size: 13px;
+    text-align: center; padding: 16px;
+  }
+
+  .shirt-photo-empty span { display: block; font-size: 2rem; margin-bottom: 6px; opacity: 0.4; }
+
+  .me-tag {
+    position: absolute; top: 8px; left: 8px;
+    background: var(--gold); color: var(--navy);
+    padding: 3px 10px; border-radius: 4px;
+    font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  }
+
+  .shirt-info { padding: 12px 14px; }
+
+  .shirt-name {
+    font-family: 'Playfair Display', serif; font-size: 1rem;
+    color: var(--navy); margin-bottom: 3px;
+  }
+
+  .shirt-from { font-size: 12px; color: var(--text-muted); font-style: italic; }
+
+  .shirt-comments-count {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--azure); margin-top: 5px;
+  }
+
+  /* PHOTO MODAL */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(13,31,51,0.8);
+    z-index: 800; display: none;
+    align-items: flex-start; justify-content: center;
+    overflow-y: auto; padding: 32px 16px;
+  }
+
+  .modal-backdrop.open { display: flex; }
+
+  .modal-card {
+    background: var(--white); border-radius: 14px;
+    max-width: 520px; width: 100%;
+    overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    margin: 0 auto;
+  }
+
+  .modal-header {
+    background: var(--navy); color: white;
+    padding: 16px 20px; display: flex;
+    justify-content: space-between; align-items: center;
+  }
+
+  .modal-header-title {
+    font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--sand);
+  }
+
+  .modal-close {
+    background: transparent; border: none; color: rgba(255,255,255,0.6);
+    font-size: 1.4rem; cursor: pointer; padding: 4px 8px;
+    transition: color 0.2s;
+  }
+
+  .modal-close:hover { color: white; }
+
+  .modal-photo {
+    background: var(--sand); min-height: 240px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .modal-photo img { width: 100%; max-height: 400px; object-fit: contain; display: block; }
+
+  .modal-photo-empty {
+    color: var(--text-muted); font-style: italic; font-size: 14px;
+    text-align: center; padding: 40px;
+  }
+
+  .modal-photo-empty span { display: block; font-size: 2.5rem; margin-bottom: 8px; opacity: 0.3; }
+
+  .modal-caption {
+    padding: 12px 20px; font-style: italic;
+    font-size: 14px; color: var(--text-muted);
+    border-bottom: 1px solid var(--sand-dark);
+    min-height: 20px;
+  }
+
+  .modal-caption.empty { opacity: 0.5; }
+
+  .modal-actions {
+    padding: 12px 20px; display: flex; gap: 10px;
+    border-bottom: 1px solid var(--sand-dark);
+  }
+
+  .modal-action-btn {
+    background: var(--navy); color: white; border: none;
+    padding: 10px 20px; border-radius: 50px; cursor: pointer;
+    font-size: 12px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; transition: all 0.2s;
+  }
+
+  .modal-action-btn:hover { background: var(--terracotta); }
+  .modal-action-btn.secondary { background: transparent; color: var(--text-muted); border: 1px solid var(--sand-dark); }
+  .modal-action-btn.secondary:hover { background: var(--sand); color: var(--navy); }
+
+  .modal-section-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--text-muted);
+    padding: 14px 20px 4px;
+  }
+
+  .comments-list { padding: 0 20px 8px; max-height: 260px; overflow-y: auto; }
+
+  .comment {
+    padding: 10px 0; border-bottom: 1px solid var(--sand-dark);
+  }
+
+  .comment:last-child { border-bottom: none; }
+
+  .comment-meta {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 3px;
+  }
+
+  .comment-name { font-weight: 700; font-size: 13px; color: var(--navy); }
+
+  .comment-time { font-size: 11px; color: var(--text-muted); }
+
+  .comment-delete {
+    background: none; border: none; color: var(--terracotta);
+    font-size: 11px; cursor: pointer; padding: 0; text-decoration: underline;
+  }
+
+  .comment-text { font-size: 14px; color: var(--text); line-height: 1.5; }
+
+  .comments-empty { font-style: italic; color: var(--text-muted); font-size: 13px; padding: 8px 0; }
+
+  .comment-form {
+    display: flex; gap: 8px; padding: 12px 20px 16px;
+    border-top: 1px solid var(--sand-dark);
+  }
+
+  .comment-input {
+    flex: 1; padding: 10px 14px;
+    border: 2px solid var(--sand-dark); border-radius: 50px;
+    font-family: 'Lato', sans-serif; font-size: 14px; color: var(--text);
+    outline: none; transition: border-color 0.2s;
+  }
+
+  .comment-input:focus { border-color: var(--azure); }
+
+  .comment-submit {
+    background: var(--azure); color: white; border: none;
+    padding: 10px 18px; border-radius: 50px; cursor: pointer;
+    font-size: 12px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; transition: background 0.2s; flex-shrink: 0;
+  }
+
+  .comment-submit:hover { background: var(--navy); }
+
+  /* UPLOAD MODAL */
+  .upload-modal {
+    position: fixed; inset: 0; background: rgba(13,31,51,0.8);
+    z-index: 850; display: none;
+    align-items: center; justify-content: center; padding: 24px 16px;
+  }
+
+  .upload-modal.open { display: flex; }
+
+  .upload-card {
+    background: var(--white); border-radius: 14px;
+    max-width: 460px; width: 100%; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+
+  .upload-zone {
+    margin: 20px; border: 2px dashed var(--sand-dark); border-radius: 10px;
+    padding: 24px; text-align: center; transition: border-color 0.2s;
+  }
+
+  .upload-zone:hover { border-color: var(--azure); }
+  .upload-zone input[type="file"] { display: none; }
+
+  .upload-zone label {
+    cursor: pointer; display: block; padding: 8px;
+    color: var(--text-muted); font-style: italic; font-size: 14px;
+  }
+
+  .upload-zone label span { display: block; font-size: 2.5rem; margin-bottom: 8px; opacity: 0.4; }
+
+  .upload-preview {
+    margin: 0 20px 16px; max-width: calc(100% - 40px);
+    border-radius: 8px; max-height: 280px; object-fit: contain; display: none;
+  }
+
+  .upload-caption-input {
+    margin: 0 20px 16px; padding: 12px 14px; width: calc(100% - 40px);
+    border: 2px solid var(--sand-dark); border-radius: 8px;
+    font-family: 'Lato', sans-serif; font-size: 14px; outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .upload-caption-input:focus { border-color: var(--azure); }
+
+  .upload-actions {
+    padding: 0 20px 20px; display: flex; gap: 8px; justify-content: flex-end;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%);
+    background: var(--navy); color: var(--sand);
+    padding: 12px 24px; border-radius: 50px;
+    font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    z-index: 900; box-shadow: var(--shadow-lg);
+    opacity: 0; transition: opacity 0.3s; pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .toast.show { opacity: 1; }
+
+  /* MOBILE */
+  @media (max-width: 600px) {
+    .countdown-num { font-size: 1.8rem; }
+    .shirt-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .flip-card { height: 340px; }
+    .flip-photo-wrap { width: 110px; height: 110px; }
+    .matrix-name { font-size: 0.9rem; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="swap-header">
+  <div class="swap-eyebrow">Marshall's Way · July 2026</div>
+  <h1>Airport <span>Shirt</span> Swap</h1>
+  <div class="swap-header-sub">A secret shirt Santa for the flight to Naples</div>
+</header>
+
+<!-- Countdown (pre-reveal only) -->
+<div class="countdown-box" id="countdownBox" style="display:none">
+  <div class="countdown-label">Reveal In</div>
+  <div class="countdown-grid">
+    <div class="countdown-cell"><div class="countdown-num" id="cd-d">--</div><div class="countdown-unit">Days</div></div>
+    <div class="countdown-cell"><div class="countdown-num" id="cd-h">--</div><div class="countdown-unit">Hours</div></div>
+    <div class="countdown-cell"><div class="countdown-num" id="cd-m">--</div><div class="countdown-unit">Min</div></div>
+    <div class="countdown-cell"><div class="countdown-num" id="cd-s">--</div><div class="countdown-unit">Sec</div></div>
+  </div>
+</div>
+
+<div class="content">
+
+  <div id="statusBanner"></div>
+  <div id="adminPanel"></div>
+
+  <!-- PRE-REVEAL: YOUR MISSION -->
+  <div id="missionSection" style="display:none">
+    <div class="mission-section">
+      <div class="mission-eyebrow">Your Mission</div>
+      <h2 class="mission-title">You're shopping for…</h2>
+      <p class="mission-subtitle">Tap the card to reveal your assignment</p>
+    </div>
+
+    <div class="mission-card-wrap">
+      <div class="flip-card" onclick="flipCard(this)" id="missionCard">
+        <div class="flip-card-inner">
+          <div class="flip-front">
+            <div class="flip-mission-eyebrow">🎁 Tap to Reveal</div>
+            <div class="flip-photo-wrap" id="missionPhoto"><img src="" alt=""></div>
+            <div class="flip-name" id="missionName"></div>
+            <div class="flip-hint">tap to flip</div>
+          </div>
+          <div class="flip-back">
+            <div class="flip-back-photo" id="missionBackPhoto"><img src="" alt=""></div>
+            <div class="flip-back-name" id="missionBackName"></div>
+            <div class="flip-back-sub">Your shirt recipient</div>
+            <div class="flip-back-hint">Buy something ridiculous.<br>They have to wear it the whole flight. 😄</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tips-panel">
+      <div class="tips-title">💡 Tips for the Perfect Shirt</div>
+      <ul class="tips-list">
+        <li>The more ridiculous, the better — embarrassing is the goal</li>
+        <li>Bonus points for an inside joke only they would get</li>
+        <li>Get something they'd never buy themselves</li>
+        <li>Size up — tight is no fun in airplane seats</li>
+        <li>Bring it wrapped to preserve the surprise</li>
+        <li>They have to wear it the entire flight to Naples 🛫</li>
+      </ul>
+    </div>
+
+    <div class="secret-banner">
+      <div class="secret-banner-title">🤐 And someone is shopping for you…</div>
+      <div class="secret-banner-text">Find out at the airport on July 2nd at 5:40 PM.<br>Until then, no peeking. 😉</div>
+    </div>
+  </div>
+
+  <!-- POST-REVEAL -->
+  <div id="postRevealSection" style="display:none">
+    <div class="matrix-section">
+      <h2 class="matrix-title">🎁 The Matches</h2>
+      <div class="matrix-subtitle">Who got who a shirt</div>
+      <div class="matrix-grid" id="matrixGrid"></div>
+    </div>
+
+    <div class="shirt-section">
+      <div class="shirt-section-header">
+        <h2 class="shirt-section-title">📸 The Shirts</h2>
+        <p class="shirt-section-subtitle">Tap any card to see the photo & comments</p>
+      </div>
+      <div class="shirt-grid" id="shirtGrid"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Photo + Comments Modal -->
+<div class="modal-backdrop" id="photoModal" onclick="if(event.target===this)closePhotoModal()">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div class="modal-header-title" id="photoModalName">Name</div>
+      <button class="modal-close" onclick="closePhotoModal()">✕</button>
+    </div>
+    <div class="modal-photo" id="photoModalImage"></div>
+    <div class="modal-caption" id="photoModalCaption"></div>
+    <div class="modal-actions" id="photoModalActions" style="display:none">
+      <button class="modal-action-btn" onclick="openUploadModal()">📷 Upload / Replace</button>
+    </div>
+    <div class="modal-section-label">Comments</div>
+    <div class="comments-list" id="commentsList"></div>
+    <form class="comment-form" onsubmit="submitComment(event)">
+      <input type="text" class="comment-input" id="commentInput" placeholder="Add a comment…" maxlength="300">
+      <button type="submit" class="comment-submit">Post</button>
+    </form>
+  </div>
+</div>
+
+<!-- Upload Modal -->
+<div class="upload-modal" id="uploadModal" onclick="if(event.target===this)closeUploadModal()">
+  <div class="upload-card">
+    <div class="modal-header">
+      <div class="modal-header-title">Upload Your Shirt Photo</div>
+      <button class="modal-close" onclick="closeUploadModal()">✕</button>
+    </div>
+    <div class="upload-zone">
+      <label for="uploadFileInput">
+        <span>📷</span>
+        Tap to select a photo
+      </label>
+      <input type="file" id="uploadFileInput" accept="image/*" onchange="handleFileSelect(event)">
+    </div>
+    <img class="upload-preview" id="uploadPreview" src="" alt="">
+    <input type="text" class="upload-caption-input" id="uploadCaptionInput" placeholder="Caption (optional) — make it funny!" maxlength="200">
+    <div class="upload-actions">
+      <button class="modal-action-btn secondary" onclick="closeUploadModal()">Cancel</button>
+      <button class="modal-action-btn" id="uploadSubmitBtn" onclick="submitUpload()" disabled>Upload</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+  import { db, requireAuth, getCurrentUser, getCurrentEmoji } from './js/supabase.js';
+  import { renderNav } from './js/nav.js';
+
+  await requireAuth();
+  renderNav('airport-swap.html');
+
+  // ─── CONFIG ─────────────────────────────────────────────────────────────────
+
+  // July 2, 2026 5:40 PM EDT = 21:40 UTC
+  const REVEAL_AT = new Date('2026-07-02T21:40:00Z');
+  const STORAGE_BUCKET = 'mw-airport-swap';
+
+  // ─── PARTICIPANTS (9 — no Saads) ────────────────────────────────────────────
+
+  const MEMBERS = [
+    { name: 'Victoria',  photo: 'images/victoria.jpg'  },
+    { name: 'Marshall',  photo: 'images/marshall.jpg'  },
+    { name: 'Danielle',  photo: 'images/danielle.jpg'  },
+    { name: 'Mac',       photo: 'images/mac.jpg'       },
+    { name: 'Jacob',     photo: 'images/jacob.jpg'     },
+    { name: 'Ginger',    photo: 'images/ginger.jpg'    },
+    { name: 'Kimberly',  photo: 'images/kimberly.jpg'  },
+    { name: 'Stephanie', photo: 'images/stephanie.jpg' },
+    { name: 'Moshe',     photo: 'images/moshe.jpg'     },
+  ];
+
+  // ─── STATE ───────────────────────────────────────────────────────────────────
+
+  const userName = getCurrentUser();
+  let allMatches  = [];
+  let allPhotos   = [];
+  let allComments = [];
+  let openModalPerson = null;
+  let selectedFile = null;
+  let isAdmin = false;
+
+  // ─── HELPERS ─────────────────────────────────────────────────────────────────
+
+  function isRevealed() { return new Date() >= REVEAL_AT; }
+
+  function photoForName(name) {
+    return allPhotos.find(p => p.user_name === name) || null;
+  }
+
+  function escapeHtml(s) {
+    const d = document.createElement('div');
+    d.textContent = s || '';
+    return d.innerHTML;
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2400);
+  }
+
+  // ─── DATA LOADERS ────────────────────────────────────────────────────────────
+
+  async function loadMatches() {
+    const { data } = await db.from('mw_airport_swap_matches').select('*');
+    allMatches = data || [];
+  }
+
+  async function loadPhotos() {
+    const { data } = await db.from('mw_airport_swap_photos').select('*');
+    allPhotos = data || [];
+  }
+
+  async function loadComments() {
+    const { data } = await db.from('mw_airport_swap_comments').select('*').order('posted_at', { ascending: true });
+    allComments = data || [];
+  }
+
+  async function checkAdmin() {
+    const { data: { session } } = await db.auth.getSession();
+    if (!session) return;
+    const { data } = await db.from('profiles').select('is_admin').eq('id', session.user.id).single();
+    isAdmin = !!data?.is_admin;
+  }
+
+  // ─── RENDER ──────────────────────────────────────────────────────────────────
+
+  function render() {
+    const revealed = isRevealed();
+    const matchesReady = allMatches.length > 0;
+
+    // Countdown
+    const cdBox = document.getElementById('countdownBox');
+    cdBox.style.display = (!revealed && matchesReady) ? 'block' : 'none';
+
+    // Status banner
+    renderStatusBanner(revealed, matchesReady);
+
+    // Admin panel
+    renderAdminPanel(revealed, matchesReady);
+
+    // Mission section (pre-reveal, logged-in participant)
+    const missionEl = document.getElementById('missionSection');
+    if (!revealed && matchesReady && userName) {
+      renderMission();
+      missionEl.style.display = 'block';
+    } else {
+      missionEl.style.display = 'none';
+    }
+
+    // Post-reveal
+    const postEl = document.getElementById('postRevealSection');
+    postEl.style.display = revealed ? 'block' : 'none';
+    if (revealed) {
+      renderMatrix();
+      renderShirtGrid();
+    }
+  }
+
+  function renderStatusBanner(revealed, matchesReady) {
+    const el = document.getElementById('statusBanner');
+    if (revealed) { el.innerHTML = ''; return; }
+    if (!matchesReady) {
+      el.innerHTML = `
+        <div class="info-banner">
+          <div class="info-banner-eyebrow">Coming Soon</div>
+          <div class="info-banner-title">Matches haven't been generated yet</div>
+          <div class="info-banner-text">${isAdmin ? 'Use the admin panel below to generate matches when you\'re ready.' : 'Check back soon — Victoria will set this up before the trip.'}</div>
+        </div>`;
+    } else {
+      el.innerHTML = '';
+    }
+  }
+
+  function renderAdminPanel(revealed, matchesReady) {
+    const el = document.getElementById('adminPanel');
+    if (!isAdmin || revealed) { el.innerHTML = ''; return; }
+    if (matchesReady) {
+      el.innerHTML = `
+        <div class="admin-panel">
+          <div class="admin-eyebrow">🛠 Admin</div>
+          <div class="admin-title">Matches Locked In</div>
+          <div class="admin-status">All 9 participants have their secret assignment. The full matrix reveals to everyone on July 2nd at 5:40 PM.</div>
+          <button class="admin-btn" disabled>Locked</button>
+        </div>`;
+    } else {
+      el.innerHTML = `
+        <div class="admin-panel">
+          <div class="admin-eyebrow">🛠 Admin Only</div>
+          <div class="admin-title">Generate Matches</div>
+          <div class="admin-status">Click below to randomly pair all 9 participants in a chain — everyone gives one shirt and receives one. This is FINAL and cannot be undone. Make sure all 9 are ready before clicking.</div>
+          <button class="admin-btn" id="generateBtn" onclick="generateMatches()">Generate Matches Now</button>
+        </div>`;
+    }
+  }
+
+  function renderMission() {
+    const myMatch = allMatches.find(m => m.giver_name === userName);
+    if (!myMatch) return;
+
+    const recipient = MEMBERS.find(m => m.name === myMatch.receiver_name);
+    if (!recipient) return;
+
+    // Front card
+    const photoEl = document.getElementById('missionPhoto');
+    photoEl.querySelector('img').src = recipient.photo;
+    photoEl.querySelector('img').alt = recipient.name;
+    document.getElementById('missionName').textContent = recipient.name;
+
+    // Back card
+    const backPhotoEl = document.getElementById('missionBackPhoto');
+    backPhotoEl.querySelector('img').src = recipient.photo;
+    backPhotoEl.querySelector('img').alt = recipient.name;
+    document.getElementById('missionBackName').textContent = recipient.name;
+  }
+
+  function renderMatrix() {
+    const grid = document.getElementById('matrixGrid');
+    if (!allMatches.length) {
+      grid.innerHTML = '<p style="text-align:center;color:var(--text-muted);font-style:italic">No matches were generated.</p>';
+      return;
+    }
+    grid.innerHTML = allMatches.map(m => {
+      const giver    = MEMBERS.find(p => p.name === m.giver_name);
+      const receiver = MEMBERS.find(p => p.name === m.receiver_name);
+      return `
+        <div class="matrix-row">
+          <span class="matrix-name">${escapeHtml(m.giver_name)}</span>
+          <img class="matrix-pic" src="${giver?.photo || ''}" alt="${escapeHtml(m.giver_name)}">
+          <span class="matrix-arrow">→</span>
+          <img class="matrix-pic" src="${receiver?.photo || ''}" alt="${escapeHtml(m.receiver_name)}">
+          <span class="matrix-name right">${escapeHtml(m.receiver_name)}</span>
+        </div>`;
+    }).join('');
+  }
+
+  function renderShirtGrid() {
+    const grid = document.getElementById('shirtGrid');
+    grid.innerHTML = MEMBERS.map(member => {
+      const photo = photoForName(member.name);
+      const match = allMatches.find(m => m.receiver_name === member.name);
+      const giverName = match?.giver_name || '';
+      const isMe = member.name === userName;
+      const commentCount = allComments.filter(c => c.photo_user_name === member.name).length;
+
+      const photoHtml = photo
+        ? `<img src="${photo.photo_url}" alt="${escapeHtml(member.name)}'s shirt">`
+        : `<div class="shirt-photo-empty"><span>📷</span>${isMe ? 'Tap to upload' : 'No photo yet'}</div>`;
+
+      return `
+        <div class="shirt-card${isMe ? ' is-me' : ''}" onclick="openPhotoModal('${escapeHtml(member.name)}')">
+          <div class="shirt-photo">
+            ${isMe ? '<div class="me-tag">You</div>' : ''}
+            ${photoHtml}
+          </div>
+          <div class="shirt-info">
+            <div class="shirt-name">${escapeHtml(member.name)}</div>
+            ${giverName ? `<div class="shirt-from">Shirt from ${escapeHtml(giverName)}</div>` : ''}
+            ${commentCount ? `<div class="shirt-comments-count">💬 ${commentCount} comment${commentCount === 1 ? '' : 's'}</div>` : ''}
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // ─── COUNTDOWN ───────────────────────────────────────────────────────────────
+
+  function updateCountdown() {
+    const diff = REVEAL_AT - new Date();
+    if (diff <= 0) { render(); return; }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-d').textContent = d;
+    document.getElementById('cd-h').textContent = String(h).padStart(2, '0');
+    document.getElementById('cd-m').textContent = String(m).padStart(2, '0');
+    document.getElementById('cd-s').textContent = String(s).padStart(2, '0');
+  }
+
+  // ─── GENERATE MATCHES ────────────────────────────────────────────────────────
+
+  window.generateMatches = async function() {
+    if (!confirm('This will randomly pair all 9 participants and LOCK the matches permanently. Cannot be undone. Continue?')) return;
+    const btn = document.getElementById('generateBtn');
+    btn.disabled = true; btn.textContent = 'Generating…';
+    try {
+      const names = MEMBERS.map(m => m.name);
+      const shuffled = [...names].sort(() => Math.random() - 0.5);
+      const matches = shuffled.map((giver, i) => ({
+        giver_name: giver,
+        receiver_name: shuffled[(i + 1) % shuffled.length],
+        generated_by: userName
+      }));
+      const { error } = await db.from('mw_airport_swap_matches').insert(matches);
+      if (error) throw error;
+      showToast('Matches generated! 🎁');
+      await loadMatches();
+      render();
+    } catch (err) {
+      console.error(err);
+      showToast('Generation failed — check console');
+      btn.disabled = false; btn.textContent = 'Generate Matches Now';
+    }
+  };
+
+  // ─── FLIP CARD ───────────────────────────────────────────────────────────────
+
+  window.flipCard = function(card) { card.classList.toggle('flipped'); };
+
+  // ─── PHOTO MODAL ─────────────────────────────────────────────────────────────
+
+  window.openPhotoModal = function(personName) {
+    openModalPerson = personName;
+    const photo = photoForName(personName);
+    const isMe = personName === userName;
+
+    document.getElementById('photoModalName').textContent = personName;
+
+    const photoEl = document.getElementById('photoModalImage');
+    photoEl.innerHTML = photo
+      ? `<img src="${photo.photo_url}" alt="${escapeHtml(personName)}'s shirt">`
+      : `<div class="modal-photo-empty"><span>📷</span>No photo uploaded yet</div>`;
+
+    const captionEl = document.getElementById('photoModalCaption');
+    captionEl.textContent = photo?.caption || (isMe ? 'Add a funny caption when you upload!' : '(no caption)');
+    captionEl.classList.toggle('empty', !photo?.caption);
+
+    document.getElementById('photoModalActions').style.display = isMe ? 'flex' : 'none';
+
+    renderComments(personName);
+    document.getElementById('photoModal').classList.add('open');
+  };
+
+  window.closePhotoModal = function() {
+    document.getElementById('photoModal').classList.remove('open');
+    openModalPerson = null;
+  };
+
+  function renderComments(personName) {
+    const list = document.getElementById('commentsList');
+    const comments = allComments.filter(c => c.photo_user_name === personName);
+    if (!comments.length) {
+      list.innerHTML = '<p class="comments-empty">No comments yet — be the first!</p>';
+      return;
+    }
+    list.innerHTML = comments.map(c => {
+      const time = new Date(c.posted_at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+      const isMine = c.commenter_name === userName;
+      return `
+        <div class="comment">
+          <div class="comment-meta">
+            <span class="comment-name">${escapeHtml(c.commenter_name)}</span>
+            <span class="comment-time">${time}${isMine ? ` · <button class="comment-delete" onclick="deleteComment('${c.id}')">delete</button>` : ''}</span>
+          </div>
+          <p class="comment-text">${escapeHtml(c.comment_text)}</p>
+        </div>`;
+    }).join('');
+  }
+
+  window.submitComment = async function(e) {
+    e.preventDefault();
+    const input = document.getElementById('commentInput');
+    const text = input.value.trim();
+    if (!text || !openModalPerson) return;
+    const { error } = await db.from('mw_airport_swap_comments').insert({
+      photo_user_name: openModalPerson,
+      commenter_name: userName,
+      comment_text: text,
+      posted_at: new Date().toISOString()
+    });
+    if (error) { showToast('Failed to post'); return; }
+    input.value = '';
+    await loadComments();
+    renderComments(openModalPerson);
+    renderShirtGrid();
+  };
+
+  window.deleteComment = async function(id) {
+    if (!confirm('Delete this comment?')) return;
+    const { error } = await db.from('mw_airport_swap_comments').delete().eq('id', id);
+    if (error) { showToast('Delete failed'); return; }
+    await loadComments();
+    if (openModalPerson) renderComments(openModalPerson);
+    renderShirtGrid();
+  };
+
+  // ─── UPLOAD ──────────────────────────────────────────────────────────────────
+
+  window.openUploadModal = function() {
+    selectedFile = null;
+    document.getElementById('uploadFileInput').value = '';
+    document.getElementById('uploadPreview').style.display = 'none';
+    document.getElementById('uploadCaptionInput').value = '';
+    document.getElementById('uploadSubmitBtn').disabled = true;
+    const myPhoto = photoForName(userName);
+    if (myPhoto?.caption) document.getElementById('uploadCaptionInput').value = myPhoto.caption;
+    document.getElementById('uploadModal').classList.add('open');
+  };
+
+  window.closeUploadModal = function() {
+    document.getElementById('uploadModal').classList.remove('open');
+    selectedFile = null;
+  };
+
+  window.handleFileSelect = function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    selectedFile = file;
+    const preview = document.getElementById('uploadPreview');
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = 'block';
+    document.getElementById('uploadSubmitBtn').disabled = false;
+  };
+
+  window.submitUpload = async function() {
+    if (!selectedFile) return;
+    const btn = document.getElementById('uploadSubmitBtn');
+    btn.disabled = true; btn.textContent = 'Uploading…';
+    try {
+      const ext = selectedFile.name.split('.').pop() || 'jpg';
+      const path = `${userName.toLowerCase()}_${Date.now()}.${ext}`;
+      const { error: uploadError } = await db.storage.from(STORAGE_BUCKET).upload(path, selectedFile, { upsert: true });
+      if (uploadError) throw uploadError;
+      const { data: urlData } = db.storage.from(STORAGE_BUCKET).getPublicUrl(path);
+      const caption = document.getElementById('uploadCaptionInput').value.trim();
+      const { error: dbError } = await db.from('mw_airport_swap_photos').upsert({
+        user_name: userName,
+        photo_url: urlData.publicUrl,
+        caption: caption || null,
+        uploaded_at: new Date().toISOString()
+      }, { onConflict: 'user_name' });
+      if (dbError) throw dbError;
+      showToast('Photo uploaded! 👕');
+      await loadPhotos();
+      closeUploadModal();
+      renderShirtGrid();
+      if (openModalPerson) openPhotoModal(openModalPerson);
+    } catch (err) {
+      console.error(err);
+      showToast('Upload failed — try again');
+      btn.disabled = false; btn.textContent = 'Upload';
+    }
+  };
+
+  // ─── INIT ─────────────────────────────────────────────────────────────────────
+
+  await checkAdmin();
+  await loadMatches();
+  await loadPhotos();
+  await loadComments();
+  render();
+
+  setInterval(() => {
+    if (!isRevealed()) {
+      updateCountdown();
+    } else {
+      const cdBox = document.getElementById('countdownBox');
+      if (cdBox.style.display !== 'none') render();
+    }
+  }, 1000);
+
+</script>
+</body>
+</html>
