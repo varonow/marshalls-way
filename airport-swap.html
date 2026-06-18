@@ -814,16 +814,9 @@
     allComments = data || [];
   }
 
-    async function checkAdmin() {
-        try {
-            const { data: { session } } = await db.auth.getSession();
-            if (!session) return;
-                const { data } = await db.from('profiles').select('is_admin').eq('id', session.user.id).single();
-                isAdmin = !!data?.is_admin;
-            } catch (e) {
-            isAdmin = false;
-        }
-    }
+  async function checkAdmin() {
+    isAdmin = userName === 'Victoria';
+  }
 
   // ─── RENDER ──────────────────────────────────────────────────────────────────
 
