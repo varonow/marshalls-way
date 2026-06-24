@@ -113,6 +113,115 @@
     font-weight: 400; font-size: 11px; display: block; margin-top: 2px;
   }
 
+
+  .glance-section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--terracotta);
+    margin: 16px 0 10px; text-align: left;
+  }
+
+  .dress-tip {
+    cursor: help;
+    border-bottom: 1px dashed var(--azure);
+    color: var(--azure);
+    position: relative;
+    display: inline;
+  }
+
+  .dress-tip::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--navy);
+    color: var(--sand);
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.6;
+    padding: 10px 14px;
+    border-radius: 8px;
+    white-space: normal;
+    width: 260px;
+    text-align: left;
+    letter-spacing: 0;
+    text-transform: none;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  }
+
+  .dress-tip:hover::after { opacity: 1; }
+
+
+  /* GLANCE REDESIGN */
+  .glance-band {
+    margin-bottom: 20px;
+  }
+
+  .glance-band-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--navy);
+    margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+  }
+
+  .glance-band-title span {
+    font-size: 10px; color: var(--text-muted); font-weight: 400;
+    letter-spacing: 1px;
+  }
+
+  .glance-chips {
+    display: flex; flex-wrap: wrap; gap: 10px;
+  }
+
+  .glance-chip {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 16px; border-radius: 10px;
+    min-width: 130px; flex: 1;
+  }
+
+  .chip-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 700;
+    line-height: 1; flex-shrink: 0;
+  }
+
+  .chip-name {
+    font-size: 12px; font-weight: 700; line-height: 1.3;
+  }
+
+  .chip-azure { background: #EEF6FC; border: 1px solid #B8D8F0; }
+  .chip-azure .chip-num { color: var(--azure); }
+  .chip-azure .chip-name { color: var(--navy); }
+
+  .chip-terracotta { background: #FEF0E8; border: 1px solid #F0C8B0; }
+  .chip-terracotta .chip-num { color: var(--terracotta); }
+  .chip-terracotta .chip-name { color: var(--navy); }
+
+  .chip-green { background: #F4FBF6; border: 1px solid #A8D5B8; }
+  .chip-green .chip-num { color: #2E7D52; }
+  .chip-green .chip-name { color: var(--navy); }
+
+  .chip-gold { background: #FDF8E8; border: 1px solid #E8D898; }
+  .chip-gold .chip-num { color: #9A7A00; }
+  .chip-gold .chip-name { color: var(--navy); }
+
+  .chip-navy { background: #EEF2F8; border: 1px solid #B8C8E0; }
+  .chip-navy .chip-num { color: var(--navy); }
+  .chip-navy .chip-name { color: var(--navy); }
+
+  .chip-dark { background: #F0EEF8; border: 1px solid #9B8EC4; }
+  .chip-dark .chip-num { color: #5B4A9B; }
+  .chip-dark .chip-name { color: #3D3060; font-weight: 700; }
+  .chip-dark .dress-tip { color: #5B4A9B; border-bottom-color: #5B4A9B; }
+
+  @media (max-width: 600px) {
+    .glance-chip { min-width: 100px; }
+    .chip-num { font-size: 1.4rem; }
+  }
+
   /* STICKY TABS */
   .day-tabs-wrap {
     background: var(--white);
@@ -429,13 +538,69 @@
   <div class="glance-card">
     <div class="glance-eyebrow">At a Glance</div>
     <div class="glance-title">What You're Packing</div>
-    <div class="glance-grid">
-      <div class="glance-item"><span class="glance-num">7</span><span class="glance-label">Beach / Pool outfits</span></div>
-      <div class="glance-item"><span class="glance-num">2</span><span class="glance-label">Touring / Shopping outfits</span></div>
-      <div class="glance-item"><span class="glance-num">3–5</span><span class="glance-label">Gym / Lounge outfits</span></div>
-      <div class="glance-item"><span class="glance-num">9</span><span class="glance-label">Dinner outfits <em>(3 club nights · 11 restaurants)</em></span></div>
-      <div class="glance-item"><span class="glance-num">1</span><span class="glance-label">Airport outfit</span></div>
+
+    <!-- NIGHTS -->
+    <div class="glance-band">
+      <div class="glance-band-title">🌙 Nights <span>9 total</span></div>
+      <div class="glance-chips">
+        <div class="glance-chip chip-azure">
+          <div class="chip-num">4</div>
+          <div class="chip-name"><span class="dress-tip" data-tip="Women: sundress, linen trousers + blouse, flat sandals. Men: linen trousers, collared shirt, loafers. No shorts, flip flops or t-shirts.">Smart Casual ⓘ</span></div>
+        </div>
+        <div class="glance-chip chip-terracotta">
+          <div class="chip-num">1</div>
+          <div class="chip-name"><span class="dress-tip" data-tip="Women: silk or chiffon dress, heeled sandals, statement jewelry. Men: dress trousers, crisp shirt tucked in, leather loafers. No shorts or sneakers.">Elegant → Club ⓘ</span></div>
+        </div>
+        <div class="glance-chip chip-green">
+          <div class="chip-num">1</div>
+          <div class="chip-name"><span class="dress-tip" data-tip="Women: sundress or nice coverup, sandals. Men: quality swim shorts, linen shirt, sandals.">Resort Casual ⓘ</span></div>
+        </div>
+        <div class="glance-chip chip-gold">
+          <div class="chip-num">1</div>
+          <div class="chip-name"><span class="dress-tip" data-tip="This is Marshall's 63rd birthday party under the stars! Women: your most glamorous outfit — sequins, silk, something truly special. Men: sharp trousers + a great shirt. Think disco ball on a superyacht.">Show-Stopping ⓘ</span></div>
+        </div>
+        <div class="glance-chip chip-navy">
+          <div class="chip-num">1</div>
+          <div class="chip-name"><span class="dress-tip" data-tip="Candlelit Shabbat dinner aboard M/Y R23 anchored in the Bay of Naples. Women: an elegant dress — understated and beautiful. Men: dress trousers + a nice collared shirt.">Formal Onboard ⓘ</span></div>
+        </div>
+        <div class="glance-chip chip-dark">
+          <div class="chip-num">1</div>
+          <div class="chip-name"><span class="dress-tip" data-tip="STRICT DOOR — no swimwear, flip flops or sleeveless shirts. Women: chic dress, comfortable wedges (many stairs!). Men: dark trousers, nice shirt, dressy loafers.">Club Night ⓘ</span></div>
+        </div>
+      </div>
     </div>
+
+    <!-- DAYS -->
+    <div class="glance-band">
+      <div class="glance-band-title">☀️ Days</div>
+      <div class="glance-chips">
+        <div class="glance-chip chip-azure">
+          <div class="chip-num">5</div>
+          <div class="chip-name">Beach / Boat</div>
+        </div>
+        <div class="glance-chip chip-green">
+          <div class="chip-num">3</div>
+          <div class="chip-name">Beach Club</div>
+        </div>
+        <div class="glance-chip chip-terracotta">
+          <div class="chip-num">1</div>
+          <div class="chip-name">Water Sports</div>
+        </div>
+        <div class="glance-chip chip-gold">
+          <div class="chip-num">3–5</div>
+          <div class="chip-name">Gym / Spa / Tennis</div>
+        </div>
+        <div class="glance-chip chip-dark">
+          <div class="chip-num">3</div>
+          <div class="chip-name">Touring / Shopping</div>
+        </div>
+        <div class="glance-chip chip-navy">
+          <div class="chip-num">1</div>
+          <div class="chip-name">Airport / Home</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
