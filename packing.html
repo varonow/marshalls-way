@@ -410,6 +410,154 @@
     .outfit-label { font-size: 0.95rem; }
   }
 
+  /* DRESS CODE SECTION */
+  .dress-section {
+    margin-top: 60px; padding-top: 60px;
+    border-top: 2px solid var(--sand-dark);
+    scroll-margin-top: 130px;
+  }
+
+  .dress-section-title {
+    font-family: 'Playfair Display', serif; font-size: 2rem;
+    color: var(--navy); margin-bottom: 8px;
+    display: flex; align-items: center; gap: 16px;
+  }
+
+  .dress-section-title::after {
+    content: ''; flex: 1; height: 2px;
+    background: linear-gradient(90deg, var(--terracotta), transparent);
+  }
+
+  .dress-section-sub {
+    font-size: 13px; color: var(--text-muted); font-style: italic;
+    margin-bottom: 32px;
+  }
+
+  /* LEGEND */
+  .dress-legend {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px; margin-bottom: 40px;
+  }
+
+  .dress-legend-card {
+    border-radius: 12px; padding: 20px;
+    border-left: 4px solid;
+  }
+
+  .dress-legend-card.smart { background: #EEF6FC; border-color: var(--azure); }
+  .dress-legend-card.elegant { background: #FEF8F5; border-color: var(--terracotta); }
+  .dress-legend-card.club { background: #1A3350; border-color: var(--gold); }
+  .dress-legend-card.casual { background: #F4FBF6; border-color: #2E7D52; }
+
+  .dress-legend-badge {
+    display: inline-block; font-size: 9px; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 20px; margin-bottom: 10px;
+  }
+
+  .smart .dress-legend-badge { background: var(--azure); color: white; }
+  .elegant .dress-legend-badge { background: var(--terracotta); color: white; }
+  .club .dress-legend-badge { background: var(--gold); color: var(--navy); }
+  .casual .dress-legend-badge { background: #2E7D52; color: white; }
+
+  .dress-legend-title {
+    font-family: 'Playfair Display', serif; font-size: 1.1rem;
+    font-weight: 700; margin-bottom: 10px;
+  }
+
+  .smart .dress-legend-title, .elegant .dress-legend-title,
+  .casual .dress-legend-title { color: var(--navy); }
+  .club .dress-legend-title { color: var(--gold); }
+
+  .dress-legend-desc {
+    font-size: 12px; line-height: 1.8;
+  }
+
+  .smart .dress-legend-desc, .elegant .dress-legend-desc,
+  .casual .dress-legend-desc { color: var(--text-muted); }
+  .club .dress-legend-desc { color: rgba(255,255,255,0.65); }
+
+  .dress-legend-desc strong {
+    display: block; margin-top: 6px; font-size: 11px;
+    letter-spacing: 0.5px;
+  }
+
+  .smart .dress-legend-desc strong { color: var(--azure); }
+  .elegant .dress-legend-desc strong { color: var(--terracotta); }
+  .club .dress-legend-desc strong { color: var(--gold); }
+  .casual .dress-legend-desc strong { color: #2E7D52; }
+
+  /* RESTAURANT CARDS */
+  .restaurant-list {
+    display: flex; flex-direction: column; gap: 12px;
+  }
+
+  .restaurant-card {
+    background: var(--white); border-radius: 12px;
+    border: 1px solid var(--sand-dark); overflow: hidden;
+    display: flex; align-items: stretch;
+  }
+
+  .restaurant-stripe {
+    width: 6px; flex-shrink: 0;
+  }
+
+  .stripe-smart { background: var(--azure); }
+  .stripe-elegant { background: var(--terracotta); }
+  .stripe-club { background: var(--gold); }
+  .stripe-casual { background: #2E7D52; }
+  .stripe-none { background: var(--sand-dark); }
+
+  .restaurant-body {
+    padding: 16px 20px; flex: 1;
+    display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+  }
+
+  .restaurant-date {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--text-muted);
+    flex-shrink: 0; min-width: 60px;
+  }
+
+  .restaurant-info { flex: 1; min-width: 180px; }
+
+  .restaurant-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 2px;
+  }
+
+  .restaurant-location {
+    font-size: 11px; color: var(--text-muted); font-style: italic;
+  }
+
+  .restaurant-code {
+    display: flex; flex-direction: column; align-items: flex-end;
+    gap: 4px; flex-shrink: 0;
+  }
+
+  .dress-badge {
+    font-size: 9px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; padding: 3px 10px; border-radius: 20px;
+  }
+
+  .badge-smart { background: #EEF6FC; color: var(--azure); border: 1px solid var(--azure-light); }
+  .badge-elegant { background: #FEF8F5; color: var(--terracotta); border: 1px solid #F0C8B0; }
+  .badge-club { background: var(--navy); color: var(--gold); border: 1px solid var(--navy); }
+  .badge-casual { background: #F4FBF6; color: #2E7D52; border: 1px solid #A8D5B8; }
+  .badge-none { background: var(--sand); color: var(--text-muted); border: 1px solid var(--sand-dark); }
+
+  .restaurant-note {
+    font-size: 11px; color: var(--text-muted); font-style: italic;
+    text-align: right;
+  }
+
+  @media (max-width: 600px) {
+    .restaurant-body { gap: 12px; }
+    .restaurant-code { align-items: flex-start; }
+    .restaurant-note { text-align: left; }
+  }
+
 </style>
 </head>
 <body>
@@ -434,6 +582,7 @@
       <div class="glance-item"><span class="glance-num">3–5</span><span class="glance-label">Gym / Lounge outfits</span></div>
       <div class="glance-item"><span class="glance-num">9</span><span class="glance-label">Dinner outfits <em>(3 club nights)</em></span></div>
       <div class="glance-item"><span class="glance-num">1</span><span class="glance-label">Airport outfit</span></div>
+      <div class="glance-item"><span class="glance-num">11</span><span class="glance-label">Restaurants <em>(see Dress Code tab)</em></span></div>
     </div>
   </div>
 </div>
@@ -643,6 +792,115 @@
     },
   ];
 
+  // ─── DRESS CODE DATA ─────────────────────────────────────────────────────────
+
+  const RESTAURANTS = [
+    { date: 'Jul 3', name: 'Ristorante Tasso', location: 'Sorrento', code: 'smart', note: 'Quite formal for Sorrento — dress well' },
+    { date: 'Jul 4', name: "L'Abate", location: 'Sorrento', code: 'smart', note: 'Smart casual evening' },
+    { date: 'Jul 5', name: 'Il Pescatore — The Fisherman', location: 'Corricella, Procida', code: 'casual', note: 'Relaxed harbor setting, al fresco' },
+    { date: 'Jul 6', name: 'Indaco ⭐ Michelin', location: 'Hotel Regina Isabella, Ischia', code: 'elegant', note: 'The dressiest dinner of the trip' },
+    { date: 'Jul 6', name: 'Valentino Club', location: 'Ischia', code: 'club', note: 'No flip flops or shorts' },
+    { date: 'Jul 7', name: 'Da Luigi ai Faraglioni', location: 'Capri', code: 'casual', note: 'Beach club lunch — coverup over swimwear' },
+    { date: 'Jul 7', name: 'Ristorante Panorama', location: 'Capri', code: 'smart', note: 'Smart casual evening' },
+    { date: 'Jul 7', name: 'Taverna Anema e Core', location: 'Capri', code: 'smart', note: 'Festive — dress up and have fun' },
+    { date: 'Jul 8', name: "Franco's Bar at Le Sirenuse", location: 'Positano', code: 'none', note: 'No dress code — come as you are!' },
+    { date: 'Jul 8', name: 'Chic Mama', location: 'Montepertuso, Positano', code: 'smart', note: 'Relaxed hillside smart casual' },
+    { date: 'Jul 9', name: 'Salvatore Ravello 1958', location: 'Ravello', code: 'smart', note: "Marshall's birthday lunch — dress beautifully" },
+    { date: 'Jul 11', name: 'Music on the Rocks', location: 'Positano', code: 'club', note: 'Strict door — no swimwear, flip flops or sleeveless shirts. Dress to impress!' },
+  ];
+
+  const CODE_LABELS = {
+    smart: 'Smart Casual',
+    elegant: 'Elegant Fine Dining',
+    club: 'Club / Night Out',
+    casual: 'Resort Casual',
+    none: 'No Dress Code',
+  };
+
+  function renderDressCode() {
+    const bodyEl = document.getElementById('packBody');
+
+    const legendHTML = `
+      <div class="dress-legend">
+        <div class="dress-legend-card smart">
+          <div class="dress-legend-badge">Smart Casual</div>
+          <div class="dress-legend-title">Smart Casual</div>
+          <div class="dress-legend-desc">
+            <strong>Women:</strong> Sundress, midi dress, linen trousers + blouse, strappy flat sandals
+            <strong>Men:</strong> Linen/cotton trousers, collared shirt (button-down or polo), loafers
+            <strong>No:</strong> shorts, flip flops, t-shirts, sneakers
+          </div>
+        </div>
+        <div class="dress-legend-card elegant">
+          <div class="dress-legend-badge">Elegant Fine Dining</div>
+          <div class="dress-legend-title">Elegant Fine Dining</div>
+          <div class="dress-legend-desc">
+            <strong>Women:</strong> Silk, chiffon or elegant linen dress, heeled sandals, statement jewelry
+            <strong>Men:</strong> Dress trousers, crisp collared shirt tucked in, leather loafers, optional blazer
+            <strong>No:</strong> shorts, polo shirts, sneakers, flip flops
+          </div>
+        </div>
+        <div class="dress-legend-card club">
+          <div class="dress-legend-badge">Club / Night Out</div>
+          <div class="dress-legend-title">Club / Night Out</div>
+          <div class="dress-legend-desc">
+            <strong>Women:</strong> Chic going-out dress or stylish separates, comfortable wedges or block heels (many stairs!)
+            <strong>Men:</strong> Dark trousers or smart chinos, nice shirt open collar, dressy loafers
+            <strong>No:</strong> flip flops, shorts, sleeveless shirts — they will turn you away at the door
+          </div>
+        </div>
+        <div class="dress-legend-card casual">
+          <div class="dress-legend-badge">Resort Casual</div>
+          <div class="dress-legend-title">Resort Casual</div>
+          <div class="dress-legend-desc">
+            <strong>Women:</strong> Coverup over swimwear, sundress, sandals
+            <strong>Men:</strong> Quality swim shorts, linen shirt, sandals
+            <strong>Perfect for:</strong> Beach club lunches, al fresco harbor restaurants
+          </div>
+        </div>
+      </div>`;
+
+    const restaurantHTML = RESTAURANTS.map(r => `
+      <div class="restaurant-card">
+        <div class="restaurant-stripe stripe-${r.code}"></div>
+        <div class="restaurant-body">
+          <div class="restaurant-date">${r.date}</div>
+          <div class="restaurant-info">
+            <div class="restaurant-name">${r.name}</div>
+            <div class="restaurant-location">${r.location}</div>
+          </div>
+          <div class="restaurant-code">
+            <span class="dress-badge badge-${r.code}">${CODE_LABELS[r.code]}</span>
+            <span class="restaurant-note">${r.note}</span>
+          </div>
+        </div>
+      </div>`).join('');
+
+    const dressSection = document.createElement('div');
+    dressSection.className = 'dress-section';
+    dressSection.id = 'dress';
+    dressSection.innerHTML = `
+      <div class="dress-section-title">Dress Code Guide</div>
+      <div class="dress-section-sub">What to wear at each restaurant — from beach club casual to Michelin star elegant</div>
+      ${legendHTML}
+      <div class="restaurant-list">${restaurantHTML}</div>`;
+
+    bodyEl.appendChild(dressSection);
+
+    // Add dress tab
+    const tabsEl = document.getElementById('dayTabs');
+    const dressTab = document.createElement('a');
+    dressTab.className = 'day-tab';
+    dressTab.href = '#dress';
+    dressTab.dataset.id = 'dress';
+    dressTab.innerHTML = `<div class="day-tab-date">Guide</div><div class="day-tab-name">Dress Code</div>`;
+    dressTab.addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById('dress').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    tabsEl.appendChild(dressTab);
+  }
+
   // ─── STATE ───────────────────────────────────────────────────────────────────
 
   let checkedItems = {};
@@ -850,7 +1108,7 @@
 
   // ─── SCROLL ──────────────────────────────────────────────────────────────────
 
-  const allIds = [...DAYS.map(d => d.id), 'other'];
+  const allIds = [...DAYS.map(d => d.id), 'other', 'dress'];
 
   const tabObserver = new IntersectionObserver(entries => {
     entries.forEach(entry => {
@@ -874,6 +1132,7 @@
 
   await loadChecked();
   renderDays();
+  renderDressCode();
   updateProgress();
 
   allIds.forEach(id => {
