@@ -216,136 +216,112 @@
   <div class="band-inner">
     <div class="section-title">👨‍✈️ The Crew</div>
     <style>
-      .crew-grid-full { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
-      .crew-card-full { background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 16px rgba(26,51,80,0.1); }
-      .crew-card-full .crew-photo { width: 100%; height: 200px; object-fit: cover; object-position: top; display: block; }
-      .crew-card-full .crew-no-photo { width: 100%; height: 200px; background: #EEF6FC; display: flex; align-items: center; justify-content: center; font-size: 48px; }
-      .crew-card-full .crew-info { padding: 16px 20px; }
-      .crew-card-full .crew-name { font-family: "Playfair Display", serif; font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
-      .crew-card-full .crew-role-badge { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--terracotta); margin-bottom: 8px; }
-      .crew-card-full .crew-bio { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
-      .crew-card-full .crew-langs { font-size: 10px; color: var(--azure); margin-top: 6px; font-weight: 700; }
+      .crew-grid-full { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+      .crew-card-full { background: var(--white); border-radius: 16px; box-shadow: 0 2px 16px rgba(26,51,80,0.1); padding: 28px 20px 20px; text-align: center; }
+      .crew-avatar-wrap { width: 110px; height: 110px; border-radius: 50%; overflow: hidden; margin: 0 auto 14px; border: 3px solid #EEF6FC; box-shadow: 0 2px 12px rgba(26,51,80,0.15); background: #EEF6FC; display: flex; align-items: center; justify-content: center; }
+      .crew-card-full .crew-photo { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+      .crew-card-full .crew-no-photo { font-size: 40px; line-height: 1; }
+      .crew-card-full .crew-name { font-family: "Playfair Display", serif; font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+      .crew-card-full .crew-role-badge { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--terracotta); margin-bottom: 10px; }
+      .crew-card-full .crew-bio { font-size: 12px; color: var(--text-muted); line-height: 1.6; text-align: left; }
+      .crew-card-full .crew-langs { font-size: 10px; color: var(--azure); margin-top: 8px; font-weight: 700; text-align: left; }
     </style>
     <div class="crew-grid-full">
 
       <div class="crew-card-full">
-        <div class="crew-no-photo">⚓</div>
-        <div class="crew-info">
-          <div class="crew-name">Mauro Ventura</div>
-          <div class="crew-role-badge">Captain · Italian</div>
-          <div class="crew-bio">Highly skilled captain with extensive experience on private yachts up to 45M. Expert in water sports, tender driving and guest entertainment. Combines impeccable technical leadership with a strong focus on the guest experience.</div>
-          <div class="crew-langs">🗣 English · Italian</div>
-        </div>
+        <div class="crew-avatar-wrap"><div class="crew-no-photo">⚓</div></div>
+        <div class="crew-name">Mauro Ventura</div>
+        <div class="crew-role-badge">Captain · Italian</div>
+        <div class="crew-bio">Highly skilled captain with extensive experience on private yachts up to 45M. Expert in water sports, tender driving and guest entertainment. Combines impeccable technical leadership with a strong focus on the guest experience.</div>
+        <div class="crew-langs">🗣 English · Italian</div>
       </div>
 
       <div class="crew-card-full">
-        <div class="crew-no-photo">⚙️</div>
-        <div class="crew-info">
-          <div class="crew-name">Danilo Maimone</div>
-          <div class="crew-role-badge">Chief Engineer · Italian</div>
-          <div class="crew-bio">Chief Engineer responsible for all technical operations and vessel maintenance aboard M/Y R23.</div>
-          <div class="crew-langs">🗣 Italian · English</div>
-        </div>
+        <div class="crew-avatar-wrap"><div class="crew-no-photo">⚙️</div></div>
+        <div class="crew-name">Danilo Maimone</div>
+        <div class="crew-role-badge">Chief Engineer · Italian</div>
+        <div class="crew-bio">Chief Engineer responsible for all technical operations and vessel maintenance aboard M/Y R23.</div>
+        <div class="crew-langs">🗣 Italian · English</div>
       </div>
 
       <div class="crew-card-full">
-        <img class="crew-photo" src="images/crew-alberto.png" alt="Alberto Loi">
-        <div class="crew-info">
-          <div class="crew-name">Alberto Loi</div>
-          <div class="crew-role-badge">Chief Officer · Italian</div>
-          <div class="crew-bio">Born in Sassari, Sardinia, Alberto began his maritime journey at 16 as a lifeguard before training at the Nautical Academy. Passionate about sailing, water sports and exploring new horizons.</div>
-          <div class="crew-langs">🗣 English · Italian</div>
-        </div>
+        <div class="crew-avatar-wrap"><img class="crew-photo" src="images/crew-alberto.png" alt="Alberto Loi"></div>
+        <div class="crew-name">Alberto Loi</div>
+        <div class="crew-role-badge">Chief Officer · Italian</div>
+        <div class="crew-bio">Born in Sassari, Sardinia, Alberto began his maritime journey at 16 as a lifeguard before training at the Nautical Academy. Passionate about sailing, water sports and exploring new horizons.</div>
+        <div class="crew-langs">🗣 English · Italian</div>
       </div>
 
       <div class="crew-card-full">
-        <div class="crew-no-photo">👨‍🍳</div>
-        <div class="crew-info">
-          <div class="crew-name">Simone Narducci</div>
-          <div class="crew-role-badge">Chef · Italian</div>
-          <div class="crew-bio">Our onboard chef, fully briefed on our kosher dietary requirements. The kitchen has been koshered and new pots and pans purchased in preparation for our voyage.</div>
-          <div class="crew-langs">🗣 Italian · English</div>
-        </div>
+        <div class="crew-avatar-wrap"><div class="crew-no-photo">👨‍🍳</div></div>
+        <div class="crew-name">Simone Narducci</div>
+        <div class="crew-role-badge">Chef · Italian</div>
+        <div class="crew-bio">Our onboard chef, fully briefed on our kosher dietary requirements. The kitchen has been koshered and new pots and pans purchased in preparation for our voyage.</div>
+        <div class="crew-langs">🗣 Italian · English</div>
       </div>
 
       <div class="crew-card-full">
-        <img class="crew-photo" src="images/crew-valentyna.png" alt="Valentyna Apopiy">
-        <div class="crew-info">
-          <div class="crew-name">Valentyna Apopiy</div>
-          <div class="crew-role-badge">Chief Stewardess · Ukrainian</div>
-          <div class="crew-bio">15 years of yachting experience and a true professional. Valentyna is proactive, well-organised and dedicated to delivering the highest standard of hospitality. Loyalty, truth and respect are her life mottos.</div>
-          <div class="crew-langs">🗣 English · Italian · Romanian · Spanish · Russian · Ukrainian</div>
-        </div>
+        <div class="crew-avatar-wrap"><img class="crew-photo" src="images/crew-valentyna.png" alt="Valentyna Apopiy"></div>
+        <div class="crew-name">Valentyna Apopiy</div>
+        <div class="crew-role-badge">Chief Stewardess · Ukrainian</div>
+        <div class="crew-bio">15 years of yachting experience and a true professional. Valentyna is proactive, well-organised and dedicated to delivering the highest standard of hospitality. Loyalty, truth and respect are her life mottos.</div>
+        <div class="crew-langs">🗣 English · Italian · Romanian · Spanish · Russian · Ukrainian</div>
       </div>
 
       <div class="crew-card-full">
-        <img class="crew-photo" src="images/crew-marialoreta.png" alt="Marialoreta Popolla">
-        <div class="crew-info">
-          <div class="crew-name">Marialoreta Popolla</div>
-          <div class="crew-role-badge">2nd Stewardess · Italian</div>
-          <div class="crew-bio">Known as Mary onboard, she is outgoing, cheerful and passionate about hospitality. Born in Fondi, Italy, she loves dance, cooking and travelling. Now in her 4th season in yachting.</div>
-          <div class="crew-langs">🗣 Italian · French · Spanish</div>
-        </div>
+        <div class="crew-avatar-wrap"><img class="crew-photo" src="images/crew-marialoreta.png" alt="Marialoreta Popolla"></div>
+        <div class="crew-name">Marialoreta Popolla</div>
+        <div class="crew-role-badge">2nd Stewardess · Italian</div>
+        <div class="crew-bio">Known as Mary onboard, she is outgoing, cheerful and passionate about hospitality. Born in Fondi, Italy, she loves dance, cooking and travelling. Now in her 4th season in yachting.</div>
+        <div class="crew-langs">🗣 Italian · French · Spanish</div>
       </div>
 
       <div class="crew-card-full">
-        <div class="crew-no-photo">✨</div>
-        <div class="crew-info">
-          <div class="crew-name">Eva Fernandez</div>
-          <div class="crew-role-badge">Stewardess · Spanish</div>
-          <div class="crew-bio">Stewardess dedicated to making every guest's time onboard exceptional.</div>
-          <div class="crew-langs">🗣 Spanish · English</div>
-        </div>
+        <div class="crew-avatar-wrap"><div class="crew-no-photo">✨</div></div>
+        <div class="crew-name">Eva Fernandez</div>
+        <div class="crew-role-badge">Stewardess · Spanish</div>
+        <div class="crew-bio">Stewardess dedicated to making every guest's time onboard exceptional.</div>
+        <div class="crew-langs">🗣 Spanish · English</div>
       </div>
 
       <div class="crew-card-full">
-        <div class="crew-no-photo">✨</div>
-        <div class="crew-info">
-          <div class="crew-name">Ana Redondo</div>
-          <div class="crew-role-badge">Stewardess · Spanish</div>
-          <div class="crew-bio">Stewardess dedicated to making every guest's time onboard exceptional.</div>
-          <div class="crew-langs">🗣 Spanish · English</div>
-        </div>
+        <div class="crew-avatar-wrap"><div class="crew-no-photo">✨</div></div>
+        <div class="crew-name">Ana Redondo</div>
+        <div class="crew-role-badge">Stewardess · Spanish</div>
+        <div class="crew-bio">Stewardess dedicated to making every guest's time onboard exceptional.</div>
+        <div class="crew-langs">🗣 Spanish · English</div>
       </div>
 
       <div class="crew-card-full">
-        <img class="crew-photo" src="images/crew-angelo.png" alt="Angelo Espana">
-        <div class="crew-info">
-          <div class="crew-name">Angelo Espana</div>
-          <div class="crew-role-badge">Bosun · Italian</div>
-          <div class="crew-bio">Born in Vico Equense on the Sorrento peninsula — our home waters! Angelo grew up fishing and working with boats, and is an expert tender driver with deep experience in vessel maintenance.</div>
-          <div class="crew-langs">🗣 Italian · English</div>
-        </div>
+        <div class="crew-avatar-wrap"><img class="crew-photo" src="images/crew-angelo.png" alt="Angelo Espana"></div>
+        <div class="crew-name">Angelo Espana</div>
+        <div class="crew-role-badge">Bosun · Italian</div>
+        <div class="crew-bio">Born in Vico Equense on the Sorrento peninsula — our home waters! Angelo grew up fishing and working with boats, and is an expert tender driver with deep experience in vessel maintenance.</div>
+        <div class="crew-langs">🗣 Italian · English</div>
       </div>
 
       <div class="crew-card-full">
-        <div class="crew-no-photo">⛵</div>
-        <div class="crew-info">
-          <div class="crew-name">Beniamin Lopera</div>
-          <div class="crew-role-badge">Deckhand</div>
-          <div class="crew-bio">Deckhand and part of the deck team keeping M/Y R23 running smoothly throughout our voyage.</div>
-          <div class="crew-langs">🗣 English</div>
-        </div>
+        <div class="crew-avatar-wrap"><div class="crew-no-photo">⛵</div></div>
+        <div class="crew-name">Beniamin Lopera</div>
+        <div class="crew-role-badge">Deckhand</div>
+        <div class="crew-bio">Deckhand and part of the deck team keeping M/Y R23 running smoothly throughout our voyage.</div>
+        <div class="crew-langs">🗣 English</div>
       </div>
 
       <div class="crew-card-full">
-        <div class="crew-no-photo">⛵</div>
-        <div class="crew-info">
-          <div class="crew-name">Maxime Boudry</div>
-          <div class="crew-role-badge">Deckhand</div>
-          <div class="crew-bio">Deckhand and part of the deck team keeping M/Y R23 running smoothly throughout our voyage.</div>
-          <div class="crew-langs">🗣 English</div>
-        </div>
+        <div class="crew-avatar-wrap"><div class="crew-no-photo">⛵</div></div>
+        <div class="crew-name">Maxime Boudry</div>
+        <div class="crew-role-badge">Deckhand</div>
+        <div class="crew-bio">Deckhand and part of the deck team keeping M/Y R23 running smoothly throughout our voyage.</div>
+        <div class="crew-langs">🗣 English</div>
       </div>
 
       <div class="crew-card-full">
-        <img class="crew-photo" src="images/crew-gabriele.png" alt="Gabriele Genovese">
-        <div class="crew-info">
-          <div class="crew-name">Gabriele Genovese</div>
-          <div class="crew-role-badge">Deckhand · Italian</div>
-          <div class="crew-bio">Born in Termoli, Gabriele attended nautical school and began working the sea at 19 in the Tremiti islands. Friendly, positive and well-mannered — he also plays basketball and practices martial arts!</div>
-          <div class="crew-langs">🗣 Italian · English</div>
-        </div>
+        <div class="crew-avatar-wrap"><img class="crew-photo" src="images/crew-gabriele.png" alt="Gabriele Genovese"></div>
+        <div class="crew-name">Gabriele Genovese</div>
+        <div class="crew-role-badge">Deckhand · Italian</div>
+        <div class="crew-bio">Born in Termoli, Gabriele attended nautical school and began working the sea at 19 in the Tremiti islands. Friendly, positive and well-mannered — he also plays basketball and practices martial arts!</div>
+        <div class="crew-langs">🗣 Italian · English</div>
       </div>
 
     </div>
